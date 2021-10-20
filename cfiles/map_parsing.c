@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ricardo <ricardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/10/19 23:59:33 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/10/20 13:23:33 by ricardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,25 @@ int		ft_process_map(t_map *map, char *line, int counter)
 	return (1);
 }
 
+bool	wrong_color_range(int color1, int color2, int color3)
+{
+	if (color1 < 0 && color1 > 255)
+		return (true);
+	if (color2 < 0 && color2 > 255)
+		return(true);	
+	if (color3 < 0 && color3 > 255)
+		return(true);	
+	return (false);
+}
+
 int		ft_process_line(t_map *map)
 {
 	if (map->args[0][0] == 'R') // if wrong value, return atoi -1 i finish
 	{
 		map->window_width = ft_atoi(map->args[1]);  // less than 0 should throw error
-		map->window_height = ft_atoi(map->args[2]); // less than 0 should throw error 
+		map->window_height = ft_atoi(map->args[2]); // less than 0 should throw error
+		if (map->window_height <= 0 || map->window_width <= 0)
+			return (0); 
 	}
 	else if (!(ft_strncmp(map->args[0], "NO", 2)))
 		map->N = map->args[1];
@@ -144,6 +157,8 @@ int		ft_process_line(t_map *map)
 		map->FR = ft_atoi(map->RGB[0]); 
 		map->FG = ft_atoi(map->RGB[1]);
 		map->FB = ft_atoi(map->RGB[2]);
+		if (wrong_color_range(map->FR, map->FG, map->FB))
+			return (0);
 	}	
 	else if (map->args[0][0] == 'C') 
 	{
@@ -151,6 +166,8 @@ int		ft_process_line(t_map *map)
 		map->CR = ft_atoi(map->RGB[0]);
 		map->CG = ft_atoi(map->RGB[1]);
 		map->CB = ft_atoi(map->RGB[2]);
+		if (wrong_color_range(map->FR, map->FG, map->FB))
+			return (0);
 	}
 	return (1);
 }
