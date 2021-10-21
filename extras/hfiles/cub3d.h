@@ -6,7 +6,7 @@
 /*   By: bcosters <bcosters@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/10/19 23:59:41 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/10/22 00:28:33 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,28 @@ typedef	struct s_map
 	int		last_line;
 }				t_map;
 
+typedef	struct	s_window
+{
+	void	*mlx_p;
+	void	*win_p;
+	void	*xpm_image;
+}
+				t_window;
+
+/****MAP****/
 int		ft_map_parse(t_map *map, char *argc);
 int		ft_get_next_line(t_map *map);
 int		ft_count_longest_line(t_map *map);
 int		ft_check_de_map(t_map *map);
 void	ft_resize_map_to_square(t_map *map, int l);
 void	ft_print_map(t_map *map);
+
+/****WINDOW****/
+void	ft_map_create(t_window *window, t_map *map);
+
+
+/****FREE and CLEAN****/
+void	ft_free_memory(t_map *map);
 
 /*
 typedef struct s_minishell
