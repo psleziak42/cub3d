@@ -31,7 +31,7 @@ LINKS	=	-L./$(LIBFT) -lft $(MLX)
 all:	$(NAME)
 
 $(NAME): libft $(DIR_O) $(OBJS)
-	@$(CC) $(CFLAGS) $(LDFLAGS) $(wildcard cfiles/*.c) $(wildcard extras/libft/*c) -o $(NAME) $(LINKS)
+	@$(CC) $(wildcard cfiles/*.c) $(wildcard extras/libft/*c) $(MLX) $(INC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(LINKS)
 	@echo "\n$(GREEN)\n"
 	@cat ./fonts/cub3d.txt
 	@echo "\n$(RESET)\n"

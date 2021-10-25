@@ -1,0 +1,18 @@
+R 1024 800 
+
+NO ./extras/textures/N
+SO ./extras/textures/S
+WE ./extras/textures/W
+EA ./extras/textures/E
+
+F 77,92,53
+C 163,208,230
+
+11111111
+10000001
+10N00001
+10000001
+10000001
+10000001
+10000001
+11111111

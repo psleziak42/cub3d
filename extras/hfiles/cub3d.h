@@ -6,7 +6,7 @@
 /*   By: bcosters <bcosters@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/10/22 00:28:33 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/10/23 23:42:50 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include "mlx.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <signal.h>
@@ -32,8 +33,13 @@
 # include <curses.h>
 # include <term.h>
 
-# define A	0b00000001 // A and B, look on it
-# define B	0b00000010
+# define ESC 	53
+# define X		17
+# define F		3
+# define k_A	0
+# define k_S	1
+# define k_W	13
+# define k_D	2
 
 typedef	struct s_map
 {
@@ -41,6 +47,11 @@ typedef	struct s_map
 	char	**args;
 	char	**RGB;
 	int		fd;
+	int		current_x_position;
+	int		current_y_position;
+	int		next_x_position;
+	int		next_y_position;
+	char	player_facing_dir;
 	int		window_width;
 	int		window_height;
 	int		FR;
@@ -54,6 +65,9 @@ typedef	struct s_map
 	char	*E;
 	char	*W;
 	int		last_line;
+	int		longest_line;
+	float	unit_x_size;
+	float	unit_y_size;
 }				t_map;
 
 typedef	struct	s_window
@@ -64,6 +78,20 @@ typedef	struct	s_window
 }
 				t_window;
 
+typedef struct s_img
+{
+	int		bpp;
+	int		endian;
+	int		size_line;
+	void	*img_ptr;
+} t_img;
+
+typedef struct s_master
+{
+	t_map		map;
+	t_window	window;
+} t_master;
+
 /****MAP****/
 int		ft_map_parse(t_map *map, char *argc);
 int		ft_get_next_line(t_map *map);
@@ -73,8 +101,8 @@ void	ft_resize_map_to_square(t_map *map, int l);
 void	ft_print_map(t_map *map);
 
 /****WINDOW****/
-void	ft_map_create(t_window *window, t_map *map);
-
+void	ft_map_create(t_master *master);
+void	ft_put_pixel(t_master *master, int x, int y);
 
 /****FREE and CLEAN****/
 void	ft_free_memory(t_map *map);
