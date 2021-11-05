@@ -13,7 +13,6 @@ void	ft_move_pixel(t_master *master, int next_x, int next_y)
 
 }
 
-
 void	ft_put_pixel(t_master *master, int x, int y)
 {
 	int		a;
@@ -70,30 +69,47 @@ void	ft_put_pixel(t_master *master, int x, int y)
 
 void	ft_printmap_to_window(t_master *master)
 {
+	int a;
+	int b;
 	int	y;
 	int x;
+	master->img.img_width = 32;
+	master->img.img_heigth = 32;
 
 	y = 0;
+	b = 0;
+	printf("window width: %d\n window_heigth: %d\n", master->map.window_width, master->map.window_height);
+	printf("img width: %d\n img_heigth: %d\n", master->map.unit_y_size, master->map.unit_x_size);
 	while (y < master->map.window_height)
 	{
 		x = 0;
-		while (x < master->map.window_width)
+		a = 0;
+		while (x < master->map.window_width - 32)
 		{
-			ft_put_pixel(master, x, y); // tutaj jest 
+			if (master->map.map[b][a] == '1')
+				master->img.img_file = "../extras/textures/wall.xpm";
+			else if (master->map.map[b][a] == 'N')
+				master->img.img_file = "../extras/textures/player.xpm";
+			else
+				master->img.img_file = "../extras/textures/walk.xpm";
+			master->img.img_instance = mlx_xpm_file_to_image(master->window.mlx_p, master->img.img_file, &master->img.img_width, &master->img.img_heigth);
+			printf("x: %d\n y: %d\n", x, y);
+			mlx_put_image_to_window(master->window.mlx_p, master->window.win_p, master->img.img_instance, x, y);
 			x += master->map.unit_x_size;
+			a++;
 		}
 		y += master->map.unit_y_size;
+		b++;
 	}
 }
 
-int	key_hook(int key, t_master *master)
+/*int	key_hook(int key, t_master *master)
 {
 	//key press and key release
 	if (key == k_W)
-		ft_move_pixel(master, master->map.current_x_position, master->map.current_y_position + 10);
+		//ft_move_pixel(master, master->map.current_x_position, master->map.current_y_position + 10);
 	return (1);
-}
-
+}*/
 
 void	ft_map_create(t_master *master)
 {
@@ -102,6 +118,6 @@ void	ft_map_create(t_master *master)
 	master->window.win_p = mlx_new_window(master->window.mlx_p, master->map.window_width, master->map.window_height, "dujuivnDUBSTEPbro?");
 	master->map.unit_x_size = master->map.window_width/(master->map.longest_line - 1);
 	master->map.unit_y_size =  master->map.window_height/(master->map.last_line + 1);
-	mlx_hook(master->window.mlx_p, 2, 1L << 0, key_hook, master);
+	//mlx_hook(master->window.mlx_p, 2, 1L << 0, key_hook, master);
 	ft_printmap_to_window(master);
 }

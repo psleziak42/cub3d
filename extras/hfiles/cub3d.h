@@ -66,30 +66,39 @@ typedef	struct s_map
 	char	*W;
 	int		last_line;
 	int		longest_line;
-	float	unit_x_size;
-	float	unit_y_size;
+	int		unit_x_size;
+	int		unit_y_size;
 }				t_map;
 
 typedef	struct	s_window
 {
 	void	*mlx_p;
 	void	*win_p;
-	void	*xpm_image;
 }
 				t_window;
 
-typedef struct s_img
+typedef struct	s_image
+{
+	void	*img_instance;
+	void	*xpm_image;
+	char	*img_file;
+	int		img_width;
+	int		img_heigth;
+}				t_img;
+
+/*typedef struct s_img
 {
 	int		bpp;
 	int		endian;
 	int		size_line;
 	void	*img_ptr;
-} t_img;
+} t_img;*/
 
 typedef struct s_master
 {
 	t_map		map;
 	t_window	window;
+	t_img		img;
 } t_master;
 
 /****MAP****/
