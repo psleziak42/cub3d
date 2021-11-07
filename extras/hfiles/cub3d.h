@@ -15,6 +15,7 @@
 
 # include "mlx.h"
 # include "../libft/libft.h"
+# include <math.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <signal.h>
@@ -95,6 +96,7 @@ typedef struct s_key
 	bool	s;
 	bool	a;
 	bool	d;
+	float	degree_shift;
 }				t_keys;
 
 typedef struct s_master

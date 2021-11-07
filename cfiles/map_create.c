@@ -120,32 +120,25 @@ int	key_press(int key, t_master *master)
 {
 	if (key == k_W)
 	{
-		master->map.current_y_position -= 1 * master->map.current_angle/(PI/2);
-		master->map.current_x_position += 1 * ((PI/2) - master->map.current_angle)/(PI/2);
-		/*if (master->map.current_angle <= PI && master->map.current_angle > 0)
-		{
-			master->map.current_y_position -= 1 * master->map.current_angle/(PI/2);
-			master->map.current_x_position += 1 * ((PI/2) - master->map.current_angle) / (PI/2);
-		}
-		else
-		{
-			master->map.current_y_position += 1 * master->map.current_angle/(PI/2);
-			master->map.current_x_position -= 1 * ((PI/2) - master->map.current_angle) / (PI/2);
-		}*/
+		master->map.current_y_position += 2 * -sin(master->map.current_angle);
+		master->map.current_x_position += 2 * cos(master->map.current_angle);
 	}
 	else if (key == k_S)
-		master->map.current_y_position += 1 * 0.01111;
+	{
+		master->map.current_y_position += 2 * sin(master->map.current_angle);
+		master->map.current_x_position += 2 * -cos(master->map.current_angle);
+	}
 	else if (key == k_A)
 	{
-		master->map.current_angle += degree * 90;
-		if (master->map.current_angle >= PI)
-			master->map.current_angle = PI * (-1) + degree;
+		master->map.current_angle += degree;
+		if (master->map.current_angle + degree >= 2 * PI)
+			master->map.current_angle = 0;
 	}
 	else if (key == k_D)
 	{
-		master->map.current_angle -= degree * 90;
-		if (master->map.current_angle <= PI * (-1))
-			master->map.current_angle = PI - degree;
+		master->map.current_angle -= degree;
+		if (master->map.current_angle - degree <= 0)
+			master->map.current_angle = 2 * PI;
 	}
 	printf("angle: %f\n", master->map.current_angle);
 	ft_move_image(master, master->map.current_x_position, master->map.current_y_position);
