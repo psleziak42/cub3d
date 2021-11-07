@@ -33,6 +33,8 @@
 # include <curses.h>
 # include <term.h>
 
+# define PI		3.14159265359
+# define degree	0.01745329251
 # define ESC 	53
 # define X		17
 # define F		3
@@ -47,8 +49,9 @@ typedef	struct s_map
 	char	**args;
 	char	**RGB;
 	int		fd;
-	int		current_x_position;
-	int		current_y_position;
+	float	current_x_position;
+	float	current_y_position;
+	float	current_angle;
 	int		next_x_position;
 	int		next_y_position;
 	char	player_facing_dir;
@@ -66,8 +69,8 @@ typedef	struct s_map
 	char	*W;
 	int		last_line;
 	int		longest_line;
-	int		unit_x_size;
-	int		unit_y_size;
+	float	unit_x_size;
+	float	unit_y_size;
 }				t_map;
 
 typedef	struct	s_win

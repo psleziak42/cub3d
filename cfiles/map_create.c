@@ -1,7 +1,7 @@
 #include "../extras/hfiles/cub3d.h"
 
 #define IMG_SIZE 64
-
+/*
 void	ft_move_pixel(t_master *master, int next_x, int next_y)
 {	
 	master->map.next_x_position = next_x;
@@ -49,11 +49,11 @@ void	ft_put_pixel(t_master *master, int x, int y)
 					}
 					mlx_pixel_put(master->window.mlx_p, master->window.win_p, x, y, 0xFFFFFF);
 				}
-				/*else
+				else
 				{
 					position = 48;
 					break ;
-				}*/
+				}
 			}
 			else
 				break ;
@@ -64,7 +64,7 @@ void	ft_put_pixel(t_master *master, int x, int y)
 		x = a;
 		y++;
 	}
-}
+}*/
 
 void	ft_printmap_to_window(t_master *master)
 {
@@ -76,7 +76,7 @@ void	ft_printmap_to_window(t_master *master)
 	y = 0;
 	b = 0;
 	printf("window width: %d\n window_heigth: %d\n", master->map.window_width, master->map.window_height);
-	printf("img width: %d\n img_heigth: %d\n", master->map.unit_y_size, master->map.unit_x_size);
+	printf("img width: %f\n img_heigth: %f\n", master->map.unit_y_size, master->map.unit_x_size);
 	while (y < master->map.window_height)
 	{
 		x = 0;
@@ -92,6 +92,7 @@ void	ft_printmap_to_window(t_master *master)
 				master->img.img_file = "extras/textures/player.xpm";
 				master->map.current_x_position = x;
 				master->map.current_y_position = y;
+				master->map.current_angle = PI/2;
 			}
 			else
 				master->img.img_file = "extras/textures/walk.xpm";
@@ -111,28 +112,58 @@ void	ft_printmap_to_window(t_master *master)
 void	ft_move_image(t_master *master, int x, int y)
 {
 	master->img.img_file = "extras/textures/player.xpm";
+	master->img.img_instance = mlx_xpm_file_to_image(master->window.mlx_p, master->img.img_file, &master->img.img_width, &master->img.img_heigth);
 	mlx_put_image_to_window(master->window.mlx_p, master->window.win_p, master->img.img_instance, x, y);
 }
 
 int	key_press(int key, t_master *master)
 {
-	//key press and key release
 	if (key == k_W)
 	{
-		printf("chuj\n");
-		master->keys.w = TRUE;
-		while (master->keys.w)
+		master->map.current_y_position -= 1 * master->map.current_angle/(PI/2);
+		master->map.current_x_position += 1 * ((PI/2) - master->map.current_angle)/(PI/2);
+		/*if (master->map.current_angle <= PI && master->map.current_angle > 0)
 		{
-			printf("bla bla%d\n", master->keys.w = TRUE);
-			ft_move_image(master, master->map.current_x_position, master->map.current_y_position - 10);
+			master->map.current_y_position -= 1 * master->map.current_angle/(PI/2);
+			master->map.current_x_position += 1 * ((PI/2) - master->map.current_angle) / (PI/2);
 		}
-		printf("bla bla bla bla %d\n", master->keys.w = TRUE);
+		else
+		{
+			master->map.current_y_position += 1 * master->map.current_angle/(PI/2);
+			master->map.current_x_position -= 1 * ((PI/2) - master->map.current_angle) / (PI/2);
+		}*/
 	}
+	else if (key == k_S)
+		master->map.current_y_position += 1 * 0.01111;
+	else if (key == k_A)
+	{
+		master->map.current_angle += degree * 90;
+		if (master->map.current_angle >= PI)
+			master->map.current_angle = PI * (-1) + degree;
+	}
+	else if (key == k_D)
+	{
+		master->map.current_angle -= degree * 90;
+		if (master->map.current_angle <= PI * (-1))
+			master->map.current_angle = PI - degree;
+	}
+	printf("angle: %f\n", master->map.current_angle);
+	ft_move_image(master, master->map.current_x_position, master->map.current_y_position);
+	return (0);
+}
+		/*if (master->map.current_angle <= 0.0f)
+		{
+			master->map.current_angle = 2*PI - master->map.current_angle;
+
+		}
+		printf("angle: %f\n", master->map.current_angle);
+	}
+	ft_move_image(master, master->map.current_x_position, master->map.current_y_position);
 	return (1);
 }
 
-/*int	key_release(int key, t_master *master)
-{
+int	key_release(int key, t_master *master)
+{:w
 	if (key == k_W)
 		master->keys.w = FALSE;
 	return (1);
