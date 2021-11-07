@@ -54,6 +54,7 @@ int		ft_check_de_map(t_map *map)
 				if (map->map[y][x+1] == 32 || map->map[y][x-1] == 32 || map->map[y+1][x] == 32 || map->map[y-1][x] == 32) 
 					return (0);
 				if (map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W')
+
 					player++;
 			}
 		}

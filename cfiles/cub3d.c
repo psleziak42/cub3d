@@ -29,6 +29,7 @@ int	main(int argc, char **argv)
 {
 	t_master	master;
 	
+	ft_memset(&master, 0, sizeof(master));
 	if (argc != 2)
 		return (-1);
 	if (!ft_map_parse(&master.map, argv[1]))
@@ -36,10 +37,18 @@ int	main(int argc, char **argv)
 		printf("Error\n");
 		ft_free_memory(&master.map);
 		return(-1);
-	}		
+	}
+	master.window.mlx_p = mlx_init();
+	master.window.win_p = mlx_new_window(master.window.mlx_p, master.map.window_width, master.map.window_height, "dujuivnDUBSTEPbro?");
+	mlx_hook(master.window.win_p, 2, 1L << 0, key_press, &master);
+	//mlx_hook(master.window.win_p, 2, 1L << 1, key_release, &master);
 	ft_map_create(&master);
+	//master.img.img_file = "cfiles/textures/player.xpm";
+	//master.img.img_instance = mlx_xpm_file_to_image(master.window.mlx_p, master.img.img_file, &master.img.img_width, &master.img.img_heigth);
+	//mlx_put_image_to_window(master.window.mlx_p, master.window.win_p, master.img.img_instance, 100, 100);
 	//printf("w_heigh %d, w_width %d\n", map.window_height, map.window_width);
 	//printf("N: %s\n, S %s\n, E %s\n, W %s\n", map.N, map.S, map.E, map.W);
 	//printf("FR %d, FG %d, FB %d, CR %d, CG %d, CB %d\n", map.FR, map.FG, map.FB, map.CR, map.CG, map.CB);
+	mlx_loop(master.window.mlx_p);
 	return (0);
 }

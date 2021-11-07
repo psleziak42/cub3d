@@ -10,7 +10,6 @@ void	ft_move_pixel(t_master *master, int next_x, int next_y)
 		mlx_pixel_put(master->window.mlx_p, master->window.win_p, master->map.next_x_position, master->map.next_y_position, 0xFFFFFF);
 		master->map.current_y_position++;
 	}
-
 }
 
 void	ft_put_pixel(t_master *master, int x, int y)
@@ -73,8 +72,6 @@ void	ft_printmap_to_window(t_master *master)
 	int b;
 	int	y;
 	int x;
-	master->img.img_width = 32;
-	master->img.img_heigth = 32;
 
 	y = 0;
 	b = 0;
@@ -84,16 +81,24 @@ void	ft_printmap_to_window(t_master *master)
 	{
 		x = 0;
 		a = 0;
-		while (x < master->map.window_width - 32)
+		while (x < master->map.window_width)
 		{
+			printf("xxxx: %d\n yyyy: %d\n", x, y);
+			printf("char: %c\n", master->map.map[b][a]);
 			if (master->map.map[b][a] == '1')
-				master->img.img_file = "../extras/textures/wall.xpm";
+				master->img.img_file = "extras/textures/wall.xpm";
 			else if (master->map.map[b][a] == 'N')
-				master->img.img_file = "../extras/textures/player.xpm";
+			{
+				master->img.img_file = "extras/textures/player.xpm";
+				master->map.current_x_position = x;
+				master->map.current_y_position = y;
+			}
 			else
-				master->img.img_file = "../extras/textures/walk.xpm";
+				master->img.img_file = "extras/textures/walk.xpm";
 			master->img.img_instance = mlx_xpm_file_to_image(master->window.mlx_p, master->img.img_file, &master->img.img_width, &master->img.img_heigth);
-			printf("x: %d\n y: %d\n", x, y);
+			if (!master->img.img_instance)
+				printf("error\n");
+			printf("image width: %d\n image heigth: %d\n", master->img.img_width, master->img.img_heigth);
 			mlx_put_image_to_window(master->window.mlx_p, master->window.win_p, master->img.img_instance, x, y);
 			x += master->map.unit_x_size;
 			a++;
@@ -103,21 +108,39 @@ void	ft_printmap_to_window(t_master *master)
 	}
 }
 
-/*int	key_hook(int key, t_master *master)
+void	ft_move_image(t_master *master, int x, int y)
+{
+	master->img.img_file = "extras/textures/player.xpm";
+	mlx_put_image_to_window(master->window.mlx_p, master->window.win_p, master->img.img_instance, x, y);
+}
+
+int	key_press(int key, t_master *master)
 {
 	//key press and key release
 	if (key == k_W)
-		//ft_move_pixel(master, master->map.current_x_position, master->map.current_y_position + 10);
+	{
+		printf("chuj\n");
+		master->keys.w = TRUE;
+		while (master->keys.w)
+		{
+			printf("bla bla%d\n", master->keys.w = TRUE);
+			ft_move_image(master, master->map.current_x_position, master->map.current_y_position - 10);
+		}
+		printf("bla bla bla bla %d\n", master->keys.w = TRUE);
+	}
+	return (1);
+}
+
+/*int	key_release(int key, t_master *master)
+{
+	if (key == k_W)
+		master->keys.w = FALSE;
 	return (1);
 }*/
 
 void	ft_map_create(t_master *master)
 {
-
-	master->window.mlx_p = mlx_init();
-	master->window.win_p = mlx_new_window(master->window.mlx_p, master->map.window_width, master->map.window_height, "dujuivnDUBSTEPbro?");
 	master->map.unit_x_size = master->map.window_width/(master->map.longest_line - 1);
 	master->map.unit_y_size =  master->map.window_height/(master->map.last_line + 1);
-	//mlx_hook(master->window.mlx_p, 2, 1L << 0, key_hook, master);
 	ft_printmap_to_window(master);
 }

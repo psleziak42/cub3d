@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef CUB3D_H
+# define CUB3D_H
 
-# include "../libft/libft.h"
 # include "mlx.h"
+# include "../libft/libft.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <signal.h>
@@ -70,14 +70,14 @@ typedef	struct s_map
 	int		unit_y_size;
 }				t_map;
 
-typedef	struct	s_window
+typedef	struct	s_win
 {
 	void	*mlx_p;
 	void	*win_p;
 }
 				t_window;
 
-typedef struct	s_image
+typedef struct	s_img
 {
 	void	*img_instance;
 	void	*xpm_image;
@@ -86,20 +86,21 @@ typedef struct	s_image
 	int		img_heigth;
 }				t_img;
 
-/*typedef struct s_img
+typedef struct s_key
 {
-	int		bpp;
-	int		endian;
-	int		size_line;
-	void	*img_ptr;
-} t_img;*/
+	bool	w;
+	bool	s;
+	bool	a;
+	bool	d;
+}				t_keys;
 
 typedef struct s_master
 {
 	t_map		map;
 	t_window	window;
 	t_img		img;
-} t_master;
+	t_keys		keys;
+} 				t_master;
 
 /****MAP****/
 int		ft_map_parse(t_map *map, char *argc);
@@ -112,6 +113,10 @@ void	ft_print_map(t_map *map);
 /****WINDOW****/
 void	ft_map_create(t_master *master);
 void	ft_put_pixel(t_master *master, int x, int y);
+
+/****KEY****/
+int		key_press(int key, t_master *master);
+int		key_release(int key, t_master *master);
 
 /****FREE and CLEAN****/
 void	ft_free_memory(t_map *map);
