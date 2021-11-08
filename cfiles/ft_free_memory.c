@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_memory.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 23:47:04 by psleziak          #+#    #+#             */
-/*   Updated: 2021/10/22 00:28:44 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/07 22:28:58 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
 
-void	ft_free_memory(t_map *map)
+void	ft_free_memory(t_master *master)
 {
 	int	y;
 
 	y = -1;
-	while (map->map[++y])
-		free(map->map[y]);
-	free(map->map);
+	while (master->map.map[++y])
+		free(master->map.map[y]);
+	free(master->map.map);
 	y = -1;
-	while (map->args[++y])
-		free(map->args[y]);
-	free(map->args);
+	while (master->map.args[++y])
+		free(master->map.args[y]);
+	free(master->map.args);
 	y = -1;
-	while (map->RGB[++y])
-		free(map->RGB[y]);
-	free(map->RGB);
+	while (master->map.RGB[++y])
+		free(master->map.RGB[y]);
+	free(master->map.RGB);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcosters <bcosters@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/10/23 23:42:50 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/07 23:38:33 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,6 @@ typedef	struct s_map
 	char	**args;
 	char	**RGB;
 	int		fd;
-	float	current_x_position;
-	float	current_y_position;
-	float	current_angle;
-	int		next_x_position;
-	int		next_y_position;
 	char	player_facing_dir;
 	int		window_width;
 	int		window_height;
@@ -70,8 +65,6 @@ typedef	struct s_map
 	char	*W;
 	int		last_line;
 	int		longest_line;
-	float	unit_x_size;
-	float	unit_y_size;
 }				t_map;
 
 typedef	struct	s_win
@@ -90,28 +83,32 @@ typedef struct	s_img
 	int		img_heigth;
 }				t_img;
 
-typedef struct s_key
+typedef struct s_trigonometry
 {
-	bool	w;
-	bool	s;
-	bool	a;
-	bool	d;
-	float	degree_shift;
-}				t_keys;
+	int		current_x_position;
+	int		current_y_position;
+	float	current_angle;
+	int		unit_x_size;
+	int		unit_y_size;
+	int		offset_x;
+    int		offset_y;
+	int		dist_x_to_grid;
+	int		dist_y_to_grid;
+}				t_trigo;
 
 typedef struct s_master
 {
 	t_map		map;
 	t_window	window;
 	t_img		img;
-	t_keys		keys;
+	t_trigo		trigo;
 } 				t_master;
 
 /****MAP****/
-int		ft_map_parse(t_map *map, char *argc);
+int		ft_map_parse(t_master *master, char *argc);
 int		ft_get_next_line(t_map *map);
 int		ft_count_longest_line(t_map *map);
-int		ft_check_de_map(t_map *map);
+int		ft_check_de_map(t_master *master);
 void	ft_resize_map_to_square(t_map *map, int l);
 void	ft_print_map(t_map *map);
 
@@ -123,8 +120,11 @@ void	ft_put_pixel(t_master *master, int x, int y);
 int		key_press(int key, t_master *master);
 int		key_release(int key, t_master *master);
 
+/****RAYCASTING****/
+void    print_one_ray(t_master *master, int x, int y);
+
 /****FREE and CLEAN****/
-void	ft_free_memory(t_map *map);
+void	ft_free_memory(t_master *master);
 
 /*
 typedef struct s_minishell

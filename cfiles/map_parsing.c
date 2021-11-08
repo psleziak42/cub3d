@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ricardo <ricardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/10/22 21:51:23 by psleziak         ###   ########.fr       */
-/*   Updated: 2021/10/20 13:23:33 by ricardo          ###   ########.fr       */
+/*   Updated: 2021/11/07 22:24:22 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../extras/hfiles/cub3d.h"
 
@@ -31,7 +31,7 @@ void	ft_print_map(t_map *map)
 		printf("%s", map->map[y]);
 }
 
-int		ft_check_de_map(t_map *map) 
+int		ft_check_de_map(t_master *master) 
 {
 	int	x;
 	int y;
@@ -39,23 +39,34 @@ int		ft_check_de_map(t_map *map)
 
 	y = -1;
 	player = 0;
-	while (map->map[++y])
+	while (master->map.map[++y])
 	{
 		x = -1;
-		while (map->map[y][++x])
+		while (master->map.map[y][++x])
 		{
-			if (y == 0 || y == map->last_line)
+			if (y == 0 || y == master->map.last_line)
 			{
-				if (map->map[y][x] != '1' && map->map[y][x] != ' ' && map->map[y][x] != '\n')
+				if (master->map.map[y][x] != '1' && master->map.map[y][x] != ' ' && master->map.map[y][x] != '\n')
 					return (0);
 			}
-			else if (map->map[y][x] == 48 || map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W') 
+			else if (master->map.map[y][x] == 48 || master->map.map[y][x] == 'N' || master->map.map[y][x] == 'S' || master->map.map[y][x] == 'E' || master->map.map[y][x] == 'W') 
 			{
-				if (map->map[y][x+1] == 32 || map->map[y][x-1] == 32 || map->map[y+1][x] == 32 || map->map[y-1][x] == 32) 
+				if (master->map.map[y][x+1] == 32 || master->map.map[y][x-1] == 32 || master->map.map[y+1][x] == 32 || master->map.map[y-1][x] == 32) 
 					return (0);
-				if (map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W')
-
+				if (master->map.map[y][x] == 'N' || master->map.map[y][x] == 'S' || master->map.map[y][x] == 'E' || master->map.map[y][x] == 'W')
+				{
+					master->trigo.current_x_position = x;
+					master->trigo.current_y_position = y;
+					if (master->map.map[y][x] == 'N')
+						master->trigo.current_angle = PI/2;
+					else if (master->map.map[y][x] == 'S')
+						master->trigo.current_angle = 3 * PI / 2;
+					else if (master->map.map[y][x] == 'E')
+						master->trigo.current_angle = 0;
+					else if (master->map.map[y][x] == 'W')
+						master->trigo.current_angle = PI; 
 					player++;
+				}	
 			}
 		}
 	}
