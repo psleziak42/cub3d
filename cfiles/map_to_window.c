@@ -11,8 +11,8 @@ void	ft_printmap_to_window(t_master *master)
 
 	y = 0;
 	b = 0;
-	printf("window width: %d\n window_heigth: %d\n", master->map.window_width, master->map.window_height);
-	printf("img width: %d\n img_heigth: %d\n", master->trigo.unit_y_size, master->trigo.unit_x_size);
+	//printf("window width: %f\n window_heigth: %d\n", master->map.window_width, master->map.window_height);
+	//printf("img width: %d\n img_heigth: %f\n", master->trigo.unit_y_size, master->trigo.unit_x_size);
 	while (y < master->map.window_height)
 	{
 		x = 0;
@@ -38,11 +38,4 @@ void	ft_printmap_to_window(t_master *master)
 		y += master->trigo.unit_y_size;
 		b++;
 	}
-}
-
-void	ft_map_create(t_master *master)
-{
-	master->trigo.unit_x_size = master->map.window_width/(master->map.longest_line - 1);
-	master->trigo.unit_y_size =  master->map.window_height/(master->map.last_line + 1);
-	ft_printmap_to_window(master);
 }

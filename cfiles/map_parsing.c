@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/07 22:24:22 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/08 23:08:58 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ int		ft_check_de_map(t_master *master)
 					return (0);
 				if (master->map.map[y][x] == 'N' || master->map.map[y][x] == 'S' || master->map.map[y][x] == 'E' || master->map.map[y][x] == 'W')
 				{
-					master->trigo.current_x_position = x;
-					master->trigo.current_y_position = y;
+					master->trigo.map2d_x = x;
+					master->trigo.map2d_y = y;
+					master->trigo.pixel_x = x * master->trigo.unit_x_size;
+					master->trigo.pixel_y = y * master->trigo.unit_y_size;
 					if (master->map.map[y][x] == 'N')
 						master->trigo.current_angle = PI/2;
 					else if (master->map.map[y][x] == 'S')
@@ -103,26 +105,6 @@ void	ft_resize_map_to_square(t_map *map, int l)
 	}
 }
 
-int		ft_count_longest_line(t_map *map)
-{
-	int	x;
-	int	y;
-	int	l;
-
-	x = -1;
-	y = -1;
-	l = 0;
-	while (map->map[++y])
-	{
-		while(map->map[y][++x])
-			;
-		if (x > l)
-			l = x;
-		x = -1;
-	}
-	return (l);
-}
-
 int		ft_process_map(t_map *map, char *line, int counter) 
 {
 	int		size;
@@ -135,17 +117,6 @@ int		ft_process_map(t_map *map, char *line, int counter)
 	map->map[counter] = ft_strdup(line);
 	return (1);
 }
-
-/*bool	wrong_color_range(int color1, int color2, int color3)
-{
-	if (color1 < 0 && color1 > 255)
-		return (true);
-	if (color2 < 0 && color2 > 255)
-		return(true);	
-	if (color3 < 0 && color3 > 255)
-		return(true);	
-	return (false);
-}*/
 
 int		ft_process_line(t_map *map)
 {
