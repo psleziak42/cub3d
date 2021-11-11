@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/08 21:38:45 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/10 23:48:16 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ int	key_press(int key, t_master *master)
 	printf("angle: %f\n", master->trigo.current_angle);
 	printf("x: %f, y: %f\n", master->trigo.pixel_x, master->trigo.pixel_y);
 	ft_move_image(master, master->trigo.pixel_x, master->trigo.pixel_y);
+	print_one_ray(master, master->trigo.pixel_x, master->trigo.pixel_y);
 	return (0);
 }

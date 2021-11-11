@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/08 22:50:17 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/10 22:40:00 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	main(int argc, char **argv)
 		ft_free_memory(&master);
 		return(-1);
 	}
-	printf("map2d_x: %d, map2d_y: %d\n", master.trigo.map2d_x, master.trigo.map2d_y);
 	master.window.mlx_p = mlx_init();
 	master.window.win_p = mlx_new_window(master.window.mlx_p, master.map.window_width, master.map.window_height, "dujuivnDUBSTEPbro?");
 	mlx_hook(master.window.win_p, 2, 1L << 0, key_press, &master);

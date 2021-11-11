@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/08 23:08:58 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/10 23:45:07 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		ft_check_de_map(t_master *master)
 					master->trigo.pixel_x = x * master->trigo.unit_x_size;
 					master->trigo.pixel_y = y * master->trigo.unit_y_size;
 					if (master->map.map[y][x] == 'N')
-						master->trigo.current_angle = PI/2;
+						master->trigo.current_angle = PI/6;
 					else if (master->map.map[y][x] == 'S')
 						master->trigo.current_angle = 3 * PI / 2;
 					else if (master->map.map[y][x] == 'E')

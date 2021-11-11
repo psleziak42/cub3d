@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/11/08 22:24:51 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/10 23:48:07 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void    print_one_ray(t_master *master, float pixel_x, float pixel_y);
 
 /****FREE and CLEAN****/
 void	ft_free_memory(t_master *master);
+
 
 /*
 typedef struct s_minishell
