@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/10 23:45:07 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/21 01:04:58 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@
  *
 */
 
-void	ft_print_map(t_map *map)
+void	ft_print_map(void)
 {
 	int y;
 
 	y = -1;
-	while (map->map[++y])
-		printf("%s", map->map[y]);
+	while (g_master.map.map[++y])
+		printf("%s", g_master.map.map[y]);
 }
 
-int		ft_check_de_map(t_master *master) 
+int		ft_check_de_map(void) 
 {
 	int	x;
 	int y;
@@ -39,34 +39,34 @@ int		ft_check_de_map(t_master *master)
 
 	y = -1;
 	player = 0;
-	while (master->map.map[++y])
+	while (g_master.map.map[++y])
 	{
 		x = -1;
-		while (master->map.map[y][++x])
+		while (g_master.map.map[y][++x])
 		{
-			if (y == 0 || y == master->map.last_line)
+			if (y == 0 || y == g_master.map.last_line)
 			{
-				if (master->map.map[y][x] != '1' && master->map.map[y][x] != ' ' && master->map.map[y][x] != '\n')
+				if (g_master.map.map[y][x] != '1' && g_master.map.map[y][x] != ' ' && g_master.map.map[y][x] != '\n')
 					return (0);
 			}
-			else if (master->map.map[y][x] == 48 || master->map.map[y][x] == 'N' || master->map.map[y][x] == 'S' || master->map.map[y][x] == 'E' || master->map.map[y][x] == 'W') 
+			else if (g_master.map.map[y][x] == 48 || g_master.map.map[y][x] == 'N' || g_master.map.map[y][x] == 'S' || g_master.map.map[y][x] == 'E' || g_master.map.map[y][x] == 'W') 
 			{
-				if (master->map.map[y][x+1] == 32 || master->map.map[y][x-1] == 32 || master->map.map[y+1][x] == 32 || master->map.map[y-1][x] == 32) 
+				if (g_master.map.map[y][x+1] == 32 || g_master.map.map[y][x-1] == 32 || g_master.map.map[y+1][x] == 32 || g_master.map.map[y-1][x] == 32) 
 					return (0);
-				if (master->map.map[y][x] == 'N' || master->map.map[y][x] == 'S' || master->map.map[y][x] == 'E' || master->map.map[y][x] == 'W')
+				if (g_master.map.map[y][x] == 'N' || g_master.map.map[y][x] == 'S' || g_master.map.map[y][x] == 'E' || g_master.map.map[y][x] == 'W')
 				{
-					master->trigo.map2d_x = x;
-					master->trigo.map2d_y = y;
-					master->trigo.pixel_x = x * master->trigo.unit_x_size;
-					master->trigo.pixel_y = y * master->trigo.unit_y_size;
-					if (master->map.map[y][x] == 'N')
-						master->trigo.current_angle = PI/6;
-					else if (master->map.map[y][x] == 'S')
-						master->trigo.current_angle = 3 * PI / 2;
-					else if (master->map.map[y][x] == 'E')
-						master->trigo.current_angle = 0;
-					else if (master->map.map[y][x] == 'W')
-						master->trigo.current_angle = PI; 
+					g_master.trigo.map2d_x = x;
+					g_master.trigo.map2d_y = y;
+					g_master.trigo.pixel_x = x * g_master.trigo.unit_x_size;
+					g_master.trigo.pixel_y = y * g_master.trigo.unit_y_size;
+					if (g_master.map.map[y][x] == 'N')
+						g_master.trigo.current_angle = (PI/6);
+					else if (g_master.map.map[y][x] == 'S')
+						g_master.trigo.current_angle = 3 * PI / 2;
+					else if (g_master.map.map[y][x] == 'E')
+						g_master.trigo.current_angle = 0;
+					else if (g_master.map.map[y][x] == 'W')
+						g_master.trigo.current_angle = PI; 
 					player++;
 				}	
 			}
@@ -77,86 +77,86 @@ int		ft_check_de_map(t_master *master)
 	return (1);
 }
 
-void	ft_resize_map_to_square(t_map *map, int l)
+void	ft_resize_map_to_square(int l)
 {
 	int	x;
 	int	y;
 
 	y = -1;
-	while (map->map[++y])
+	while (g_master.map.map[++y])
 	{
 		x = -1;	
-		while (map->map[y][++x])
+		while (g_master.map.map[y][++x])
 			;
 		if (x < l)
 		{
-			map->map[y] = realloc(map->map[y], sizeof(char) * (l + 1));
+			g_master.map.map[y] = realloc(g_master.map.map[y], sizeof(char) * (l + 1));
 			while (x < l)
 			{
 				if (x == l)
-					map->map[y][x] = '\0';
+					g_master.map.map[y][x] = '\0';
 				if (x == l - 1)
-					map->map[y][x] = '\n';
-				map->map[y][x - 1] = ' '; // checked with 'x' it works, now we turn it back to spaces;
+					g_master.map.map[y][x] = '\n';
+				g_master.map.map[y][x - 1] = ' '; // checked with 'x' it works, now we turn it back to spaces;
 				x++;
 			}
-			map->map[y][x] = '\0';
+			g_master.map.map[y][x] = '\0';
 		}
 	}
 }
 
-int		ft_process_map(t_map *map, char *line, int counter) 
+static int		ft_process_map(char *line, int counter) 
 {
 	int		size;
 	
 	if (counter == 0)
-		map->map = malloc(sizeof(char *) * (counter + 2));
+		g_master.map.map = malloc(sizeof(char *) * (counter + 2));
 	else
-		map->map = realloc(map->map, sizeof(char *) * (counter + 2));
+		g_master.map.map = realloc(g_master.map.map, sizeof(char *) * (counter + 2));
 	size = ft_strlen(line);
-	map->map[counter] = ft_strdup(line);
+	g_master.map.map[counter] = ft_strdup(line);
 	return (1);
 }
 
-int		ft_process_line(t_map *map)
+static int		ft_process_line(void)
 {
-	if (map->args[0][0] == 'R') // if wrong value, return atoi -1 i finish
+	if (g_master.map.args[0][0] == 'R') // if wrong value, return atoi -1 i finish
 	{
-		map->window_width = ft_atoi(map->args[1]);  // less than 0 should throw error
-		map->window_height = ft_atoi(map->args[2]); // less than 0 should throw error
-		if (map->window_height <= 0 || map->window_width <= 0)
+		g_master.map.window_width = ft_atoi(g_master.map.args[1]);  // less than 0 should throw error
+		g_master.map.window_height = ft_atoi(g_master.map.args[2]); // less than 0 should throw error
+		if (g_master.map.window_height <= 0 || g_master.map.window_width <= 0)
 			return (0); 
 	}
-	else if (!(ft_strncmp(map->args[0], "NO", 2)))
-		map->N = map->args[1];
-	else if (!(ft_strncmp(map->args[0], "SO", 2)))
-		map->S = map->args[1];
-	else if (!(ft_strncmp(map->args[0], "WE", 2)))
-		map->E = map->args[1];
-	else if (!(ft_strncmp(map->args[0], "EA", 2)))
-		map->W = map->args[1];
-	else if (map->args[0][0] == 'F') // < 0 && > 255 error
+	else if (!(ft_strncmp(g_master.map.args[0], "NO", 2)))
+		g_master.map.N = g_master.map.args[1];
+	else if (!(ft_strncmp(g_master.map.args[0], "SO", 2)))
+		g_master.map.S = g_master.map.args[1];
+	else if (!(ft_strncmp(g_master.map.args[0], "WE", 2)))
+		g_master.map.E = g_master.map.args[1];
+	else if (!(ft_strncmp(g_master.map.args[0], "EA", 2)))
+		g_master.map.W = g_master.map.args[1];
+	else if (g_master.map.args[0][0] == 'F') // < 0 && > 255 error
 	{
-		map->RGB = ft_split(map->args[1], ',');
-		map->FR = ft_atoi(map->RGB[0]); 
-		map->FG = ft_atoi(map->RGB[1]);
-		map->FB = ft_atoi(map->RGB[2]);
+		g_master.map.RGB = ft_split(g_master.map.args[1], ',');
+		g_master.map.FR = ft_atoi(g_master.map.RGB[0]); 
+		g_master.map.FG = ft_atoi(g_master.map.RGB[1]);
+		g_master.map.FB = ft_atoi(g_master.map.RGB[2]);
 		/*if (wrong_color_range(map->FR, map->FG, map->FB))
 			return (0);*/
 	}	
-	else if (map->args[0][0] == 'C') 
+	else if (g_master.map.args[0][0] == 'C') 
 	{
-		map->RGB = ft_split(map->args[1], ',');
-		map->CR = ft_atoi(map->RGB[0]);
-		map->CG = ft_atoi(map->RGB[1]);
-		map->CB = ft_atoi(map->RGB[2]);
-		/*if (wrong_color_range(map->FR, map->FG, map->FB))
+		g_master.map.RGB = ft_split(g_master.map.args[1], ',');
+		g_master.map.CR = ft_atoi(g_master.map.RGB[0]);
+		g_master.map.CG = ft_atoi(g_master.map.RGB[1]);
+		g_master.map.CB = ft_atoi(g_master.map.RGB[2]);
+		/*if (wrong_color_range(g_master.map.FR, map->FG, map->FB))
 			return (0);*/
 	}
 	return (1);
 }
 
-int		ft_get_next_line(t_map *map)
+int		ft_get_next_line(void)
 {
 	char	*line;
 	char	buf;
@@ -168,9 +168,9 @@ int		ft_get_next_line(t_map *map)
 	counter = -1;
 	next_is_map = FALSE;
 	line = malloc(8192);
-	if (map->fd < 0 || !line)
+	if (g_master.map.fd < 0 || !line)
 		return (0);
-	while (read(map->fd, &buf, 1))
+	while (read(g_master.map.fd, &buf, 1))
 	{
 		if (buf == '\n')
 		{
@@ -178,10 +178,10 @@ int		ft_get_next_line(t_map *map)
 			line[++i] = '\0';
 			if (i != 0 && (line[0] >= 65 && line[0] <= 90) && next_is_map == FALSE) // to jest kod do informacji o teksturach i rozmiarze
 			{
-				map->args = ft_split(line, 32);
-				if (map->args[0][0] == 'C')
+				g_master.map.args = ft_split(line, 32);
+				if (g_master.map.args[0][0] == 'C')
 					next_is_map = TRUE;
-				if (!ft_process_line(map))
+				if (!ft_process_line())
 					return (0);
 				i = 0;
 				continue ;
@@ -195,7 +195,7 @@ int		ft_get_next_line(t_map *map)
 				return (0);
 			else 
 			{
-				if(!ft_process_map(map, line, ++counter))
+				if(!ft_process_map(line, ++counter))
 					break ;
 				i = 0;
 				continue ;
@@ -203,7 +203,7 @@ int		ft_get_next_line(t_map *map)
 		}
 		line[i++] = buf;
 	}
-	map->last_line = counter;
-	map->map[++counter] = NULL;
+	g_master.map.last_line = counter;
+	g_master.map.map[++counter] = NULL;
 	return (1);
 }

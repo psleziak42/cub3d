@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/11/10 23:48:07 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/21 00:23:23 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,24 @@ typedef struct	s_img
 
 typedef struct s_trigonometry
 {
-	float	pixel_x;
 	float	pixel_y;
-	int		map2d_x;
+	float	pixel_x;
+	float	wall_y_pixel;
+	float	wall_x_pixel;
 	int		map2d_y;
+	int		map2d_x;
+	int		map2d_y_incrementor;
+	int		map2d_x_incrementor;
 	float	current_angle;
-	float	unit_x_size;
 	float	unit_y_size;
-	float	offset_x;
+	float	unit_x_size;
     float	offset_y;
-	int		dist_x_to_grid;
-	int		dist_y_to_grid;
+	float	offset_x;
+	float	dist_y_to_grid;
+	float	dist_x_to_grid;
+	float	ray_dist_to_y;
+	float	ray_dist_to_x;
+	
 }				t_trigo;
 
 typedef struct s_master
@@ -106,27 +113,28 @@ typedef struct s_master
 	t_trigo		trigo;
 } 				t_master;
 
+t_master	g_master;
+
 /****MAP****/
-int		ft_map_parse(t_master *master, char *argc);
-int		ft_get_next_line(t_map *map);
-int		ft_count_longest_line(t_master *master);
-int		ft_check_de_map(t_master *master);
-void	ft_resize_map_to_square(t_map *map, int l);
-void	ft_print_map(t_map *map);
+int		ft_get_next_line(void);
+int		ft_count_longest_line(void);
+void	ft_resize_map_to_square(int l);
+int		ft_check_de_map(void);
+void	ft_print_map(void);
 
 /****WINDOW****/
 void	ft_printmap_to_window(t_master *master);
 void	ft_put_pixel(t_master *master, int x, int y);
 
 /****KEY****/
-int		key_press(int key, t_master *master);
+int		key_press(int key);
 int		key_release(int key, t_master *master);
 
 /****RAYCASTING****/
-void    print_one_ray(t_master *master, float pixel_x, float pixel_y);
+void	print_one_ray(void);
 
 /****FREE and CLEAN****/
-void	ft_free_memory(t_master *master);
+void	ft_free_memory(void);
 
 
 /*
