@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/11/21 00:23:23 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/23 21:52:49 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		ft_check_de_map(void);
 void	ft_print_map(void);
 
 /****WINDOW****/
-void	ft_printmap_to_window(t_master *master);
+void	ft_printmap_to_window(void);
 void	ft_put_pixel(t_master *master, int x, int y);
 
 /****KEY****/
@@ -165,17 +165,17 @@ void	ft_path(void);
 
 void	ft_handler(int signal);*/
 
-/* ERROS AND CLEAN */
+// /* ERROS AND CLEAN */
 
-int		ft_clear_data(char c);
-void	ft_error_exit(const char *errmessage);
-int		ft_error_handler(const char *errmessage);
+// int		ft_clear_data(char c);
+// void	ft_error_exit(const char *errmessage);
+// int		ft_error_handler(const char *errmessage);
 
-/* DOLLAR */
+// /* DOLLAR */
 
-void	ft_dollar_sign(char *argv);
-void	ft_expand_var(char *argv);
+// void	ft_dollar_sign(char *argv);
+// void	ft_expand_var(char *argv);
 
-/* LINKED LIST EXTRAS */
+// /* LINKED LIST EXTRAS */
 
 #endif

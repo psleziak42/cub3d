@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/21 00:20:01 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/23 21:51:53 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv)
 	g_master.window.win_p = mlx_new_window(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height, "dujuivnDUBSTEPbro?");
 	mlx_hook(g_master.window.win_p, 2, 1L << 0, key_press, NULL);
 	//mlx_hook(g_master.window.win_p, 2, 1L << 1, key_release, &g_master);
-	ft_printmap_to_window(&g_master);
+	ft_printmap_to_window();
 	print_one_ray();
 	//master.img.img_file = "cfiles/textures/player.xpm";
 	//master.img.img_instance = mlx_xpm_file_to_image(master.window.mlx_p, master.img.img_file, &master.img.img_width, &master.img.img_heigth);
