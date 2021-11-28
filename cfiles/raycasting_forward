@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/25 01:04:05 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/27 23:34:13 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	ft_print_one_ray(void)
 	float	x;
 	float	y;
 	float	c; // length of the line
-	float	slope; // slope of the line, zmiana dla y.
+	float	step; // slope of the line, zmiana dla y.
 
 	y = g_master.trigo.pixel_y; // player y
 	printf("y: %f\n", y);
@@ -54,26 +54,38 @@ static void	ft_print_one_ray(void)
 	printf("g_master.trigo.wall_x_pixel: %f\n", g_master.trigo.wall_x_pixel);
 	// g_master.trigo.wall_y_pixel = g_master.trigo.ray_dist_to_y; 
 	// g_master.trigo.wall_x_pixel = g_master.trigo.ray_dist_to_x;
-	c = sqrt((g_master.trigo.wall_y_pixel - y) * (g_master.trigo.wall_y_pixel - y)
-				+ (g_master.trigo.wall_x_pixel - x) * (g_master.trigo.wall_x_pixel));
-	printf("c: %f\n", c);
-	slope = (g_master.trigo.wall_y_pixel - y) / (g_master.trigo.wall_x_pixel - x);
-	printf("slope: %f\n", slope);
+	//c = sqrt((g_master.trigo.wall_y_pixel - y) * (g_master.trigo.wall_y_pixel - y)
+	//			+ (g_master.trigo.wall_x_pixel - x) * (g_master.trigo.wall_x_pixel));
+	//printf("c: %f\n", c);
+	//slope = (g_master.trigo.wall_y_pixel - y) / (g_master.trigo.wall_x_pixel - x);
+	
+	//printf("slope: %f\n", slope);
 	i = 0;
+	if (fabs(g_master.trigo.wall_y_pixel) > fabs(g_master.trigo.wall_x_pixel))
+	//{
+		c = cos(g_master.trigo.current_angle) * g_master.trigo.wall_x_pixel;
+		//c = g_master.trigo.wall_x_pixel;
+	else
+		c = sin(g_master.trigo.current_angle) * g_master.trigo.wall_y_pixel;
 	// if (g_master.trigo.wall_y_pixel > g_master.trigo.wall_x_pixel) - moze tu cos sie dzieje.
 	// 	step = tan(g_master.trigo.current_angle) * 1;
 	// printf("step: %f\n", step);
 	while (i < c)
 	{
+		step = tan(g_master.trigo.current_angle);
+		//printf("step: %f\n", step);
+		if (cos(g_master.trigo.current_angle) > 0)
+			y -= step;
+		else
+			y += step;
 		mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, x, y, 0xFF0000);
-		y += slope;
 		if (cos(g_master.trigo.current_angle) < 0)
 				x -= 1;
 		else
 			x += 1;
 		i++;
 	}
-	printf("here\n");
+	printf("-----------------here------------------\n\n");
 }
 /***
  * zle licze odleglosci. Odleglosc od pozycji do X badz Y na mapie moze byc wieksza niz 1 jednostka.
@@ -83,30 +95,59 @@ static void	ft_print_one_ray(void)
  * **/
 static void	ft_find_da_wall(void)
 {
-	int		imaginary_map2d_x;
-	int		imaginary_map2d_y;
+	// int		imaginary_map2d_x;
+	// int		imaginary_map2d_y;
+	int 	ux;
+	int		uy;
 
-	imaginary_map2d_x = g_master.trigo.map2d_x;
-	imaginary_map2d_y = g_master.trigo.map2d_y;
-	printf("imaginary_map2d_x: %d\n", imaginary_map2d_x);
-	printf("imaginary_map2d_y: %d\n", imaginary_map2d_y);
-	if (g_master.map.map[imaginary_map2d_y][imaginary_map2d_x] != '1')
+	// imaginary_map2d_x = g_master.trigo.map2d_x; 
+	// imaginary_map2d_y = g_master.trigo.map2d_y;
+	printf("111 imaginary_map2d_x: %d\n", g_master.trigo.imaginary_map2d_x);
+	printf("111 imaginary_map2d_y: %d\n", g_master.trigo.imaginary_map2d_y);
+	printf("111111 g_master.map.map[imaginary_map2d_y][imaginary_map2d_x]: %c\n", 
+		g_master.map.map[g_master.trigo.imaginary_map2d_y][g_master.trigo.imaginary_map2d_x]); // must stop here;
+	if (g_master.map.map[g_master.trigo.imaginary_map2d_y][g_master.trigo.imaginary_map2d_x] != '1')
 	{
 		g_master.trigo.ray_dist_to_x = g_master.trigo.offset_y / sin(g_master.trigo.current_angle);
+		printf("g_master.trigo.offset_y: %f\n", g_master.trigo.offset_y);
+		printf("sin(g_master.trigo.current_angle: %f\n", sin(g_master.trigo.current_angle));
 		printf("g_master.trigo.ray_dist_to_x: %f\n", g_master.trigo.ray_dist_to_x);
-			if (g_master.trigo.ray_dist_to_x)
-				imaginary_map2d_x += g_master.trigo.map2d_x_incrementor;
+		/** tu mozna policzyc x2 i y2 i zsumowac z x1 i x2 i jesli zmienia pozycje to zmienic pozycje ray na mapie **/
+		ux = g_master.trigo.ray_dist_to_x * cos(g_master.trigo.current_angle);
+		uy = g_master.trigo.ray_dist_to_x * sin(g_master.trigo.current_angle); // x bo liczymy przyklad dla X.
+			if (g_master.map.map[g_master.trigo.imaginary_map2d_y + uy][g_master.trigo.imaginary_map2d_x + ux] != 1)
+			{
+				g_master.trigo.imaginary_map2d_x += ux;
+				g_master.trigo.imaginary_map2d_y += uy;
+				//g_master.trigo.imaginary_map2d_x += (g_master.trigo.offset_y / tan(g_master.trigo.current_angle))/32;
+				printf("g_master.trigo.offset_y: %f\n", g_master.trigo.offset_y);
+				printf("tan(g_master.trigo.current_angle): %f\n", tan(g_master.trigo.current_angle));
+				printf("333: imaginary_map2d_x: %d\n", g_master.trigo.imaginary_map2d_x);
+			}
 	}
-	if (g_master.map.map[imaginary_map2d_y][imaginary_map2d_x] != '1')
+	printf("222222 g_master.map.map[imaginary_map2d_y][imaginary_map2d_x]: %c\n", 
+		g_master.map.map[g_master.trigo.imaginary_map2d_y][g_master.trigo.imaginary_map2d_x]);
+	if (g_master.map.map[g_master.trigo.imaginary_map2d_y][g_master.trigo.imaginary_map2d_x] != '1')
 	{
 		g_master.trigo.ray_dist_to_y = g_master.trigo.offset_x / cos(g_master.trigo.current_angle);
 		printf("g_master.trigo.ray_dist_to_y: %f\n", g_master.trigo.ray_dist_to_y);
-			if (g_master.trigo.ray_dist_to_y)
-				imaginary_map2d_y += g_master.trigo.map2d_y_incrementor;
+			if (fabs(g_master.trigo.ray_dist_to_y / 32) > g_master.trigo.imaginary_map2d_y)
+			{
+				g_master.trigo.imaginary_map2d_y += (g_master.trigo.offset_x * tan(g_master.trigo.current_angle)) / 32;
+				printf("222: imaginary_map2d_y: %d\n", g_master.trigo.imaginary_map2d_y);
+			}
 	}
-	g_master.trigo.wall_y_pixel = imaginary_map2d_y * g_master.trigo.unit_y_size;
-	g_master.trigo.wall_x_pixel = imaginary_map2d_x * g_master.trigo.unit_x_size;
-	printf("wall_y: %f, wall_x: %f\n", g_master.trigo.wall_y_pixel/32, g_master.trigo.wall_x_pixel/32);
+	/** dlugosc lini x i y **/
+	if (g_master.map.map[g_master.trigo.imaginary_map2d_y][g_master.trigo.imaginary_map2d_x] != '1')
+	{
+		g_master.trigo.wall_y_pixel = g_master.trigo.unit_y_size / sin(g_master.trigo.current_angle);//imaginary_map2d_y * g_master.trigo.unit_y_size;
+		g_master.trigo.wall_x_pixel = g_master.trigo.unit_x_size / cos(g_master.trigo.current_angle);//imaginary_map2d_x * g_master.trigo.unit_x_size;
+		printf("wall_y: %f, wall_x: %f\n", g_master.trigo.wall_y_pixel, g_master.trigo.wall_x_pixel);
+	}
+
+
+
+
 }
 	// while (g_master.map.map[imaginary_map2d_y][imaginary_map2d_x] != '1')
 	// {
@@ -149,11 +190,11 @@ static void	ft_set_map_incrementor(void)
 
 static void	ft_calculate_initial_offsets_and_distances(void) // every next move instead offset x/y we take unit size x/y 
 {
-	int		imaginary_map2d_x;
-	int		imaginary_map2d_y;
+	// int		imaginary_map2d_x;
+	// int		imaginary_map2d_y;
 	
-	imaginary_map2d_x = g_master.trigo.map2d_x;
-	imaginary_map2d_y = g_master.trigo.map2d_y;
+	// imaginary_map2d_x = g_master.trigo.map2d_x;
+	// imaginary_map2d_y = g_master.trigo.map2d_y;
 	g_master.trigo.offset_y = fmod(g_master.trigo.pixel_y, g_master.trigo.unit_y_size);
 	g_master.trigo.offset_x = fmod(g_master.trigo.pixel_x, g_master.trigo.unit_x_size);
 	if (cos(g_master.trigo.current_angle) > 0)

@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/11/23 21:52:49 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/28 20:22:45 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct s_trigonometry
 	float	wall_x_pixel;
 	int		map2d_y;
 	int		map2d_x;
+	int		imaginary_map2d_x;
+	int		imaginary_map2d_y;
 	int		map2d_y_incrementor;
 	int		map2d_x_incrementor;
 	float	current_angle;
