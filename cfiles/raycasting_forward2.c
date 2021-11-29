@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/28 21:33:54 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/29 23:21:34 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,26 +217,34 @@
 	// printf("g_master.trigo.ray_dist_to_x: %f\n", g_master.trigo.ray_dist_to_x);
 	//ft_print_one_ray();
 //}
+static float	ft_distance(float ry, float py, float rx, float px)
+{
+	return (sqrt((ry - py) * (ry - py) + (rx - px) * (rx - px)));
+}
 
-static void	ft_print_one_ray(float rx, float ry)
+static void	ft_print_one_ray(float rx, float ry, int color, int extra)
 {
 	float 	x;
 	float	y;
 	float	i;
-	float	c;
+	//float	c;
 	float	delta_x;
 	float	step;
 
 	ry = (float)ry;
 	i = 0;
 	delta_x = fabs(rx - g_master.trigo.pixel_x);
-	c = delta_x / sin(g_master.trigo.current_angle);
+	printf("deltax: %f\n", delta_x);
+	// if (sin(g_master.trigo.current_angle) != 0)
+	// 	c = delta_x / sin(g_master.trigo.current_angle);
 	step = tan(g_master.trigo.current_angle);
+	if (extra == 1)
+		step += 0.01;
 	x = g_master.trigo.pixel_x;
 	y = g_master.trigo.pixel_y;
 	while (i < delta_x)
 	{
-		mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, x, y, 0xFF0000);
+		mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, x, y, color);
 		if (cos(g_master.trigo.current_angle) > 0)
 			y -= step;
 		else
@@ -246,51 +254,99 @@ static void	ft_print_one_ray(float rx, float ry)
 		else
 			x += 1;
 		i++;
-	}		
+	}	
 }
 
 void	ft_draw_3d(void)
 {
+	float	distHorizontal;
+	float	distVertical;
 	float	rx; // wall_x;
 	float	ry; // wall_y;
 	float	xo;
 	float	yo;
 	int		mx;
 	int		my;
+	float	cot;
+/*** TANGENS IS CHANGING SIGNT AND FUCKING UP ALL THE MATH. WE SHOULD PROBABLY USE SINUS AND COSINUS INSTEAD TO HAVE CONTROL OVER THIS SHIT ***/
+	cot = 1/(tan(g_master.trigo.current_angle));
 	/**** HORIZONTAL LINES ****/
-	if (g_master.trigo.current_angle > PI)
+	if (!tan(g_master.trigo.current_angle))
 	{
-		ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size); // - 0.0001;
-		rx = (ry - g_master.trigo.pixel_y) * tan(g_master.trigo.current_angle) + g_master.trigo.pixel_x;
+		ry = g_master.trigo.pixel_y;
+		rx = g_master.trigo.pixel_x;
+		yo = 0;
+		xo = g_master.trigo.unit_x_size;
+	}
+	else if (g_master.trigo.current_angle < PI)
+	{
+		ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) - 0.0001;
+		rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
 		yo = -g_master.trigo.unit_y_size;
-		xo = yo / tan(g_master.trigo.current_angle);
+		xo = -yo * cot;
 	}
-	if (g_master.trigo.current_angle < PI)
+	else
 	{
-		ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) + g_master.trigo.unit_y_size;
-		rx = (ry - g_master.trigo.pixel_y) * tan(g_master.trigo.current_angle) + g_master.trigo.pixel_x;
+		ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) + g_master.trigo.unit_y_size; //- 0.0001; // - 0.0001;//  + 0.0001;
+		rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
 		yo = g_master.trigo.unit_y_size;
-		xo = yo / tan(g_master.trigo.current_angle);
-	}
-	if (g_master.trigo.current_angle == 0 || g_master.trigo.current_angle == PI)
-	{
-		g_master.trigo.wall_y_pixel = g_master.trigo.pixel_y;
-		g_master.trigo.wall_x_pixel = g_master.trigo.pixel_x;
-		//dof == max_map_size;
+		xo = -yo * cot;
 	}
 	mx = (int)(rx / g_master.trigo.unit_x_size);
 	my = (int)(ry / g_master.trigo.unit_y_size);
-	printf("g_master.map.map[%d][%d]: %c\n", my, mx, g_master.map.map[my][mx]);
-	while (g_master.map.map[my][mx] != '1')
+	while (my < 8 && mx < 8 && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
 	{
-		ry += yo;
-		printf("ry: %f\n", ry);
-		rx += xo;
+			rx += xo;
+			ry += yo;
+		printf("tan(g_master.trigo.current_angle): %f\n", cot);
+		printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
 		mx = (int)(rx / g_master.trigo.unit_x_size);
 		my = (int)(ry / g_master.trigo.unit_y_size);
-		printf("1___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
 	}
-	ft_print_one_ray(rx, ry);
+	distHorizontal = ft_distance(ry, g_master.trigo.pixel_y, rx, g_master.trigo.pixel_x);
+	//ft_print_one_ray(rx, ry, 0xFF0000, 0);
+	/*********** CHECK VERTICAL LINE *************/
+	float ryv;
+	float rxv;
+
+	float nTan = tan(g_master.trigo.current_angle);
+	if (!tan(g_master.trigo.current_angle))
+	{
+		ryv = g_master.trigo.pixel_y;
+		rxv = g_master.trigo.pixel_x;
+		yo = g_master.trigo.unit_x_size;
+		xo = 0;
+	}
+	else if (g_master.trigo.current_angle > P2 && g_master.trigo.current_angle < P3)
+	{
+		rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) - 0.0001; 
+		ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
+		xo = -g_master.trigo.unit_x_size;
+		yo = -xo * nTan;
+	}
+	else
+	{
+		rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) + g_master.trigo.unit_x_size; //- 0.0001; // - 0.0001;//  + 0.0001;
+		ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
+		xo = g_master.trigo.unit_x_size;
+		yo = -xo * nTan;
+	}
+	mx = (int)(rxv / g_master.trigo.unit_x_size);
+	my = (int)(ryv / g_master.trigo.unit_y_size);
+	while (my < 8 && mx < 8 && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
+	{
+		rxv += xo;
+		ryv += yo;
+		printf("tan(g_master.trigo.current_angle): %f\n", nTan);
+		printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
+		mx = (int)(rxv / g_master.trigo.unit_x_size);
+		my = (int)(ryv / g_master.trigo.unit_y_size);
+	}
+	distVertical = ft_distance(ryv, g_master.trigo.pixel_y, rxv, g_master.trigo.pixel_x); // rxv ryvt musi byc dla horizontal i vertial osobne;
+	if (distVertical < distHorizontal)
+		ft_print_one_ray(rxv, ryv, 0x0000FF, 0);
+	else
+		ft_print_one_ray(rx, ry, 0xFF0000, 0);
 }
 
 // static void	ft_print_one_ray(void)

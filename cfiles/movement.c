@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/28 16:12:28 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/28 23:37:03 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	ft_update_position(int key)
 	else if (key == k_A)
 	{
 		g_master.trigo.current_angle += degree;
-		if (g_master.trigo.current_angle >= 2 * PI)
-			g_master.trigo.current_angle -= 2 * PI;
+		if (g_master.trigo.current_angle + degree >= 2 * PI)
+			g_master.trigo.current_angle = 0 + degree;
 	}
 	else if (key == k_D)
 	{
 		g_master.trigo.current_angle -= degree;
-		if (g_master.trigo.current_angle <= 0)
-			g_master.trigo.current_angle += 2 * PI;
+		if (g_master.trigo.current_angle - degree < 0)
+			g_master.trigo.current_angle = 2 * PI - degree;
 	}
 	printf("angle: %f\n", g_master.trigo.current_angle);
 	printf("x: %f, y: %f\n", g_master.trigo.pixel_x, g_master.trigo.pixel_y);

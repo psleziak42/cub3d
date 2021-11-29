@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting_forward.c                               :+:      :+:    :+:   */
+/*   raycasting_forward                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/27 23:34:13 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/28 23:20:36 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void	ft_print_one_ray(void)
  * To jest w pixelach podane wiec trzeba przeliczyc /32 i updatowac X w zaleznosci od tego gdzie sie kratka koczy/
  * strona 1!!
  * **/
-static void	ft_find_da_wall(void)
+/*static void	ft_find_da_wall(void)
 {
 	// int		imaginary_map2d_x;
 	// int		imaginary_map2d_y;
@@ -148,7 +148,7 @@ static void	ft_find_da_wall(void)
 
 
 
-}
+}*/
 	// while (g_master.map.map[imaginary_map2d_y][imaginary_map2d_x] != '1')
 	// {
 	// 	//printf("tutaj\n");
