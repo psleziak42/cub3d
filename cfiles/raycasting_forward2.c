@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/29 23:21:34 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/30 00:08:18 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ static float	ft_distance(float ry, float py, float rx, float px)
 {
 	return (sqrt((ry - py) * (ry - py) + (rx - px) * (rx - px)));
 }
-
+// chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
 static void	ft_print_one_ray(float rx, float ry, int color, int extra)
 {
 	float 	x;
@@ -233,7 +233,7 @@ static void	ft_print_one_ray(float rx, float ry, int color, int extra)
 
 	ry = (float)ry;
 	i = 0;
-	delta_x = fabs(rx - g_master.trigo.pixel_x);
+	delta_x = fabs(rx - g_master.trigo.pixel_x); // chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
 	printf("deltax: %f\n", delta_x);
 	// if (sin(g_master.trigo.current_angle) != 0)
 	// 	c = delta_x / sin(g_master.trigo.current_angle);
@@ -268,85 +268,106 @@ void	ft_draw_3d(void)
 	int		mx;
 	int		my;
 	float	cot;
-/*** TANGENS IS CHANGING SIGNT AND FUCKING UP ALL THE MATH. WE SHOULD PROBABLY USE SINUS AND COSINUS INSTEAD TO HAVE CONTROL OVER THIS SHIT ***/
-	cot = 1/(tan(g_master.trigo.current_angle));
-	/**** HORIZONTAL LINES ****/
-	if (!tan(g_master.trigo.current_angle))
-	{
-		ry = g_master.trigo.pixel_y;
-		rx = g_master.trigo.pixel_x;
-		yo = 0;
-		xo = g_master.trigo.unit_x_size;
-	}
-	else if (g_master.trigo.current_angle < PI)
-	{
-		ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) - 0.0001;
-		rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
-		yo = -g_master.trigo.unit_y_size;
-		xo = -yo * cot;
-	}
-	else
-	{
-		ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) + g_master.trigo.unit_y_size; //- 0.0001; // - 0.0001;//  + 0.0001;
-		rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
-		yo = g_master.trigo.unit_y_size;
-		xo = -yo * cot;
-	}
-	mx = (int)(rx / g_master.trigo.unit_x_size);
-	my = (int)(ry / g_master.trigo.unit_y_size);
-	while (my < 8 && mx < 8 && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
-	{
-			rx += xo;
-			ry += yo;
-		printf("tan(g_master.trigo.current_angle): %f\n", cot);
-		printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
+	int		i;
+	float	ra;
+
+	i = -1;
+	// ra = g_master.trigo.current_angle - degree * 30;
+	// if (ra < 0)
+	// 	ra += 2 * PI;
+	// if (ra > 2*PI)
+	// 	ra -= 2 * PI;
+	ra = g_master.trigo.current_angle - 5 * degree; //-> jak zmieniam pozycje z x albo y to linie sie wydluzaja.
+	printf("\n\n 1_RA: %f \n\n", ra);
+	//ra = g_master.trigo.current_angle + degree;
+	printf("\n\n 2_RA: %f \n\n", ra);
+	while (++i < 10)
+	{	
+	/*** TANGENS IS CHANGING SIGNT AND FUCKING UP ALL THE MATH. WE SHOULD PROBABLY USE SINUS AND COSINUS INSTEAD TO HAVE CONTROL OVER THIS SHIT ***/
+		cot = 1/(tan(ra));
+		/**** HORIZONTAL LINES ****/
+		if (!tan(ra))
+		{
+			ry = g_master.trigo.pixel_y;
+			rx = g_master.trigo.pixel_x;
+			yo = 0;
+			xo = g_master.trigo.unit_x_size;
+		}
+		else if (ra < PI)
+		{
+			ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) - 0.0001;
+			rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
+			yo = -g_master.trigo.unit_y_size;
+			xo = -yo * cot;
+		}
+		else
+		{
+			ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) + g_master.trigo.unit_y_size; //- 0.0001; // - 0.0001;//  + 0.0001;
+			rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
+			yo = g_master.trigo.unit_y_size;
+			xo = -yo * cot;
+		}
 		mx = (int)(rx / g_master.trigo.unit_x_size);
 		my = (int)(ry / g_master.trigo.unit_y_size);
-	}
-	distHorizontal = ft_distance(ry, g_master.trigo.pixel_y, rx, g_master.trigo.pixel_x);
-	//ft_print_one_ray(rx, ry, 0xFF0000, 0);
-	/*********** CHECK VERTICAL LINE *************/
-	float ryv;
-	float rxv;
+		while (my < 8 && mx < 8 && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
+		{
+				rx += xo;
+				ry += yo;
+			printf("tan(ra): %f\n", cot);
+			printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
+			mx = (int)(rx / g_master.trigo.unit_x_size);
+			my = (int)(ry / g_master.trigo.unit_y_size);
+		}
+		distHorizontal = ft_distance(ry, g_master.trigo.pixel_y, rx, g_master.trigo.pixel_x);
+		//ft_print_one_ray(rx, ry, 0xFF0000, 0);
+		/*********** CHECK VERTICAL LINE *************/
+		float ryv;
+		float rxv;
 
-	float nTan = tan(g_master.trigo.current_angle);
-	if (!tan(g_master.trigo.current_angle))
-	{
-		ryv = g_master.trigo.pixel_y;
-		rxv = g_master.trigo.pixel_x;
-		yo = g_master.trigo.unit_x_size;
-		xo = 0;
-	}
-	else if (g_master.trigo.current_angle > P2 && g_master.trigo.current_angle < P3)
-	{
-		rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) - 0.0001; 
-		ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
-		xo = -g_master.trigo.unit_x_size;
-		yo = -xo * nTan;
-	}
-	else
-	{
-		rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) + g_master.trigo.unit_x_size; //- 0.0001; // - 0.0001;//  + 0.0001;
-		ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
-		xo = g_master.trigo.unit_x_size;
-		yo = -xo * nTan;
-	}
-	mx = (int)(rxv / g_master.trigo.unit_x_size);
-	my = (int)(ryv / g_master.trigo.unit_y_size);
-	while (my < 8 && mx < 8 && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
-	{
-		rxv += xo;
-		ryv += yo;
-		printf("tan(g_master.trigo.current_angle): %f\n", nTan);
-		printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
+		float nTan = tan(ra);
+		if (!tan(ra))
+		{
+			ryv = g_master.trigo.pixel_y;
+			rxv = g_master.trigo.pixel_x;
+			yo = g_master.trigo.unit_x_size;
+			xo = 0;
+		}
+		else if (ra > P2 && ra < P3)
+		{
+			rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) - 0.0001; 
+			ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
+			xo = -g_master.trigo.unit_x_size;
+			yo = -xo * nTan;
+		}
+		else
+		{
+			rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) + g_master.trigo.unit_x_size; //- 0.0001; // - 0.0001;//  + 0.0001;
+			ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
+			xo = g_master.trigo.unit_x_size;
+			yo = -xo * nTan;
+		}
 		mx = (int)(rxv / g_master.trigo.unit_x_size);
 		my = (int)(ryv / g_master.trigo.unit_y_size);
+		while (my < 8 && mx < 8 && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
+		{
+			rxv += xo;
+			ryv += yo;
+			printf("tan(ra): %f\n", nTan);
+			printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
+			mx = (int)(rxv / g_master.trigo.unit_x_size);
+			my = (int)(ryv / g_master.trigo.unit_y_size);
+		}
+		distVertical = ft_distance(ryv, g_master.trigo.pixel_y, rxv, g_master.trigo.pixel_x); // rxv ryvt musi byc dla horizontal i vertial osobne;
+		if (distVertical < distHorizontal)
+			ft_print_one_ray(rxv, ryv, 0x0000FF, 0);
+		else
+			ft_print_one_ray(rx, ry, 0xFF0000, 0);
+		ra += degree;
+		if (ra < 0)
+			ra += 2 * PI;
+		if (ra > 2*PI)
+			ra -= 2 * PI;
 	}
-	distVertical = ft_distance(ryv, g_master.trigo.pixel_y, rxv, g_master.trigo.pixel_x); // rxv ryvt musi byc dla horizontal i vertial osobne;
-	if (distVertical < distHorizontal)
-		ft_print_one_ray(rxv, ryv, 0x0000FF, 0);
-	else
-		ft_print_one_ray(rx, ry, 0xFF0000, 0);
 }
 
 // static void	ft_print_one_ray(void)

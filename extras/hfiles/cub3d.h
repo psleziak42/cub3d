@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/11/29 20:45:19 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/29 23:23:49 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define PI		3.14159265359
 # define P2		PI/2
 # define P3		3 * PI / 2
+# define F0V	PI / 4;
 # define degree	0.01745329251
 # define ESC 	53
 # define X		17
