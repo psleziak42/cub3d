@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/30 00:08:18 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/01 19:41:56 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,8 +221,45 @@ static float	ft_distance(float ry, float py, float rx, float px)
 {
 	return (sqrt((ry - py) * (ry - py) + (rx - px) * (rx - px)));
 }
-// chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
-static void	ft_print_one_ray(float rx, float ry, int color, int extra)
+
+/* WYSTARCZY JEDNA DRUKARKA, BO Y LICZYMY PO X ANYWAY */
+
+// static void	ft_print_one_ray_v(float rx, float ry, int color)
+// {
+// 	float 	x;
+// 	float	y;
+// 	float	i;
+// 	//float	c;
+// 	float	delta_x;
+// 	float	step;
+
+// 	ry = (float)ry;
+// 	i = 0;
+// 	delta_x = fabs(rx - g_master.trigo.pixel_x); // chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
+// 	printf("deltax: %f\n", delta_x);
+// 	// if (sin(g_master.trigo.current_angle) != 0)
+// 	// 	c = delta_x / sin(g_master.trigo.current_angle);
+// 	step = tan(g_master.trigo.current_angle);
+// 	x = g_master.trigo.pixel_x;
+// 	y = g_master.trigo.pixel_y;
+// 	while (i < delta_x)
+// 	{
+// 		mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, x, y, color);
+// 		if (cos(g_master.trigo.current_angle) > 0)
+// 			y -= step;
+// 		else
+// 			y += step;
+// 		if (cos(g_master.trigo.current_angle) < 0)
+// 				x -= 1;
+// 		else
+// 			x += 1;
+// 		i++;
+// 	}	
+// }
+
+/* nie wiem dlaczego nie drukuje 60 promieni*/
+//====================================================================
+static void	ft_print_one_ray_h(float rx, float ry, float ra, int color)
 {
 	float 	x;
 	float	y;
@@ -237,25 +274,25 @@ static void	ft_print_one_ray(float rx, float ry, int color, int extra)
 	printf("deltax: %f\n", delta_x);
 	// if (sin(g_master.trigo.current_angle) != 0)
 	// 	c = delta_x / sin(g_master.trigo.current_angle);
-	step = tan(g_master.trigo.current_angle);
-	if (extra == 1)
-		step += 0.01;
+	step = tan(ra);
 	x = g_master.trigo.pixel_x;
 	y = g_master.trigo.pixel_y;
 	while (i < delta_x)
 	{
 		mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, x, y, color);
-		if (cos(g_master.trigo.current_angle) > 0)
+		if (cos(ra) > 0)
 			y -= step;
 		else
 			y += step;
-		if (cos(g_master.trigo.current_angle) < 0)
+		if (cos(ra) < 0)
 				x -= 1;
 		else
 			x += 1;
 		i++;
 	}	
 }
+// ============================================================
+// static void	ft_3d_printer(float lineH, float lineO, float width_x);
 
 void	ft_draw_3d(void)
 {
@@ -270,6 +307,7 @@ void	ft_draw_3d(void)
 	float	cot;
 	int		i;
 	float	ra;
+	float	width_x;
 
 	i = -1;
 	// ra = g_master.trigo.current_angle - degree * 30;
@@ -277,14 +315,16 @@ void	ft_draw_3d(void)
 	// 	ra += 2 * PI;
 	// if (ra > 2*PI)
 	// 	ra -= 2 * PI;
-	ra = g_master.trigo.current_angle - 5 * degree; //-> jak zmieniam pozycje z x albo y to linie sie wydluzaja.
-	printf("\n\n 1_RA: %f \n\n", ra);
+	ra = g_master.trigo.current_angle + 30 * degree; //-> jak zmieniam pozycje z x albo y to linie sie wydluzaja.
+	//printf("\n\n 1_RA: %f \n\n", ra);
 	//ra = g_master.trigo.current_angle + degree;
-	printf("\n\n 2_RA: %f \n\n", ra);
-	while (++i < 10)
+	width_x = 0;
+	//printf("\n\n 2_RA: %f \n\n", ra);
+	while (++i < 360)
 	{	
 	/*** TANGENS IS CHANGING SIGNT AND FUCKING UP ALL THE MATH. WE SHOULD PROBABLY USE SINUS AND COSINUS INSTEAD TO HAVE CONTROL OVER THIS SHIT ***/
 		cot = 1/(tan(ra));
+		//printf("\n\ng_master.trigo.pixel_y: %f, g_master.trigo.pixel_x: %f\n\n", g_master.trigo.pixel_y, g_master.trigo.pixel_x);
 		/**** HORIZONTAL LINES ****/
 		if (!tan(ra))
 		{
@@ -295,14 +335,16 @@ void	ft_draw_3d(void)
 		}
 		else if (ra < PI)
 		{
-			ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) - 0.0001;
+			ry = ((int)(g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) - 0.0001;
+			printf("\nra < PI ry: %f\n", ry);
 			rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
+			printf("\nra < PI rx: %f\n", rx);
 			yo = -g_master.trigo.unit_y_size;
 			xo = -yo * cot;
 		}
 		else
 		{
-			ry = (int)((g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) + g_master.trigo.unit_y_size; //- 0.0001; // - 0.0001;//  + 0.0001;
+			ry = ((int)(g_master.trigo.pixel_y / g_master.trigo.unit_y_size) * g_master.trigo.unit_y_size) + g_master.trigo.unit_y_size; //- 0.0001; // - 0.0001;//  + 0.0001;
 			rx = ((g_master.trigo.pixel_y - ry) * cot) + g_master.trigo.pixel_x;
 			yo = g_master.trigo.unit_y_size;
 			xo = -yo * cot;
@@ -311,18 +353,24 @@ void	ft_draw_3d(void)
 		my = (int)(ry / g_master.trigo.unit_y_size);
 		while (my < 8 && mx < 8 && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
 		{
-				rx += xo;
-				ry += yo;
-			printf("tan(ra): %f\n", cot);
-			printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
-			mx = (int)(rx / g_master.trigo.unit_x_size);
+			ry += yo;
+			rx += xo;
+			// printf("tan(ra): %f\n", cot);
+			// printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
 			my = (int)(ry / g_master.trigo.unit_y_size);
+			mx = (int)(rx / g_master.trigo.unit_x_size);
+			
 		}
+		// printf("\n\ng_master.trigo.pixel_y: %f, g_master.trigo.pixel_x: %f\n", g_master.trigo.pixel_y, g_master.trigo.pixel_x);
+		// printf("ry: %f, rx: %f\n",ry, rx);
+
 		distHorizontal = ft_distance(ry, g_master.trigo.pixel_y, rx, g_master.trigo.pixel_x);
+		// printf("distHorizontal: %f\n\n", distHorizontal);
 		//ft_print_one_ray(rx, ry, 0xFF0000, 0);
 		/*********** CHECK VERTICAL LINE *************/
 		float ryv;
 		float rxv;
+		float	distT;
 
 		float nTan = tan(ra);
 		if (!tan(ra))
@@ -334,14 +382,16 @@ void	ft_draw_3d(void)
 		}
 		else if (ra > P2 && ra < P3)
 		{
-			rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) - 0.0001; 
+			rxv =((int)(g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) - 0.0001;
+			//printf("RXVertical 90 - 270: %f\n", rxv);
 			ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
+			//printf("RYVertical 90 - 270: %f\n", ryv);
 			xo = -g_master.trigo.unit_x_size;
 			yo = -xo * nTan;
 		}
 		else
 		{
-			rxv = (int)((g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) + g_master.trigo.unit_x_size; //- 0.0001; // - 0.0001;//  + 0.0001;
+			rxv = ((int)(g_master.trigo.pixel_x / g_master.trigo.unit_x_size) * g_master.trigo.unit_x_size) + g_master.trigo.unit_x_size; //- 0.0001; // - 0.0001;//  + 0.0001;
 			ryv = ((g_master.trigo.pixel_x - rxv) * nTan) + g_master.trigo.pixel_y;
 			xo = g_master.trigo.unit_x_size;
 			yo = -xo * nTan;
@@ -352,23 +402,82 @@ void	ft_draw_3d(void)
 		{
 			rxv += xo;
 			ryv += yo;
-			printf("tan(ra): %f\n", nTan);
-			printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
+			// printf("tan(ra): %f\n", nTan);
+			// printf("2___:g_master.map.map[y:%d][x:%d]: %c\n", my, mx, g_master.map.map[my][mx]);
 			mx = (int)(rxv / g_master.trigo.unit_x_size);
 			my = (int)(ryv / g_master.trigo.unit_y_size);
 		}
 		distVertical = ft_distance(ryv, g_master.trigo.pixel_y, rxv, g_master.trigo.pixel_x); // rxv ryvt musi byc dla horizontal i vertial osobne;
 		if (distVertical < distHorizontal)
-			ft_print_one_ray(rxv, ryv, 0x0000FF, 0);
+		{
+			distT = distVertical;
+			ft_print_one_ray_h(rxv, ryv, ra, 0x0000FF);
+		}
 		else
-			ft_print_one_ray(rx, ry, 0xFF0000, 0);
-		ra += degree;
+		{
+			distT = distHorizontal;
+			ft_print_one_ray_h(rx, ry, ra, 0xFF0000);
+		}
+		ra -= degree;
+		width_x += g_master.map.window_width / 60;
 		if (ra < 0)
 			ra += 2 * PI;
 		if (ra > 2*PI)
 			ra -= 2 * PI;
+	// /*********** 3d part ************/
+	// 	float	lineH;
+	// 	float	lineO;
+	// 	float	cubS;
+	// 	float	fish_eye;
+
+	// 	cubS = 16;
+	// 	fish_eye = g_master.trigo.current_angle - ra;
+	// 	if (fish_eye < 0)
+	// 		fish_eye += 2 * PI;
+	// 	if (fish_eye > 2*PI)
+	// 		fish_eye -= 2 * PI;
+	// 	distT = distT * cos(fish_eye);
+	// 	lineH = (cubS * g_master.map.window_height) / distT;
+	// 	lineO = (g_master.map.window_height - lineH) / 2;
+	// 	if (lineH > g_master.map.window_height)
+	// 		lineH = g_master.map.window_height;
+	// 	//ft_3d_printer(lineH, lineO, width_x); // y musi byc 0 i musi byc y + width window / no of rays.
+	// 	ra -= degree;
+	// 	width_x += g_master.map.window_width / 60;
+	// 	if (ra < 0)
+	// 		ra += 2 * PI;
+	// 	if (ra > 2*PI)
+	// 		ra -= 2 * PI;
 	}
 }
+
+// static void	ft_3d_printer(float lineH, float lineO, float width_x)
+// {
+// 	int		i;
+// 	int		j;
+
+// 	i = -1;
+// 	j = width_x - g_master.map.window_width / 60;
+// 	while (++i < g_master.map.window_height)
+// 	{
+// 		printf("j: %d\n", j);
+// 		while (j < width_x)
+// 		{
+// 			printf("j: %d\n", j);
+// 			if (i > lineO && i < lineO + lineH)
+// 				mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, j, i, 0xFF0000);
+// 			else
+// 				mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, j, i, 0x00FF00);
+// 			j++;
+// 		}
+// 		j = width_x - g_master.map.window_width / 60;
+// 	}		
+// }
+/* trzeba zrobic ze ray przechodi przez cala szerokosc. Dlaczego?
+* bo plansza musi byc na szerokosc calego okna. wiec jak mam 60 rays po pixelu to bd to tylko 60 px	
+* a musi wypelnic cale okno!
+*
+*/
 
 // static void	ft_print_one_ray(void)
 // {
