@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/27 22:50:26 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/28 21:53:16 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,10 @@ void	ft_resize_map_to_square(int l)
 
 static int		ft_process_map(char *line, int counter) 
 {
-	int		size;
-	
 	if (counter == 0)
 		g_master.map.map = malloc(sizeof(char *) * (counter + 2));
 	else
 		g_master.map.map = realloc(g_master.map.map, sizeof(char *) * (counter + 2));
-	size = ft_strlen(line);
 	g_master.map.map[counter] = ft_strdup(line);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_forward2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/28 21:33:54 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/11/28 21:54:27 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,8 @@ void	ft_draw_3d(void)
 	mx = (int)(rx / g_master.trigo.unit_x_size);
 	my = (int)(ry / g_master.trigo.unit_y_size);
 	printf("g_master.map.map[%d][%d]: %c\n", my, mx, g_master.map.map[my][mx]);
-	while (g_master.map.map[my][mx] != '1')
+	// printf("x: %d y: %d\n", g_master.map.longest_line, my < g_master.map.last_line);
+	while (g_master.map.map[my][mx] != '1' && (g_master.map.map[my][mx] != '\0' && g_master.map.map[my] != NULL ))
 	{
 		ry += yo;
 		printf("ry: %f\n", ry);
