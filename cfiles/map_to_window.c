@@ -18,12 +18,12 @@ void	ft_printmap_to_window(void)
 		while (x < g_master.map.window_width)
 		{
 			if (g_master.map.map[b][a] == '1')
-				g_master.img.img_file = "extras/textures/wall.xpm";
+				g_master.img.img_instance = "extras/textures/wall.xpm";
 			else if (g_master.map.map[b][a] == 'N' || g_master.map.map[b][a] == 'S' || g_master.map.map[b][a] == 'E' || g_master.map.map[b][a] == 'W')
-				g_master.img.img_file = "extras/textures/walk.xpm";
+				g_master.img.img_instance = "extras/textures/walk.xpm";
 			else
-				g_master.img.img_file = "extras/textures/walk.xpm";
-			g_master.img.img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.img.img_file, &g_master.img.img_width, &g_master.img.img_heigth);
+				g_master.img.img_instance = "extras/textures/walk.xpm";
+			g_master.img.img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.img.img_instance, &g_master.img.bits_per_pixel, &g_master.img.line_length);
 			if (!g_master.img.img_instance)
 				printf("error\n");
 			mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.img.img_instance, x, y);

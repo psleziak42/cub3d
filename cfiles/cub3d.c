@@ -6,11 +6,19 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/23 21:51:53 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/01 21:15:17 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
+
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = img->img_address + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
 
 int		ft_count_longest_line(void)
 {
@@ -37,6 +45,7 @@ int	ft_map_parse(char *argc)
 	g_master.map.fd = open(argc, O_RDONLY);
 	if (!ft_get_next_line())
 		return (0);
+	g_master.map.array_z = 0;
 	g_master.map.longest_line = ft_count_longest_line();
 	g_master.trigo.unit_x_size = g_master.map.window_width/(g_master.map.longest_line - 1);
 	g_master.trigo.unit_y_size =  g_master.map.window_height/(g_master.map.last_line + 1);
@@ -60,8 +69,12 @@ int	main(int argc, char **argv)
 		ft_free_memory();
 		return(-1);
 	}
+	// g_master.map.image_array[g_master.map.window_width * g_master.map.window_height] = '\0'; // check if its not error!;
+	printf("\n\n LU: %lu\n", sizeof(g_master.map.image_array));
 	g_master.window.mlx_p = mlx_init();
 	g_master.window.win_p = mlx_new_window(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height, "dujuivnDUBSTEPbro?");
+	g_master.img.img_instance = mlx_new_image(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height);
+	g_master.img.img_address = mlx_get_data_addr(g_master.img.img_instance, &g_master.img.bits_per_pixel, &g_master.img.line_length, &g_master.img.endian);
 	mlx_hook(g_master.window.win_p, 2, 1L << 0, key_press, NULL);
 	//mlx_hook(g_master.window.win_p, 2, 1L << 1, key_release, &g_master);
 	ft_printmap_to_window();

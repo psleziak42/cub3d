@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/28 21:53:16 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/03 21:04:36 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		ft_check_de_map(void)
 					g_master.trigo.pixel_x = x * g_master.trigo.unit_x_size;
 					g_master.trigo.pixel_y = y * g_master.trigo.unit_y_size;
 					if (g_master.map.map[y][x] == 'N')
-						g_master.trigo.current_angle = PI/6;
+						g_master.trigo.current_angle = (PI/2);
 					else if (g_master.map.map[y][x] == 'S')
 						g_master.trigo.current_angle = 3 * PI / 2;
 					else if (g_master.map.map[y][x] == 'E')
@@ -202,7 +202,7 @@ int		ft_get_next_line(void)
 		}
 		line[i++] = buf;
 	}
-	g_master.map.last_line = counter;
+	g_master.map.last_line = counter - 1;
 	g_master.map.map[++counter] = NULL;
 	return (1);
 }

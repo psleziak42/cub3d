@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/11/28 20:22:45 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/01 21:27:38 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 # include <term.h>
 
 # define PI		3.14159265359
+# define P2		PI/2
+# define P3		3 * PI / 2
+# define F0V	PI / 4
 # define degree	0.01745329251
 # define ESC 	53
 # define X		17
@@ -49,6 +52,8 @@ typedef	struct s_map
 	char	**map;
 	char	**args;
 	char	**RGB;
+	void	*image_array;
+	int		array_z;
 	int		fd;
 	char	player_facing_dir;
 	int		window_width;
@@ -77,10 +82,10 @@ typedef	struct	s_win
 typedef struct	s_img
 {
 	void	*img_instance;
-	void	*xpm_image;
-	char	*img_file;
-	int		img_width;
-	int		img_heigth;
+	char	*img_address;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 }				t_img;
 
 typedef struct s_trigonometry
@@ -111,7 +116,8 @@ typedef struct s_master
 {
 	t_map		map;
 	t_window	window;
-	t_img		img;
+	t_img		img; // call it walls!
+	t_img		bg; // init it and doesnt have to be updated anymore in the loop!
 	t_trigo		trigo;
 } 				t_master;
 
@@ -137,6 +143,9 @@ void	print_one_ray(void);
 
 /****FREE and CLEAN****/
 void	ft_free_memory(void);
+
+/****UTILS****/
+//void	*ft_calloc(size_t size_of, size_t no_of_elem);
 
 
 /*
