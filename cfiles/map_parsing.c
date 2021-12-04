@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/30 23:19:25 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/02 23:09:55 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ int		ft_check_de_map(void)
 					return (0);
 				if (g_master.map.map[y][x] == 'N' || g_master.map.map[y][x] == 'S' || g_master.map.map[y][x] == 'E' || g_master.map.map[y][x] == 'W')
 				{
-					g_master.trigo.map2d_x = x;
-					g_master.trigo.map2d_y = y;
-					g_master.trigo.imaginary_map2d_x = g_master.trigo.map2d_x;
-					g_master.trigo.imaginary_map2d_y = g_master.trigo.map2d_y;
 					g_master.trigo.pixel_x = x * g_master.trigo.unit_x_size;
 					g_master.trigo.pixel_y = y * g_master.trigo.unit_y_size;
 					if (g_master.map.map[y][x] == 'N')
