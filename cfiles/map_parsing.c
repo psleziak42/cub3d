@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/03 21:04:36 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/04 21:19:08 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ int		ft_check_de_map(void)
 					return (0);
 				if (g_master.map.map[y][x] == 'N' || g_master.map.map[y][x] == 'S' || g_master.map.map[y][x] == 'E' || g_master.map.map[y][x] == 'W')
 				{
-					g_master.trigo.map2d_x = x;
-					g_master.trigo.map2d_y = y;
-					g_master.trigo.imaginary_map2d_x = g_master.trigo.map2d_x;
-					g_master.trigo.imaginary_map2d_y = g_master.trigo.map2d_y;
 					g_master.trigo.pixel_x = x * g_master.trigo.unit_x_size;
 					g_master.trigo.pixel_y = y * g_master.trigo.unit_y_size;
 					if (g_master.map.map[y][x] == 'N')
@@ -197,12 +193,21 @@ int		ft_get_next_line(void)
 				if(!ft_process_map(line, ++counter))
 					break ;
 				i = 0;
+				
 				continue ;
 			}
 		}
 		line[i++] = buf;
 	}
-	g_master.map.last_line = counter - 1;
+	if (i != 0)
+	{
+		line[i] = '\0';
+		g_master.map.map[++counter] = ft_strdup(line);
+		g_master.map.map = realloc(g_master.map.map, sizeof(char *) * (counter + 2));
+	}		
+	g_master.map.last_line = counter;
 	g_master.map.map[++counter] = NULL;
+	free(line);
+	line = NULL;
 	return (1);
 }
