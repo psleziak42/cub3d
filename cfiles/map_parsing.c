@@ -6,21 +6,12 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/04 21:19:08 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/06 18:34:00 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../extras/hfiles/cub3d.h"
-
-/* TO DO:
- *-> 
- *
- *
- *
- *
- *
-*/
 
 void	ft_print_map(void)
 {
@@ -171,7 +162,7 @@ int		ft_get_next_line(void)
 		{
 			line[i] = buf; 
 			line[++i] = '\0';
-			if (i != 0 && (line[0] >= 65 && line[0] <= 90) && next_is_map == FALSE) // to jest kod do informacji o teksturach i rozmiarze
+			if (i != 0 && (line[0] >= 65 && line[0] <= 90) && next_is_map == FALSE)
 			{
 				g_master.map.args = ft_split(line, 32);
 				if (g_master.map.args[0][0] == 'C')
@@ -193,7 +184,6 @@ int		ft_get_next_line(void)
 				if(!ft_process_map(line, ++counter))
 					break ;
 				i = 0;
-				
 				continue ;
 			}
 		}

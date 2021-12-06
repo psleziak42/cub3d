@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/04 19:42:37 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/06 23:14:39 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,40 +22,43 @@ static void	ft_move_player(int x, int y)
 void	ft_update_position(int key)
 {
 	float	if_wall;
+	int		py = (int)g_master.trigo.pixel_y/g_master.trigo.cub_size;
+	int		px = (int)g_master.trigo.pixel_x/g_master.trigo.cub_size;
+	
 	if (key == k_W)
 	{
-		if_wall = g_master.trigo.pixel_y + 10 * -sin(g_master.trigo.current_angle);
-		printf("(int)g_master.trigo.pixel_y: %d\n, (int)if_wall: %df\n", (int)g_master.trigo.pixel_y/32, (int)if_wall/32);
-		printf("hello\n\n");
-		if (g_master.map.map[(int)if_wall/32][(int)g_master.trigo.pixel_x/32] != '1')
-			g_master.trigo.pixel_y += 10 * -sin(g_master.trigo.current_angle);
-		if_wall = g_master.trigo.pixel_x + 10 * cos(g_master.trigo.current_angle);
-		if (g_master.map.map[(int)g_master.trigo.pixel_y/32][(int)if_wall/32] != '1')
-			g_master.trigo.pixel_x += 10 * cos(g_master.trigo.current_angle);
+		if_wall = py + SPEED * -sin(g_master.trigo.current_angle);
+		printf("y: %d\n", (int)round(if_wall));
+		printf("actual pos y: %d\n", py);
+		if (g_master.map.map[(int)round(if_wall)][px] != '1')
+			g_master.trigo.pixel_y += SPEED * -sin(g_master.trigo.current_angle);
+		if_wall = px + SPEED * cos(g_master.trigo.current_angle);
+		printf("x: %d\n", (int) round(if_wall));
+		printf("acutal pos x: %d, cos %f angle %f\n", px, cos(g_master.trigo.current_angle), g_master.trigo.current_angle);
+		if (g_master.map.map[py][(int)round(if_wall)] != '1')
+			g_master.trigo.pixel_x += SPEED * cos(g_master.trigo.current_angle);
 	}
 	else if (key == k_S)
 	{
-		if_wall = g_master.trigo.pixel_y + 10 * sin(g_master.trigo.current_angle);
-		if (g_master.map.map[(int)if_wall/32][(int)g_master.trigo.pixel_x/32] != '1')
-			g_master.trigo.pixel_y += 10 * sin(g_master.trigo.current_angle);
-		if_wall = g_master.trigo.pixel_x + 10 * -cos(g_master.trigo.current_angle);
-		if (g_master.map.map[(int)g_master.trigo.pixel_y/32][(int)if_wall/32] != '1')
-			g_master.trigo.pixel_x += 10 * -cos(g_master.trigo.current_angle);
+		if_wall = g_master.trigo.pixel_y + SPEED * sin(g_master.trigo.current_angle);
+		if (g_master.map.map[(int)if_wall/g_master.trigo.cub_size][(int)g_master.trigo.pixel_x/g_master.trigo.cub_size] != '1')
+			g_master.trigo.pixel_y += SPEED * sin(g_master.trigo.current_angle);
+		if_wall = g_master.trigo.pixel_x + SPEED * -cos(g_master.trigo.current_angle);
+		if (g_master.map.map[(int)g_master.trigo.pixel_y/g_master.trigo.cub_size][(int)if_wall/g_master.trigo.cub_size] != '1')
+			g_master.trigo.pixel_x += SPEED * -cos(g_master.trigo.current_angle);
 	}
 	else if (key == k_A)
 	{
-		g_master.trigo.current_angle += 10 * degree;
+		g_master.trigo.current_angle += SPEED * degree;
 		if (g_master.trigo.current_angle + degree >= 2 * PI)
 			g_master.trigo.current_angle = 0 + degree;
 	}
 	else if (key == k_D)
 	{
-		g_master.trigo.current_angle -= 10 *degree;
+		g_master.trigo.current_angle -= SPEED *degree;
 		if (g_master.trigo.current_angle - degree < 0)
 			g_master.trigo.current_angle = 2 * PI - degree;
 	}
-	// printf("angle: %f\n", g_master.trigo.current_angle);
-	// printf("x: %f, y: %f\n", g_master.trigo.pixel_x, g_master.trigo.pixel_y);
 }
 
 

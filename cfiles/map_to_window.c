@@ -9,17 +9,12 @@ void	ft_printmap_to_window(void)
 
 	y = 0;
 	b = 0;
-	printf("g_master.map.window_heigth: %d\n", g_master.map.window_height);
-	printf("g_master.map.window_width: %d\n", g_master.map.window_width);
-	printf("g_master.trigo.unit_y_size: %f\n", g_master.trigo.unit_y_size);
-	printf("g_master.trigo.unit_x_size: %f\n", g_master.trigo.unit_x_size);
 	while (y < g_master.map.window_height)
 	{
 		x = 0;
 		a = 0;
 		while (x < g_master.map.window_width && g_master.map.map[b][a] != '\0')
 		{
-			printf("g_master.map.map[b][a] %c ", g_master.map.map[b][a]);
 			if (g_master.map.map[b][a] == '1')
 				g_master.t_s_map.img_file = "extras/textures/wall.xpm";
 			else if (g_master.map.map[b][a] == 'N' || g_master.map.map[b][a] == 'S' || g_master.map.map[b][a] == 'E' || g_master.map.map[b][a] == 'W')

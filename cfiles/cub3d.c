@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/04 22:48:41 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/06 19:39:30 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ int	ft_map_parse(char *argc)
 	g_master.map.fd = open(argc, O_RDONLY);
 	if (!ft_get_next_line())
 		return (0);
-	g_master.trigo.cub_size = 32;
+	g_master.trigo.cub_size = g_master.map.window_height/8;
 	g_master.map.longest_line = ft_count_longest_line();
 	g_master.trigo.unit_x_size = g_master.map.window_width/(g_master.map.longest_line - 1);
 	g_master.trigo.unit_y_size =  g_master.map.window_height/(g_master.map.last_line + 1);
 	ft_resize_map_to_square(g_master.map.longest_line);
 	if (!ft_check_de_map())
 		return (0);
-	// printf("Chega aqui?\n");
 	//ft_print_map();
 	return (1);
 }
@@ -68,7 +67,6 @@ int	main(int argc, char **argv)
 	g_master.bg.img_address = mlx_get_data_addr(g_master.bg.img_instance, &g_master.bg.bits_per_pixel, &g_master.bg.line_length, &g_master.bg.endian);
 	// ft_printmap_to_window(); //THIS WILL BE FOR MINIMAP EVENTUALLY !!
 	mlx_hook(g_master.window.win_p, 2, 1L << 0, key_press, NULL);
-	//print_one_ray();
 	mlx_loop(g_master.window.mlx_p);
 	return (0);
 }

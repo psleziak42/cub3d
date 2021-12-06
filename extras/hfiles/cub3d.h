@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/04 23:17:55 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/06 23:14:23 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@
 # define k_S	1
 # define k_W	13
 # define k_D	2
+# define NUMBER_OF_RAYS 256
+# define SIZE_OF_IMAGE 64
+# define SPEED 1
+
 
 typedef	struct s_map
 {
@@ -100,7 +104,7 @@ typedef struct s_trigonometry
 	float	ryv;
 	float	rxv;
 
-	float	cub_size;
+	int		cub_size;
 	float	pixel_y;
 	float	pixel_x;
 	float	current_angle;
@@ -119,6 +123,7 @@ typedef struct s_master
 	t_img		bg; // init it and doesnt have to be updated anymore in the loop!
 	t_trigo		trigo;
 	t_s_map		t_s_map;
+	int			temp;
 } 				t_master;
 
 t_master	g_master;
@@ -142,7 +147,7 @@ int		key_release(int key, t_master *master);
 void	ft_raycasting(void);
 
 /****PRINTING****/
-void    ft_3d_print_addr(int width_x);
+void    ft_3d_print_addr(int width_for_iteration, float dist);
 
 /****FREE and CLEAN****/
 void	ft_free_memory(void);
@@ -150,4 +155,6 @@ void	ft_free_memory(void);
 int		ft_map_parse(char *argc);
 float	ft_vertical_line(float ra);
 float	ft_horizontal_line(float ra);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+
 #endif

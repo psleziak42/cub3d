@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/04 23:18:49 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/06 21:47:24 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,49 +58,51 @@ void	ft_update_bg(void)
 	}
 }
 
-	//j = width_x - g_master.map.window_width / 60;
-// 	while (++i < g_master.map.window_height)
-// 	{
-// 		printf("j: %d\n", j);
-// 		while (j < width_x)
-// 		{
-// 			printf("j: %d\n", j);
-// 			if (i > lineO && i < lineO + lineH)
-// 				mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, j, i, 0xFF0000);
-// 			else
-// 				mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, j, i, 0x00FF00);
-// 			j++;
-// 		}
-// 		j = width_x - g_master.map.window_width / 60;
+// X_width : Largura dos pixeis que vamos desenhar width da janela / Numero de raios
 
-void	ft_update_walls(int x_width)
+bool	is_inside_wall(int h, int j)
 {
-	int		y;
-	int		j;
-// cos tu jest zle drukowane. pewnie musi byc drukowane po y caly czas. NIE MAM GLEBII!
-	//x_width = (int)x_width;
-	// printf("g_master.trigo.cub_size: %f\n", g_master.trigo.cub_size);
-	// printf("g_master.trigo.lineO_3d: %f\n", g_master.trigo.lineO_3d);
-	// printf("g_master.trigo.lineH_3d: %f\n", g_master.trigo.lineH_3d);
-	y = -1;
-	while (++y < g_master.map.window_height)
+	(void)j;
+	// printf("j %d lineO %f linO + lineH %f\n", j, g_master.trigo.lineO_3d, g_master.trigo.lineO_3d + g_master.trigo.lineH_3d);
+	if (h > g_master.trigo.lineO_3d && h < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
 	{
-		j = x_width - g_master.trigo.x_width;
-		while (j <= x_width && j < 256)
-		{
-			//printf("j: %d\n", j);
-			if (y > g_master.trigo.lineO_3d && y < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
-				my_mlx_pixel_put(&g_master.walls, j, y, 0x00FF0000);
-			else
-				my_mlx_pixel_put(&g_master.walls, j, y, 0xFF000000);
-			j++;
-		}
-	}		
+		// printf("j %d\n", j);
+		// sleep(2);
+		return (true);
+	}
+	return (false);
 }
 
-void    ft_3d_print_addr(int width_x)
+
+void	ft_update_walls(int width_for_iteration, float dist)
+{
+	int		h;
+	int		j = 0;
+	(void)dist;
+	(void)width_for_iteration;
+	
+	h = -1;
+	while (++h < g_master.map.window_height)
+	{
+		j = g_master.temp;
+		// j = width_for_iteration - g_master.trigo.x_width;
+		while (j <= (width_for_iteration +  g_master.temp) && j < g_master.map.window_width)
+		{
+			if (is_inside_wall(h, j))
+				my_mlx_pixel_put(&g_master.walls, j, h, 0x00FF0000);
+			else
+				my_mlx_pixel_put(&g_master.walls, j, h, 0xFF000000);
+			j++;
+		}
+		// printf("j %d\n", g_master.temp);
+	}
+	// sleep(1);
+	g_master.temp += width_for_iteration;
+}
+
+void    ft_3d_print_addr(int width_for_iteration, float dist)
 {
 	ft_update_bg();
-	ft_update_walls(width_x);
+	ft_update_walls(width_for_iteration, dist);
 	mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.bg.img_instance, 0, 0);
 }
