@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/07 22:32:56 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/07 23:44:33 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,51 +73,59 @@ void	ft_update_bg(void)
 // 		}
 // 		j = width_x - g_master.map.window_width / 60;
 
-void	ft_update_walls(int x, int x_width, int dir, float ra)
+void	ft_update_walls(int x, int dir, float ra)
 {
 	int		y;
-	int		j;
-// cos tu jest zle drukowane. pewnie musi byc drukowane po y caly czas. NIE MAM GLEBII!
+	int		new_x;
+	int		new_y;
+
 	y = -1;
-	//x_width = (int)x_width;
-	x = -1;
-	
-	// printf("g_master.trigo.cub_size: %f\n", g_master.trigo.cub_size);
-	// printf("g_master.trigo.lineO_3d: %f\n", g_master.trigo.lineO_3d);
-	// printf("g_master.trigo.lineH_3d: %f\n", g_master.trigo.lineH_3d);
+	new_y = 0;
 	while (++y < g_master.map.window_height)
 	{
-		while (++x < g_master.map.window_width)
-			my_mlx_pixel_put(&g_master.walls, x, y, 0x00000000);
-	}
-	y = -1;
-	while (++y < g_master.map.window_height)
-	{
-		j = x_width - g_master.trigo.x_width;
-		while (j <= x_width && j < g_master.map.window_width)
+		new_x = x - 1;
+		if (y > g_master.trigo.lineO_3d && y < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
 		{
-			//printf("j: %d\n", j);
-			if (y > g_master.trigo.lineO_3d && y < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
+			//printf("hello\n");
+			//if (dir == 1 && ra > 0 && ra < PI) // N
+				//my_mlx_pixel_put(&g_master.walls, x, y, 0x00FF0000); //g_master.textures[N].img_address[]); // y%64, x= heigth/64
+			if (dir == 1 && ra > 0 && ra < PI) // N
 			{
-				if (dir == 1 && ra > 0 && ra < PI) // N
-					my_mlx_pixel_put(&g_master.walls, j, y, 0x00FF0000); //g_master.textures[N].img_address[]); // y%64, x= heigth/64
-				if (dir == 0 && (ra < PI/2 || ra > P3)) // E
-					my_mlx_pixel_put(&g_master.walls, j, y, 0x0000FF00);
-				if (dir == 1 && ra >= PI && ra < 2 * PI) // S
-					my_mlx_pixel_put(&g_master.walls, j, y, 0x000000FF);
-				else if (dir == 0 && ra > PI/2 && ra < P3) // W
-					my_mlx_pixel_put(&g_master.walls, j, y, 0x00F000FF);
+				// newx = 289 why??????????????????????????
+				printf("newx: %d\n", new_x);
+				sleep(2);
+				while (++new_x < g_master.trigo.lineH_3d / TEXT)
+				{
+					printf("hello\n");
+					new_y = y;
+					my_mlx_pixel_put(&g_master.walls, x, y, create_trgb(
+					g_master.textures[N].img_address[new_y%64 * TEXT + x%TEXT], g_master.textures[N].img_address[new_y%64 * TEXT + (x+1)%TEXT], 
+						g_master.textures[N].img_address[new_y%64 * TEXT + (x+2)%TEXT], g_master.textures[N].img_address[new_y%64 * TEXT + (x+3)%TEXT]));
+					printf("color: %d\n", create_trgb(
+					g_master.textures[N].img_address[new_y%64 * TEXT + x%TEXT], g_master.textures[N].img_address[new_y%64 * TEXT + (x+1)%TEXT], 
+						g_master.textures[N].img_address[new_y%64 * TEXT + (x+2)%TEXT], g_master.textures[N].img_address[new_y%64 * TEXT + (x+3)%TEXT]));
+					y++;
+				}
 			}
-			else
-				my_mlx_pixel_put(&g_master.walls, j, y, 0xFF000000);
-			j++;
+			if (dir == 0 && (ra < PI/2 || ra > P3)) // E
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x0000FF00);
+			if (dir == 1 && ra >= PI && ra < 2 * PI) // S
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x000000FF);
+			else if (dir == 0 && ra > PI/2 && ra < P3) // W
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x00F000FF);
+			//y -= 1;
+			// if North : x % 64 (width), img_width_size / y -> gives us number of pixels we must print of the same color
+			// 	color = create_trgb(0, g_master.textures[N].img_address[y * sth + x], g_master.textures[N].img_address[y * sth + x + 1], 
+			// 		g_master.textures[N].img_address[y * sth + x + 2], g_master.textures[N].img_address[y * sth + x + 3]);
 		}
+		else
+			my_mlx_pixel_put(&g_master.walls, x, y, 0xFF000000);
 	}		
 }
 
-void    ft_3d_print_addr(int x, int width_x, int dir, float ra)
+void    ft_3d_print_addr(int x, int dir, float ra)
 {
 	// ft_update_bg();
 	// mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.bg.img_instance, 0, 0);
-	ft_update_walls(x, width_x, dir, ra);
+	ft_update_walls(x, dir, ra);
 }

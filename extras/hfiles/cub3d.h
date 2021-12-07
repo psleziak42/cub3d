@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/07 22:33:12 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/07 22:55:08 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int		key_release(int key, t_master *master);
 void	ft_raycasting(void);
 
 /****PRINTING****/
-void    ft_3d_print_addr(int x, int width_x, int dir, float ra);
+void    ft_3d_print_addr(int x, int dir, float ra);
 void	ft_update_bg(void);
 
 /****FREE and CLEAN****/

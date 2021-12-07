@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/07 22:33:11 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/07 22:52:24 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_load_textures(void)
 	g_master.textures[S].img_address = mlx_get_data_addr(g_master.textures[S].img_instance, &g_master.textures[S].bits_per_pixel, &g_master.textures[S].line_length, &g_master.textures[S].endian);
 	g_master.textures[E].img_address = mlx_get_data_addr(g_master.textures[E].img_instance, &g_master.textures[E].bits_per_pixel, &g_master.textures[E].line_length, &g_master.textures[E].endian);
 	g_master.textures[W].img_address = mlx_get_data_addr(g_master.textures[W].img_instance, &g_master.textures[W].bits_per_pixel, &g_master.textures[W].line_length, &g_master.textures[W].endian);
-	printf("sizeof(line_length): %x\n", g_master.textures[N].img_address[1]);
+	// printf("sizeof(line_length): %x\n", g_master.textures[N].img_address[1]);
 }
 
 int	main(int argc, char **argv)
