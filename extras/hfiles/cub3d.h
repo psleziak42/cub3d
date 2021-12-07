@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/04 00:11:47 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/07 22:33:12 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,29 @@
 # include <termios.h>
 # include <curses.h>
 # include <term.h>
+# include <limits.h>
 
 # define PI		3.14159265359
 # define P2		PI/2
 # define P3		3 * PI / 2
-# define F0V	PI / 4
+# define F0V	PI / 3 / degree
 # define degree	0.01745329251
 # define ESC 	53
 # define X		17
-# define F		3
+//# define F		3
 # define k_A	0
 # define k_S	1
 # define k_W	13
 # define k_D	2
+# define TEXT	64
+# define SPEED	5
+# define ROT	3
+# define N		0
+# define S		1
+# define E		2
+# define W		3
+# define F		1
+# define C		0
 
 typedef	struct s_map
 {
@@ -55,16 +65,14 @@ typedef	struct s_map
 	int		fd;
 	int		window_width;
 	int		window_height;
+	int		c_f[2][3];
 	int		FR;
 	int		FG;
 	int		FB;
 	int		CR;
 	int		CG;
 	int		CB;
-	char	*N;
-	char	*S;
-	char	*E;
-	char	*W;
+	char	*NSEW[4];
 	int		last_line;
 	int		longest_line;
 }				t_map;
@@ -85,13 +93,15 @@ typedef struct	s_small_map
 
 }				t_s_map;
 
-typedef struct	s_img
+typedef struct	s_img // to daje nam dane obrazka, line_length to jest dlugosc obrazka;
 {
 	void	*img_instance;
 	char	*img_address;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int	 	img_width;
+	int  	img_heigth;
 }				t_img;
 
 typedef struct s_trigonometry
@@ -118,6 +128,7 @@ typedef struct s_master
 	t_window	window;
 	t_img		walls; // call it walls!
 	t_img		bg; // init it and doesnt have to be updated anymore in the loop!
+	t_img		textures[4];
 	t_trigo		trigo;
 	t_s_map		t_s_map;
 } 				t_master;
@@ -143,7 +154,8 @@ int		key_release(int key, t_master *master);
 void	ft_raycasting(void);
 
 /****PRINTING****/
-void    ft_3d_print_addr(int x, int width_x);
+void    ft_3d_print_addr(int x, int width_x, int dir, float ra);
+void	ft_update_bg(void);
 
 /****FREE and CLEAN****/
 void	ft_free_memory(void);

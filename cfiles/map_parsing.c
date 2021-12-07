@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/02 23:09:55 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/07 21:22:27 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,29 +125,29 @@ static int		ft_process_line(void)
 		if (g_master.map.window_height <= 0 || g_master.map.window_width <= 0)
 			return (0); 
 	}
-	else if (!(ft_strncmp(g_master.map.args[0], "NO", 2)))
-		g_master.map.N = g_master.map.args[1];
-	else if (!(ft_strncmp(g_master.map.args[0], "SO", 2)))
-		g_master.map.S = g_master.map.args[1];
-	else if (!(ft_strncmp(g_master.map.args[0], "WE", 2)))
-		g_master.map.E = g_master.map.args[1];
-	else if (!(ft_strncmp(g_master.map.args[0], "EA", 2)))
-		g_master.map.W = g_master.map.args[1];
+	else if (!(ft_strncmp(g_master.map.args[0], "NO", 3)))
+		g_master.map.NSEW[N] = ft_strtrim(g_master.map.args[1], "\n");
+	else if (!(ft_strncmp(g_master.map.args[0], "SO", 3)))
+		g_master.map.NSEW[S] = ft_strtrim(g_master.map.args[1], "\n");
+	else if (!(ft_strncmp(g_master.map.args[0], "WE", 3)))
+		g_master.map.NSEW[W] = ft_strtrim(g_master.map.args[1], "\n");
+	else if (!(ft_strncmp(g_master.map.args[0], "EA", 3)))
+		g_master.map.NSEW[E] = ft_strtrim(g_master.map.args[1], "\n");
 	else if (g_master.map.args[0][0] == 'F') // < 0 && > 255 error
 	{
 		g_master.map.RGB = ft_split(g_master.map.args[1], ',');
-		g_master.map.FR = ft_atoi(g_master.map.RGB[0]); 
-		g_master.map.FG = ft_atoi(g_master.map.RGB[1]);
-		g_master.map.FB = ft_atoi(g_master.map.RGB[2]);
+		g_master.map.c_f[F][0] = ft_atoi(g_master.map.RGB[0]); 
+		g_master.map.c_f[F][1] = ft_atoi(g_master.map.RGB[1]);
+		g_master.map.c_f[F][2] = ft_atoi(g_master.map.RGB[2]);
 		/*if (wrong_color_range(map->FR, map->FG, map->FB))
 			return (0);*/
 	}	
 	else if (g_master.map.args[0][0] == 'C') 
 	{
 		g_master.map.RGB = ft_split(g_master.map.args[1], ',');
-		g_master.map.CR = ft_atoi(g_master.map.RGB[0]);
-		g_master.map.CG = ft_atoi(g_master.map.RGB[1]);
-		g_master.map.CB = ft_atoi(g_master.map.RGB[2]);
+		g_master.map.c_f[C][0] = ft_atoi(g_master.map.RGB[0]);
+		g_master.map.c_f[C][1] = ft_atoi(g_master.map.RGB[1]);
+		g_master.map.c_f[C][2]= ft_atoi(g_master.map.RGB[2]);
 		/*if (wrong_color_range(g_master.map.FR, map->FG, map->FB))
 			return (0);*/
 	}

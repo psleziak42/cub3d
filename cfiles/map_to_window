@@ -9,8 +9,8 @@ void	ft_printmap_to_window(void)
 
 	y = 0;
 	b = 0;
-	//printf("g_master.map.window_heigth: %d\n", g_master.map.window_height);
-	//printf("g_master.map.window_width: %d\n", g_master.map.window_width);
+	printf("g_master.map.window_heigth: %d\n", g_master.map.window_height);
+	printf("g_master.map.window_width: %d\n", g_master.map.window_width);
 	printf("g_master.trigo.unit_y_size: %f\n", g_master.trigo.unit_y_size);
 	printf("g_master.trigo.unit_x_size: %f\n", g_master.trigo.unit_x_size);
 	while (y < g_master.map.window_height)

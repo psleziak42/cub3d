@@ -1,18 +1,19 @@
-R 256 256 
+R 1920 1080
 
-NO ./extras/textures/N
-SO ./extras/textures/S
-WE ./extras/textures/W
-EA ./extras/textures/E
+NO ./extras/textures/eagle.xpm
+SO ./extras/textures/mossy.xpm
+WE ./extras/textures/colorstone.xpm
+EA ./extras/textures/redbrick.xpm
 
 F 77,92,53
 C 163,208,230
 
 11111111
 10000001
+10000101
+10100001
 10000001
+10N00001
 10000001
-100N0001
-11000101
-10010001
 11111111
+
