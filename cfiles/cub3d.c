@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/07 22:52:24 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/09 21:13:38 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	main(int argc, char **argv)
 	g_master.window.mlx_p = mlx_init();
 	g_master.window.win_p = mlx_new_window(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height, "dujuivnDUBSTEPbro?");
 	ft_load_textures();
+	printf("widht %d height %d\n", g_master.map.window_width, g_master.map.window_height);
 	g_master.walls.img_instance = mlx_new_image(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height);
 	g_master.walls.img_address = mlx_get_data_addr(g_master.walls.img_instance, &g_master.walls.bits_per_pixel, &g_master.walls.line_length, &g_master.walls.endian);
 	g_master.bg.img_instance = mlx_new_image(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height);
