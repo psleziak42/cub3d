@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/10 15:00:50 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/10 16:37:19 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	create_trgb(int t, int r, int g, int b)
 {
-	return (t << 24| r << 16 | g << 8 | b);
+	return ((t << 24) + (r << 16) + (g << 8) + b);
 }
 
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color) // znajdz ta funkcje, czemu nie drukuje?
@@ -142,7 +142,10 @@ void	ft_update_walls(int x, int dir, float ra)
 				// sleep(1);
 				// printf("new_x: %d\n, new_y: %d\n", new_x, new_y);
 				my_mlx_pixel_put(&g_master.walls, x, y, 
-								create_trgb(0, 0, 255, 0)); // to robi 64 / 64 - size of.
+				
+								create_trgb(1, g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+2)%256], 
+											g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+1)%256], 
+												g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+0)%256])); // to robi 64 / 64 - size of.
 					// printf("color: %x\n", create_trgb(
 					// 	0, g_master.textures[N].img_address[y%256 * TEXT + (new_x+0)%TEXT], 
 					// 		g_master.textures[N].img_address[y%256 * TEXT + (new_x+1)%TEXT], 
