@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/07 22:56:01 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/09 18:02:30 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,7 @@ void	ft_raycasting(void)
 			//ft_print_one_ray_h(g_master.trigo.rxv, g_master.trigo.ryv, ra, 0x0000FF);
 		}
 		ft_create_3d_world(dist, ra, i);
+		//printf("i: %d\n", i);
 		ft_3d_print_addr(i, dir, ra);
 		ra -= degree / (g_master.map.window_width / 60);
 		// width_x += g_master.map.window_width / 60; - not sure if needed anymore;
