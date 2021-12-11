@@ -6,13 +6,23 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/10 16:37:19 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/11 15:09:49 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
 
-int	create_trgb(int t, int r, int g, int b)
+/**
+ * Because on our image the colors are stored in bgrt, I have changed the order here to reflect it.
+ * On the function "ft_update_walls" we are passing colors in the order bgrt
+ * But here we must create it in trgb because computer reads it its way
+ * We are adding +1 to transparency bit because it seems like without it computer 
+ * does not see any value there and will move r in place of t g in place of r and b in place of g
+ * 
+ * That is the best way i can explain i guess.
+ **/
+
+int	create_trgb(int b, int g, int r, int t)
 {
 	return ((t << 24) + (r << 16) + (g << 8) + b);
 }
@@ -42,7 +52,7 @@ void	ft_update_bg(void)
 		i = -1;
 		while (++i < x)
 		{
-			color = create_trgb(0, g_master.map.c_f[C][0], g_master.map.c_f[C][1], g_master.map.c_f[C][2]);
+			color = create_trgb(g_master.map.c_f[C][2], g_master.map.c_f[C][1], g_master.map.c_f[C][0], 0);
 			my_mlx_pixel_put(&g_master.bg, i, j, color);
 		}
 	}
@@ -51,7 +61,7 @@ void	ft_update_bg(void)
 		i = -1;
 		while (++i < x)
 		{
-			color = create_trgb(0, g_master.map.c_f[F][0], g_master.map.c_f[F][1], g_master.map.c_f[F][2]);
+			color = create_trgb(g_master.map.c_f[F][2], g_master.map.c_f[F][1], g_master.map.c_f[F][0], 0);
 			my_mlx_pixel_put(&g_master.bg, i, j, color);
 		}
 		j++;
@@ -73,85 +83,61 @@ void	ft_update_bg(void)
 // 		}
 // 		j = width_x - g_master.map.window_width / 60;
 
+
+
+/** Endian 0 - means less significant byte goes first (int this case Blue)
+* Color is given in hexa, 0x12345678, less significant byte is the last one. Y?
+*
+* Every pixel has 4 bytes, last byte max value is 256, 2nd last max is 65281, etc.
+* Hence "12" value will be the biggest among all.
+*
+* So: Endian 0 =  Pixels in the image with are stored in the manner of GBRT.
+* From the lowest to the highest
+*
+* BUT: the screen's endian is 1 that means it displays in TRGB so we must "reverse it".
+* This is done with a functon "color" that puts Transparency as hights and Blue as lowest.
+* 
+* If the image has the same endian as the screen then colors stored inside it
+* corresponds to the image color set.
+*
+*/ 
+
+
 void	ft_update_walls(int x, int dir, float ra)
 {
-	int		y;
-	int		new_x;
-	int		new_y;
-	// int		new_index;
+	int				y;
+	int				new_x;
+	int				new_y;
+	int				pixel_index;
+	float			pixel_offset;
+	float			pixel_minus_offset;
 
 	y = -1;
-	// new_y = -1;
-	// printf("x: %d\n", x);
-	new_x = (x%4 + 4 - x%4) * x;
-	// printf("new_x: %d\n", new_x);
-	// printf("new_x%%64: %d\n", new_x%64);
-	// sleep(1);
-	// int z = -1;
-	// while (1)
-	// {
-	// 	printf("%d\n", g_master.textures[N].img_address[++z]);
-	// 	printf("%d\n", z);
-	// 	sleep(10);
-	// }
-	// printf("z: %d\n", z);
-	// sleep(100);
+	pixel_index = -1;
 	new_y = 0;
-	// printf("%d\n", strlen(g_master.textures[N].img_address));
-	int z;
-	int ź;
-
-	z = -1;
-	ź = -1;
-	// while (++z < 255)
-	// {
-	// 	sleep(5);
-	// 	printf("-------------------------------------\n");
-	// 	ź = -1;
-	// 	while (++ź < g_master.textures[N].line_length)
-	// 	printf("z: %d, g_master.textures[N].img_address: %s\n", z, g_master.textures[N].img_address);
-	// }
-	// sleep(100);
+	new_x = (x%4 + 4 - x%4) * x;
+	pixel_offset = 0; //g_master.trigo.lineH_3d / TEXT;
+	pixel_minus_offset = 0;
 	while (++y < g_master.map.window_height)
 	{
+		pixel_offset += g_master.trigo.lineH_3d / TEXT;
+		pixel_index = -1;
 		if (y > g_master.trigo.lineO_3d && y < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
 		{
 			if (dir == 1 && ra > 0 && ra < PI) // N
 			{
-				//printf("line_length: %c\n", g_master.textures[N].img_address[y]);
-				//printf("new_y%%64 * TEXT + new_x%%TEXT: %d\n", new_y%64 * TEXT + new_x%TEXT);
-				//usleep(100);
-				// sleep(2);
-				// new_index = -1;
-				//++new_y; // y is not 0 when gets here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				// while (++new_index < g_master.trigo.lineH_3d / TEXT)
-				// {
-					//printf("hello\n");
-					// printf("y: %d, x: %d, positon: %d\n", y, x, (y%64 * TEXT + new_x%TEXT));
-					// //sleep(10);
-					// printf("R? %d\n", g_master.textures[N].img_address[y%64 * TEXT + new_x%TEXT]);
-					// printf("G? %d\n", g_master.textures[N].img_address[y%64 * TEXT + (new_x+1)%TEXT]);
-					// printf("B? %d\n", g_master.textures[N].img_address[y%64 * TEXT + (new_x+2)%TEXT]);
-					// printf("T? %d\n", g_master.textures[N].img_address[y%64 * TEXT + (new_x+3)%TEXT]);
-					// usleep(10000);
-					//prints upside down, only 16 pixels;
-				//printf("g_master.textures[N].img_address[%d + %d]: %d\n", new_y%1024, x%1024, g_master.textures[N].img_address[new_y%1024 + x%1024]);
-				// printf("g_master.textures[N].img_address[new_y + x * TEXT]: %lu\n", sizeof(g_master.textures[N].img_address));
-				// sleep(10);
-				// printf("pos %d\n", new_y%64 * TEXT * 4 + (new_x+0)%64 * 4);
-				// sleep(1);
-				// printf("new_x: %d\n, new_y: %d\n", new_x, new_y);
-				my_mlx_pixel_put(&g_master.walls, x, y, 
-				
-								create_trgb(1, g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+2)%256], 
-											g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+1)%256], 
-												g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+0)%256])); // to robi 64 / 64 - size of.
-					// printf("color: %x\n", create_trgb(
-					// 	0, g_master.textures[N].img_address[y%256 * TEXT + (new_x+0)%TEXT], 
-					// 		g_master.textures[N].img_address[y%256 * TEXT + (new_x+1)%TEXT], 
-					// 		g_master.textures[N].img_address[y%256 * TEXT + (new_x+2)%TEXT]));
-					// y++;
-				// }
+				// new_x = (new_x%4 + 4 - new_x%4) * new_x;
+				//printf("pixel_offset - pixel_minus offset: %d", (int)(pixel_offset - pixel_minus_offset));
+				//sleep(3);
+				while (++pixel_index < (int)(pixel_offset - pixel_minus_offset))
+				{
+					my_mlx_pixel_put(&g_master.walls, x, y,
+						create_trgb(g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+0)%256], 
+										g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+1)%256], 
+											g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+2)%256], 
+												g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+3)%256] + 1));
+					y++;
+				}
 				new_y++;
 			}
 			if (dir == 0 && (ra < PI/2 || ra > P3)) // E
@@ -163,7 +149,14 @@ void	ft_update_walls(int x, int dir, float ra)
 		}
 		else
 			my_mlx_pixel_put(&g_master.walls, x, y, 0xFF000000);
-	}		
+		pixel_minus_offset += (g_master.trigo.lineH_3d / TEXT);
+		// printf("pixel_minus_offset: %f\n", pixel_minus_offset);
+		// sleep(10);
+	}	
+	// if (new_x > 265)
+	// 	new_x = 0;
+	// else	
+		// new_x++;
 }
 
 void    ft_3d_print_addr(int x, int dir, float ra)
