@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/08 21:18:47 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/13 13:41:48 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	main(int argc, char **argv)
 	}
 	g_master.window.mlx_p = mlx_init();
 	g_master.window.win_p = mlx_new_window(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height, "dujuivnDUBSTEPbro?");
-	ft_load_textures();
+	//ft_load_textures();
 	// g_master.test_img.img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, "./extras/textures/wall.xpm", &g_master.textures[0].img_width, &g_master.textures[0].img_heigth);
 	// g_master.test_img.img_address = mlx_get_data_addr(g_master.test_img.img_instance, &g_master.test_img.bits_per_pixel, &g_master.test_img.line_length, &g_master.test_img.endian);
 	// int y;

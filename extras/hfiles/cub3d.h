@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/09 18:29:53 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/13 20:52:46 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ typedef	struct s_map
 	int		window_width;
 	int		window_height;
 	int		c_f[2][3];
-	int		FR;
-	int		FG;
-	int		FB;
-	int		CR;
-	int		CG;
-	int		CB;
+	// int		FR;
+	// int		FG;
+	// int		FB;
+	// int		CR;
+	// int		CG;
+	// int		CB;
 	char	*NSEW[4];
 	int		last_line;
 	int		longest_line;
@@ -93,12 +93,12 @@ typedef struct	s_small_map
 
 }				t_s_map;
 
-typedef struct	s_img // to daje nam dane obrazka, line_length to jest dlugosc obrazka;
+typedef struct	s_img
 {
 	void	*img_instance;
 	char	*img_address;
-	int		bits_per_pixel; // 32
-	int		line_length; // 64
+	int		bits_per_pixel;
+	int		line_length;
 	int		endian;
 	int	 	img_width;
 	int  	img_heigth;
@@ -120,6 +120,7 @@ typedef struct s_trigonometry
 	float	lineH_3d;
 	float	lineO_3d;
 	float	x_width;
+	float	lineH_3d_saved;
 }				t_trigo;
 
 typedef struct s_master

@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/11 15:11:18 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/13 21:00:19 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,15 +218,10 @@ void	ft_raycasting(void)
 	float	dist_H;
 	float	dist_V;
 	float	dist;
-	int		i;
 	float	ra;
-	float	rest;
-	float	width_x;
 	int		dir;
-	//int		x;
+	int		i;
 
-	width_x = 0.0;
-	rest = 0.0;
 	i = -1;
 	ra = g_master.trigo.current_angle + 30 * degree;
 	if (ra < 0)
@@ -250,10 +245,8 @@ void	ft_raycasting(void)
 			//ft_print_one_ray_h(g_master.trigo.rxv, g_master.trigo.ryv, ra, 0x0000FF);
 		}
 		ft_create_3d_world(dist, ra, i);
-		//printf("i: %d\n", i);
 		ft_3d_print_addr(i, dir, ra);
 		ra -= degree / (g_master.map.window_width / 60);
-		// width_x += g_master.map.window_width / 60; - not sure if needed anymore;
 		if (ra < 0)
 		ra += 2 * PI;
 		if (ra > 2*PI)
@@ -261,32 +254,4 @@ void	ft_raycasting(void)
 	}
 	mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.bg.img_instance, 0, 0);
 	mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.walls.img_instance, 0, 0);
-// 	if (g_master.walls.img_instance)
-// 	{
-// 		printf("hello\n");
-		
-// 		g_master.walls.img_instance = mlx_new_image(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height);
-// 		g_master.walls.img_address = mlx_get_data_addr(g_master.walls.img_instance, &g_master.walls.bits_per_pixel, &g_master.walls.line_length, &g_master.walls.endian);
-// 	}
 }
-
-
-
-// float	ft_hit_da_wall(float rx, float ry, float xo, float yo)
-// {
-// 	int		mx;
-// 	int		my;
-	
-// 	mx = rx / g_master.trigo.unit_x_size;
-// 	my = ry / g_master.trigo.unit_y_size;
-// 	printf("g_master.map.last_line: %d\n", g_master.map.last_line);
-// 	printf("g_master.map.longest_line: %d\n", g_master.map.longest_line);
-// 	while (my < g_master.map.last_line && mx < g_master.map.longest_line && my > 0 && mx > 0 && g_master.map.map[my][mx] != '1')
-// 	{
-// 		rx += xo;
-// 		ry += yo;
-// 		mx = rx / g_master.trigo.unit_x_size;
-// 		my = ry / g_master.trigo.unit_y_size;
-// 	}
-// 	return(ft_distance(ry, g_master.trigo.pixel_y, rx, g_master.trigo.pixel_x));
-// }

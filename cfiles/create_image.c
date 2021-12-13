@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/11 15:09:49 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/13 21:09:16 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,58 +105,25 @@ void	ft_update_bg(void)
 
 void	ft_update_walls(int x, int dir, float ra)
 {
-	int				y;
-	int				new_x;
-	int				new_y;
-	int				pixel_index;
-	float			pixel_offset;
-	float			pixel_minus_offset;
+	int	y;
 
 	y = -1;
-	pixel_index = -1;
-	new_y = 0;
-	new_x = (x%4 + 4 - x%4) * x;
-	pixel_offset = 0; //g_master.trigo.lineH_3d / TEXT;
-	pixel_minus_offset = 0;
 	while (++y < g_master.map.window_height)
 	{
-		pixel_offset += g_master.trigo.lineH_3d / TEXT;
-		pixel_index = -1;
 		if (y > g_master.trigo.lineO_3d && y < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
 		{
 			if (dir == 1 && ra > 0 && ra < PI) // N
-			{
-				// new_x = (new_x%4 + 4 - new_x%4) * new_x;
-				//printf("pixel_offset - pixel_minus offset: %d", (int)(pixel_offset - pixel_minus_offset));
-				//sleep(3);
-				while (++pixel_index < (int)(pixel_offset - pixel_minus_offset))
-				{
-					my_mlx_pixel_put(&g_master.walls, x, y,
-						create_trgb(g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+0)%256], 
-										g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+1)%256], 
-											g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+2)%256], 
-												g_master.textures[N].img_address[new_y%64 * TEXT * 4 + (new_x+3)%256] + 1));
-					y++;
-				}
-				new_y++;
-			}
-			if (dir == 0 && (ra < PI/2 || ra > P3)) // E
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x00BF0000);
+			else if (dir == 0 && (ra < PI/2 || ra > P3)) // E
 				my_mlx_pixel_put(&g_master.walls, x, y, 0x00FF0000);
-			if (dir == 1 && ra >= PI && ra < 2 * PI) // S
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x0000FF00);
+			else if (dir == 1 && ra >= PI && ra < 2 * PI) // S
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x00BF0000);
 			else if (dir == 0 && ra > PI/2 && ra < P3) // W
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x000000FF);
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x00FF0000);
 		}
 		else
 			my_mlx_pixel_put(&g_master.walls, x, y, 0xFF000000);
-		pixel_minus_offset += (g_master.trigo.lineH_3d / TEXT);
-		// printf("pixel_minus_offset: %f\n", pixel_minus_offset);
-		// sleep(10);
 	}	
-	// if (new_x > 265)
-	// 	new_x = 0;
-	// else	
-		// new_x++;
 }
 
 void    ft_3d_print_addr(int x, int dir, float ra)
