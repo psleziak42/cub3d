@@ -30,7 +30,7 @@ LINKS	=	-L./$(LIBFT) -lft $(MLX)
 
 all:	$(NAME)
 
-$(NAME): libft $(DIR_O) $(OBJS)
+$(NAME): libft $(OBJS)
 	@$(CC) $(wildcard cfiles/*.c) $(wildcard extras/libft/*c) $(MLX) $(INC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(LINKS)
 	@echo "\n$(GREEN)\n"
 	@cat ./fonts/cub3d.txt
@@ -47,7 +47,7 @@ $(DIR_O):
 
 libft:
 	@echo "$(WHITE) [ .. ] Creating LIBFT [ .. ]$(RESET)"
-	@make -C $(LIBFT)
+	@test -s libft/libft.a || make -C $(LIBFT)
 	@echo "\n$(GREEN)\n"
 	@cat ./fonts/libft.txt
 	@echo "$(WHITE) \n\n\n[ .. ] Creating '$(NAME)' [ .. ]$(RESET)"

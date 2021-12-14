@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/09 21:13:38 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/14 00:23:41 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,29 @@ int	ft_map_parse(char *argc)
 	ft_resize_map_to_square(g_master.map.longest_line);
 	if (!ft_check_de_map())
 		return (0);
-	//ft_print_map();
 	return (1);
 }
 
-void	ft_load_textures(void)
+int	ft_load_textures(void)
 {
 	g_master.textures[N].img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.map.NSEW[0], &g_master.textures[0].img_width, &g_master.textures[0].img_heigth);
+	if (!g_master.textures[N].img_instance)
+		return (-1);
 	g_master.textures[S].img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.map.NSEW[1], &g_master.textures[1].img_width, &g_master.textures[1].img_heigth);
+	if (!g_master.textures[S].img_instance)
+		return (-1);
 	g_master.textures[E].img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.map.NSEW[2], &g_master.textures[2].img_width, &g_master.textures[2].img_heigth);
+	if (!g_master.textures[E].img_instance)
+		return (-1);
 	g_master.textures[W].img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.map.NSEW[3], &g_master.textures[3].img_width, &g_master.textures[3].img_heigth);
+	if (!g_master.textures[W].img_instance)
+		return (-1);
 	g_master.textures[N].img_address = mlx_get_data_addr(g_master.textures[N].img_instance, &g_master.textures[N].bits_per_pixel, &g_master.textures[N].line_length, &g_master.textures[N].endian);
 	g_master.textures[S].img_address = mlx_get_data_addr(g_master.textures[S].img_instance, &g_master.textures[S].bits_per_pixel, &g_master.textures[S].line_length, &g_master.textures[S].endian);
 	g_master.textures[E].img_address = mlx_get_data_addr(g_master.textures[E].img_instance, &g_master.textures[E].bits_per_pixel, &g_master.textures[E].line_length, &g_master.textures[E].endian);
 	g_master.textures[W].img_address = mlx_get_data_addr(g_master.textures[W].img_instance, &g_master.textures[W].bits_per_pixel, &g_master.textures[W].line_length, &g_master.textures[W].endian);
 	// printf("sizeof(line_length): %x\n", g_master.textures[N].img_address[1]);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -74,8 +82,12 @@ int	main(int argc, char **argv)
 	}
 	g_master.window.mlx_p = mlx_init();
 	g_master.window.win_p = mlx_new_window(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height, "dujuivnDUBSTEPbro?");
-	ft_load_textures();
-	printf("widht %d height %d\n", g_master.map.window_width, g_master.map.window_height);
+	if (ft_load_textures())
+	{
+		printf("Error\n");
+		ft_free_memory();
+		return(-1);
+	}
 	g_master.walls.img_instance = mlx_new_image(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height);
 	g_master.walls.img_address = mlx_get_data_addr(g_master.walls.img_instance, &g_master.walls.bits_per_pixel, &g_master.walls.line_length, &g_master.walls.endian);
 	g_master.bg.img_instance = mlx_new_image(g_master.window.mlx_p, g_master.map.window_width, g_master.map.window_height);

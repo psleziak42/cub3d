@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/10 16:16:39 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/13 16:09:53 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,7 @@
 
 int	create_trgb(char t, char r, char g, char b)
 {
-	int color = 0;
-	color = (t << 24 | r << 16 | g << 8 | b);
-	// printf("t %d, r %d\n", t, r);
-	// sleep(1);
-
-	return (color);
+	return ((t << 24) + (r << 16) + (g << 8) + b);
 }
 
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color) // znajdz ta funkcje, czemu nie drukuje?
@@ -27,7 +22,7 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color) // znajdz ta funkcje,
 	char	*dst;
 
 	dst = img->img_address + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	*(int*)dst = color;
 }
 
 void	ft_update_bg(void)
@@ -47,7 +42,7 @@ void	ft_update_bg(void)
 		i = -1;
 		while (++i < x)
 		{
-			color = create_trgb(0, g_master.map.c_f[C][0], g_master.map.c_f[C][1], g_master.map.c_f[C][2]);
+			color = create_trgb(1, g_master.map.c_f[C][0], g_master.map.c_f[C][1], g_master.map.c_f[C][2]);
 			my_mlx_pixel_put(&g_master.bg, i, j, color);
 		}
 	}
@@ -56,7 +51,7 @@ void	ft_update_bg(void)
 		i = -1;
 		while (++i < x)
 		{
-			color = create_trgb(0, g_master.map.c_f[F][0], g_master.map.c_f[F][1], g_master.map.c_f[F][2]);
+			color = create_trgb(1, g_master.map.c_f[F][0], g_master.map.c_f[F][1], g_master.map.c_f[F][2]);
 			my_mlx_pixel_put(&g_master.bg, i, j, color);
 		}
 		j++;
@@ -86,106 +81,58 @@ void	ft_update_bg(void)
 * this is why we calculate how man pixels must be printed to cover all lineH
 */
 
+void	do_texture(t_img img, int *x, int *y, int new_x, int *new_y)
+{
+	static int	helper;
+	int	size_per_pixel = g_master.trigo.lineH_3d/TEXT;
+	
+	if (helper <= 64 * size_per_pixel + 1)
+	{
+		helper = 0;
+	}
+	new_x = (helper%4 + 4 - helper%4) * helper / size_per_pixel;
+	int	i = 0;
+	while (i < size_per_pixel && (*y) < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d) 
+		&& *x < g_master.map.window_width - 5)
+	{
+		my_mlx_pixel_put(&g_master.walls, *x, *y,
+			create_trgb(img.img_address[(*new_y)%64 * TEXT * 4 + (new_x+3)%256] + 1,
+				img.img_address[(*new_y)%64 * TEXT * 4 + (new_x+2)%256], 
+					img.img_address[(*new_y)%64 * TEXT * 4 + (new_x+1)%256], 
+						img.img_address[(*new_y)%64 * TEXT * 4 + (new_x+0)%256]));
+		i++;
+		(*y)++;
+	}
+	(*new_y)++;
+	if ((*y) <= (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
+		helper++;
+}
+
 void	ft_update_walls(int x, int dir, float ra)
 {
 	int		y;
-	static int		new_x;
-	static int helper;
-	static int	counter;
-	static int	first_x;
-	int			max_size = 64 * 64 * 4;
-	int calc = 64;
+	int		new_x;
+	int		new_y = 0;
+	int		size_per_pixel = g_master.trigo.lineH_3d/TEXT;
 
+	new_x = (x%4 + 4 - x%4) * x / size_per_pixel;
 	y = -1;
-	calc = 64 * 4;
 	while (++y < g_master.map.window_height)
 	{
-		// printf("x %d\n", x);
-		// new_x = (x%4 + 4 - x%4) * x;
-		// printf("new x %d\n", new_x);
 		if (y > g_master.trigo.lineO_3d && y < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
 		{
-
-			//if (dir == 1 && ra > 0 && ra < PI) // N
-				//my_mlx_pixel_put(&g_master.walls, x, y, 0x00FF0000); //g_master.textures[N].img_address[]); // y%64, x= heigth/64
 			if (dir == 1 && ra > 0 && ra < PI) // N
-			{
-				// newx = 289 why??????????????????????????
-				// printf("newx: %d\n", new_x);
-				// sleep(2);
-				if (helper == 0 && counter == 0)
-				{
-					counter = 0;
-					new_x = counter * 4;
-					first_x = x;
-				}
-				helper = 1;
-				// new_index = -1;
-				// 0-4 + 256   256-280 
-				// while (++new_index < g_master.trigo.lineH_3d / TEXT)
-				// {
-					// printf("first x %d\n", first_x);
-					// printf("new x %d\n", new_x);
-					// printf("total %d\n", new_x);
-					// printf("new index %d\n", new_index);
-					// // sleep(2);
-					if (new_x >= max_size)
-					{
-						first_x = x;
-						new_x = counter * 4;
-						// printf("counter: %d new_x: %d\n", counter, new_x);
-						// sleep(3);
-					}
-					// sleep(3);
-					my_mlx_pixel_put(&g_master.walls, x, y, create_trgb(
-					0, g_master.textures[S].img_address[new_x + 2], 
-						g_master.textures[S].img_address[new_x + 1], g_master.textures[S].img_address[new_x + 0]));
-					// printf("color: %x\n", create_trgb(
-					// 0, g_master.textures[N].img_address[new_x + 2], 
-					// 	g_master.textures[N].img_address[new_x + 1], g_master.textures[N].img_address[new_x + 0]));
-					// printf("index %d calc x %d\n", counter, new_x);
-					
-					// usleep(50000);
-					new_x += calc;
-					// printf("%d: af new_x: %d\n", counter, new_x);
-					
-					// new_x += 4;
-					// y += 4;
-				// }
-				
-				// printf("size_of image %zu\n", ft_strlen(g_master.textures[N].img_address));
-				// sleep(10);
-				// printf("%d\n", g_master.textures[N].bits_per_pixel / 8 * g_master.textures[N].line_length);
-
-			}
-			if (dir == 0 && (ra < PI/2 || ra > P3)) // E
+				do_texture(g_master.textures[N], &x, &y, new_x, &new_y);
+			else if (dir == 0 && (ra < PI/2 || ra > P3)) // E
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x00FF0000);
+			else if (dir == 1 && ra >= PI && ra < 2 * PI) // S
 				my_mlx_pixel_put(&g_master.walls, x, y, 0x0000FF00);
-			if (dir == 1 && ra >= PI && ra < 2 * PI) // S
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x000000FF);
 			else if (dir == 0 && ra > PI/2 && ra < P3) // W
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x00F000FF);
-			//y -= 1;
-			// if North : x % 64 (width), img_width_size / y -> gives us number of pixels we must print of the same color
-			// 	color = create_trgb(0, g_master.textures[N].img_address[y * sth + x], g_master.textures[N].img_address[y * sth + x + 1], 
-			// 		g_master.textures[N].img_address[y * sth + x + 2], g_master.textures[N].img_address[y * sth + x + 3]);
+				my_mlx_pixel_put(&g_master.walls, x, y, 0x000000FF);
 		}
 		else
 			my_mlx_pixel_put(&g_master.walls, x, y, 0xFF000000);
 	}
-	if (helper == 1)
-	{
-		counter++;
-		// sleep(10);
-	}
-
-	helper = 0;
-	// if (helper != 0)
-	// {
-	// 	printf("One row is done %d\n", y);
-	// 	sleep(3);
-	// }
-	// if (new_x == 64*64)
-	// 	new_x = 0;
 }
 
 void    ft_3d_print_addr(int x, int dir, float ra)
