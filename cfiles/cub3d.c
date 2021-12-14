@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 19:08:45 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/14 20:12:54 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int	main(int argc, char **argv)
 	if (argc != 2 && ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub", 5))
 	{
 		ft_error_handler("Error\n", "Incorrect map name. Must be *.cub\n", 2);
+		ft_free_memory();
 		return (-1);
 	}
 	ft_set_em_to_zero_and_create_singletones(&map, &win, &img, &trigo);

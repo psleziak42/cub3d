@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 20:10:57 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/14 20:30:43 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,16 @@ static int		ft_process_map(char *line, int counter)
 	return (1);
 }
 
+void	get_rgb_colors(int option)
+{
+	get_map(0)->rgb = ft_split(get_map(0)->args[1], ',');
+	get_map(0)->c_f[option][0] = ft_atoi(get_map(0)->rgb[0]); 
+	get_map(0)->c_f[option][1] = ft_atoi(get_map(0)->rgb[1]);
+	get_map(0)->c_f[option][2] = ft_atoi(get_map(0)->rgb[2]);
+	if (is_wrong_color(get_map(0)->c_f[option][0], get_map(0)->c_f[option][1], get_map(0)->c_f[option][2]))
+		return (0);
+}
+
 static int		ft_process_line(void)
 {
 	if (get_map(0)->args[0][0] == 'R' && get_map(0)->win_hei == 0 && get_map(0)->win_wid == 0)
@@ -141,23 +151,9 @@ static int		ft_process_line(void)
 	else if (!(ft_strncmp(get_map(0)->args[0], "EA", 2)) && !get_map(0)->nsew[E])
 		get_map(0)->nsew[W] = get_map(0)->args[1];
 	else if (get_map(0)->args[0][0] == 'F')
-	{
-		get_map(0)->rgb = ft_split(get_map(0)->args[1], ',');
-		get_map(0)->c_f[F][0] = ft_atoi(get_map(0)->rgb[0]); 
-		get_map(0)->c_f[F][1] = ft_atoi(get_map(0)->rgb[1]);
-		get_map(0)->c_f[F][2] = ft_atoi(get_map(0)->rgb[2]);
-		if (is_wrong_color(get_map(0)->c_f[F][0], get_map(0)->c_f[F][1], get_map(0)->c_f[F][2]))
-			return (0);
-	}	
+		get_rgb_colors(1);
 	else if (get_map(0)->args[0][0] == 'C') 
-	{
-		get_map(0)->rgb = ft_split(get_map(0)->args[1], ',');
-		get_map(0)->c_f[C][0] = ft_atoi(get_map(0)->rgb[0]);
-		get_map(0)->c_f[C][1] = ft_atoi(get_map(0)->rgb[1]);
-		get_map(0)->c_f[C][2] = ft_atoi(get_map(0)->rgb[2]);
-		if (is_wrong_color(get_map(0)->c_f[C][0], get_map(0)->c_f[C][1], get_map(0)->c_f[C][2]))
-			return (0);
-	}
+		get_rgb_colors(0);
 	return (1);
 }
 
