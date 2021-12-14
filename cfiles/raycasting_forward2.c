@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 18:46:13 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/14 19:07:32 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void	ft_raycasting(void)
 	int		dir;
 	int		i;
 
-	ra = get_trigo(0)->angle + 30 * degree;
+	ra = get_trigo(0)->angle + 30 * DEGREE;
 	ft_360(ra);
 	i = -1;
 	while (++i < get_map(0)->win_wid)
@@ -209,7 +209,7 @@ void	ft_raycasting(void)
 		//ft_print_one_ray_h(get_trigo(0)->rxv, get_trigo(0)->ryv, ra, 0x0000FF);
 		ft_create_3d_world(dist, ra);
 		ft_3d_print_addr(i, dir, ra);
-		ra -= degree / (get_map(0)->win_wid / 60);
+		ra -= DEGREE / (get_map(0)->win_wid / 60);
 		ft_360(ra);
 	}
 }

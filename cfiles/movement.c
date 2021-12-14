@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 00:23:26 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 19:07:06 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,27 +45,27 @@ void	ft_backward(void)
 
 void	ft_left(void)
 {
-	get_trigo(0)->angle += ROT * degree;
-	if (get_trigo(0)->angle + degree >= 2 * PI)
-		get_trigo(0)->angle = 0 + degree;
+	get_trigo(0)->angle += ROT * DEGREE;
+	if (get_trigo(0)->angle + DEGREE >= 2 * PI)
+		get_trigo(0)->angle = 0 + DEGREE;
 }
 
 void	ft_right(void)
 {
-	get_trigo(0)->angle -= ROT *degree;
-	if (get_trigo(0)->angle - degree < 0)
-		get_trigo(0)->angle = 2 * PI - degree;
+	get_trigo(0)->angle -= ROT *DEGREE;
+	if (get_trigo(0)->angle - DEGREE < 0)
+		get_trigo(0)->angle = 2 * PI - DEGREE;
 }
 
 void	ft_update_position(int key)
 {
-	if (key == k_W)
+	if (key == K_W)
 		ft_forward();
-	else if (key == k_S)
+	else if (key == K_S)
 		ft_backward();
-	else if (key == k_A || key == ARR_L)
+	else if (key == K_A || key == ARR_L)
 		ft_left();
-	else if (key == k_D || key == ARR_R)
+	else if (key == K_D || key == ARR_R)
 		ft_right();
 	if (key == ESC)
 	{

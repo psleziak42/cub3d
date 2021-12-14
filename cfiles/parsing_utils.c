@@ -1,49 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   singletones.c                                      :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 18:41:25 by rimartin          #+#    #+#             */
-/*   Updated: 2021/12/14 19:46:07 by rimartin         ###   ########.fr       */
+/*   Created: 2021/12/14 19:36:33 by rimartin          #+#    #+#             */
+/*   Updated: 2021/12/14 19:37:42 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
 
-t_map	*get_map(t_map *map)
+bool	is_wrong_color(int r, int g, int b)
 {
-	static t_map	*mapa;
-
-	if (!map)
-		mapa = map;
-	return (mapa);
+	if (r <= 255 && r >= 0)
+		return (false);
+	else if (g <= 255 && g >= 0)
+		return (false);
+	else if (b <= 255 && b >= 0)
+		return (false);
+	return (true);
 }
 
-t_win	*get_win(t_win *win)
+bool	is_valid_char(char c, char *compound)
 {
-	static t_win	*window;
+	int	i;
 
-	if (!win)
-		window = win;
-	return (window);
-}
-
-t_img	*get_img(t_img *img)
-{
-	static t_img	*image;
-
-	if (!img)
-		image = img;
-	return (image);
-}
-
-t_trigo	*get_trigo(t_trigo *trigo)
-{
-	static t_trigo	*trigonometry;
-
-	if (!trigo)
-		trigonometry = trigo;
-	return (trigonometry);
+	i = -1;
+	while (compound[++i])
+	{
+		if (compound[i] == c)
+			return (true);
+	}	
+	return (false);
 }

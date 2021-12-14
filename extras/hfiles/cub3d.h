@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/14 18:41:00 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/14 19:37:46 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,10 @@ int		ft_count_longest_line(void);
 void	ft_resize_map_to_square(int l);
 int		ft_check_de_map(void);
 void	ft_print_map(void);
+
+/****MAP UTILS****/
+bool	is_wrong_color(int r, int g, int b);
+bool	is_valid_char(char c, char *compound);
 
 /****WINDOW****/
 void	ft_printmap_to_window(void);

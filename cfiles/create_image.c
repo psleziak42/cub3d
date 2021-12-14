@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_image.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 00:46:48 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 19:06:49 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_update_walls(int x, int dir, float ra)
 	y = -1;
 	while (++y < get_map(0)->win_hei)
 	{
-		if (y > get_trigo(0)->lineO_3d && y < (get_trigo(0)->lineO_3d + get_trigo(0)->lineH_3d))
+		if (y > get_trigo(0)->line_o_3d && y < (get_trigo(0)->line_o_3d + get_trigo(0)->line_h_3d))
 		{
 			if (dir == 1 && ra > 0 && ra < PI) // N
 				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00BF0000);

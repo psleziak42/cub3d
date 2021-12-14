@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 00:57:49 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 19:08:45 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,15 @@ int	ft_map_parse(char *argc)
 }
 
 void	ft_set_em_to_zero_and_create_singletones
-	(t_map *map, t_win *win, t_img *img, t_trigo *trigo)
+	(t_map *map, t_win *win, t_img img[][6], t_trigo *trigo)
 {
 	ft_memset(map, 0, sizeof(map));
 	ft_memset(win, 0, sizeof(win));
-	ft_memset(img, 0, sizeof(img));
+	ft_memset(*img, 0, sizeof(*img));
 	ft_memset(trigo, 0, sizeof(trigo));
 	get_map(map);
 	get_win(win);
-	get_img(img);
+	get_img(*img);
 	get_trigo(trigo);
 }
 
@@ -117,7 +117,7 @@ int	main(int argc, char **argv)
 		ft_error_handler("Error\n", "Incorrect map name. Must be *.cub\n", 2);
 		return (-1);
 	}
-	ft_set_em_to_zero_and_create_singletones(&map, &win, &img[6], &trigo);
+	ft_set_em_to_zero_and_create_singletones(&map, &win, &img, &trigo);
 	if (!ft_map_parse(argv[1]))
 	{
 		//ft_free_memory();

@@ -22,7 +22,7 @@ CC		=	gcc
 #UPDATE READLINE via brew because the Mac one is too old
 
 CFLAGS	=	-Wall -Wextra -Werror -O3
-LDFLAGS = 	-g -fsanitize=address 
+LDFLAGS = 	-g -fsanitize=address
 INCLUDE	=	-I./$(DOTH) -I./$(LIBFT) -I /usr/local/include
 LINKS	=	-L./$(LIBFT) -lft $(MLX) 
 
