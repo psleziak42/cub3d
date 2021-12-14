@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/14 00:49:25 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 18:41:00 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@
 # define PI		3.14159265359
 # define P2		PI/2
 # define P3		3 * PI / 2
-# define F0V	PI / 3 / degree
-# define degree	0.01745329251
+# define F0V	PI / 3 / DEGREE
+# define DEGREE	0.01745329251
 # define X		17
 # define ESC 	53
-# define k_W	13
-# define k_S	1
-# define k_A	0
+# define K_W	13
+# define K_S	1
+# define K_A	0
 # define ARR_L	123
-# define k_D	2
+# define K_D	2
 # define ARR_R	124
 # define TEXT	64
 # define SPEED	5
@@ -60,47 +60,44 @@
 # define F		1
 # define C		0
 
-typedef	struct s_map
+typedef struct s_map
 {
 	char	**map;
 	char	**args;
-	char	**RGB;
+	char	**rgb;
 	int		fd;
 	int		win_wid;
 	int		win_hei;
 	int		c_f[2][3];
-	char	*NSEW[4];
+	char	*nsew[4];
 	int		last_line;
 	int		longest_line;
-}				t_map;
+}	t_map;
 
-typedef	struct	s_win
+typedef struct s_win
 {
 	void	*mlx_p;
 	void	*win_p;
-}
-				t_win;
+}	t_win;
 
-typedef struct	s_small_map
+typedef struct s_small_map
 {
-	char *img_file;
-	void *img_instance;
-	int	 img_wid;
-	int  img_hei;
+	char	*img_file;
+	void	*img_instance;
+	int		img_wid;
+	int		img_hei;
+}	t_s_map;
 
-}				t_s_map;
-
-typedef struct	s_img
+typedef struct s_img
 {
 	void	*img_inst;
 	char	*img_address;
 	int		bpp;
 	int		line_len;
 	int		endian;
-	int	 	img_wid;
-	int  	img_hei;
-	
-}				t_img;
+	int		img_wid;
+	int		img_hei;
+}	t_img;
 
 typedef struct s_trigonometry
 {
@@ -108,25 +105,21 @@ typedef struct s_trigonometry
 	float	rxh;
 	float	ryv;
 	float	rxv;
-
-	// float	cub_size;
 	float	px_y;
 	float	px_x;
 	float	angle;
 	float	unit_y_size;
 	float	unit_x_size;
-	float	lineH_3d;
-	float	lineO_3d;
-	// float	x_width;
-	// float	lineH_3d_saved;
-}				t_trigo;
+	float	line_h_3d;
+	float	line_o_3d;
+}	t_trigo;
 
 // typedef struct s_master
 // {
 // 	t_map		map;
 // 	t_window	window;
 // 	t_img		walls; // call it walls!
-// 	t_img		bg; // init it and doesnt have to be updated anymore in the loop!
+// 	t_img		bg;
 // 	t_img		textures[4];
 // 	t_img		test_img;
 // 	t_trigo		trigo;
@@ -154,7 +147,7 @@ int		key_release(int key);
 void	ft_raycasting(void);
 
 /****PRINTING****/
-void    ft_3d_print_addr(int x, int dir, float ra);
+void	ft_3d_print_addr(int x, int dir, float ra);
 void	ft_update_bg(void);
 
 /****FREE and CLEAN****/

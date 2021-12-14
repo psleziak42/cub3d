@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_forward2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 00:54:22 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 18:46:13 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 // 	ry = (float)ry;
 // 	i = 0;
-// 	delta_x = fabs(rx - get_trigo(0)->px_x); // chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
+// 	delta_x = fabs(rx - get_trigo(0)->px_x);
 // 	printf("deltax: %f\n", delta_x);
 // 	// if (sin(get_trigo(0)->angle) != 0)
 // 	// 	c = delta_x / sin(get_trigo(0)->angle);
@@ -48,21 +48,21 @@
 // ============================================================
 // static void	ft_3d_printer(float lineH, float lineO, float width_x);
 
-
-void	ft_create_3d_world(float dist, float ra) // i ll need ofset lineO and lineH as return
+void	ft_create_3d_world(float dist, float ra)
 {
 	float	fish_eye;
 
 	fish_eye = ra - get_trigo(0)->angle;
 	if (fish_eye < 0)
 		fish_eye += 2 * PI;
-	if (fish_eye > 2*PI)
+	if (fish_eye > 2 * PI)
 		fish_eye -= 2 * PI;
 	dist = dist * cos(fish_eye);
-	get_trigo(0)->lineH_3d = (TEXT * get_map(0)->win_hei) / dist;
-	if (get_trigo(0)->lineH_3d > get_map(0)->win_hei)
-		get_trigo(0)->lineH_3d = get_map(0)->win_hei;
-	get_trigo(0)->lineO_3d = (get_map(0)->win_hei - get_trigo(0)->lineH_3d) / 2;
+	get_trigo(0)->line_h_3d = (TEXT * get_map(0)->win_hei) / dist;
+	if (get_trigo(0)->line_h_3d > get_map(0)->win_hei)
+		get_trigo(0)->line_h_3d = get_map(0)->win_hei;
+	get_trigo(0)->line_o_3d = (get_map(0)->win_hei -
+	get_trigo(0)->line_h_3d) / 2;
 }
 
 static float	ft_distance(float ry, float py, float rx, float px)
@@ -74,7 +74,7 @@ float	ft_hit_da_wall(float rx, float ry, float xo, float yo)
 {
 	int		mx;
 	int		my;
-	
+
 	mx = (int)(rx / get_trigo(0)->unit_x_size);
 	my = (int)(ry / get_trigo(0)->unit_y_size);
 	while (my < get_map(0)->last_line && mx < get_map(0)->longest_line &&
@@ -92,8 +92,8 @@ float	ft_hit_da_wall(float rx, float ry, float xo, float yo)
 
 float	ft_horizontal_line(float ra)
 {
-	float	rx; // wall_x; .
-	float	ry; // wall_y; .
+	float	rx;
+	float	ry;
 	float	xo;
 	float	yo;
 	
@@ -123,22 +123,22 @@ float	ft_horizontal_line(float ra)
 	return(ft_hit_da_wall(rx, ry, xo, yo));
 }
 	
-	// int		mx;
-	// int		my;
-	
-	// mx = (int)(rx / get_trigo(0)->unit_x_size);
-	// my = (int)(ry / get_trigo(0)->unit_y_size);
-	// while (my < get_map(0)->last_line && mx < get_map(0)->longest_line && my > 0 && mx > 0 && get_map(0)->map[my][mx] != '1')
-	// {
-	// 	rx += xo;
-	// 	ry += yo;
-	// 	mx = (int)(rx / get_trigo(0)->unit_x_size);
-	// 	my = (int)(ry / get_trigo(0)->unit_y_size);
-	// }
-	// get_trigo(0)->ryh = ry;
-	// get_trigo(0)->rxh = rx;
-	// return(ft_distance(ry, get_trigo(0)->px_y, rx, get_trigo(0)->px_x));
-	// //return(ft_hit_da_wall(rx, ry, xo, yo));
+// int		mx;
+// int		my;
+
+// mx = (int)(rx / get_trigo(0)->unit_x_size);
+// my = (int)(ry / get_trigo(0)->unit_y_size);
+// while (my < get_map(0)->last_line && mx < get_map(0)->longest_line && my > 0 && mx > 0 && get_map(0)->map[my][mx] != '1')
+// {
+// 	rx += xo;
+// 	ry += yo;
+// 	mx = (int)(rx / get_trigo(0)->unit_x_size);
+// 	my = (int)(ry / get_trigo(0)->unit_y_size);
+// }
+// get_trigo(0)->ryh = ry;
+// get_trigo(0)->rxh = rx;
+// return(ft_distance(ry, get_trigo(0)->px_y, rx, get_trigo(0)->px_x));
+// //return(ft_hit_da_wall(rx, ry, xo, yo));
 
 /*** VERTICAL LINE ***/
 
@@ -174,22 +174,6 @@ float	ft_vertical_line(float ra)
 	}
 	return(ft_hit_da_wall(rx, ry, xo, yo));
 }
-	// int		mx;
-	// int		my;
-	
-	// mx = (int)(rx / get_trigo(0)->unit_x_size);
-	// my = (int)(ry / get_trigo(0)->unit_y_size);
-	// while (my < get_map(0)->last_line && mx < get_map(0)->longest_line && my > 0 && mx > 0 && get_map(0)->map[my][mx] != '1')
-	// {
-	// 	rx += xo;
-	// 	ry += yo;
-	// 	mx = (int)(rx / get_trigo(0)->unit_x_size);
-	// 	my = (int)(ry / get_trigo(0)->unit_y_size);
-	// }
-	// get_trigo(0)->ryv = ry;
-	// get_trigo(0)->rxv = rx;
-	// return(ft_distance(ry, get_trigo(0)->px_y, rx, get_trigo(0)->px_x));
-	// //return(ft_hit_da_wall(rx, ry, xo, yo));
 
 float ft_360(float ra)
 {

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_updated.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 17:55:03 by psleziak          #+#    #+#             */
-/*   Updated: 2021/09/22 18:17:01 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 18:37:42 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	ft_word(char const *s, int *i, char c)
 		(*i)++;
 	while (s[*i] != c && s[*i] != '\0')
 	{
-		if (s[*i] == '\'' || s[*i] == '\"') 
+		if (s[*i] == '\'' || s[*i] == '\"')
 		{
 			g_quote.on_quote = 1;
 			g_quote.quote = s[*i];
@@ -47,7 +47,7 @@ static int	ft_word(char const *s, int *i, char c)
 		return (k);
 }
 
-static int	ft_count(char const *s, char c) // tutaj by pasowalo zeby ucinac i kopiowac do " lub ' i jesli znajde to ustawiac zmienna na 1 i przenosic do funkcji ktora stworzy string '
+static int	ft_count(char const *s, char c)
 {
 	int	i;
 	int	j;
@@ -81,11 +81,7 @@ static char	*ft_quote_arg(char const *s, char c, int *i)
 	while (s[j] != c)
 	{
 		if (s[j] == '\0')
-		{
-			printf("quote isnt closed\n");
-			//ft_error_exit("quotes arent closed");
-			return 0;
-		}
+			return (0);
 		j++;
 	}
 	handmade_arg = malloc((j + 1) * sizeof(char));
@@ -93,7 +89,7 @@ static char	*ft_quote_arg(char const *s, char c, int *i)
 		return (0);
 	j = -1;
 	while (s[*i] != c)
-		handmade_arg[++j] = s[(*i)++];	
+		handmade_arg[++j] = s[(*i)++];
 	(*i)++;
 	handmade_arg[++j] = '\0';
 	g_quote.on_quote = 0;
@@ -114,8 +110,6 @@ char	**ft_split_updated(char const *s, char c)
 	i = 0;
 	y = -1;
 	big = ft_calloc((ft_count(s, c) + 1), sizeof(char *));
-	if (!big)
-		return (0);
 	while (s[i] != '\0')
 	{
 		if (g_quote.on_quote)
@@ -124,7 +118,7 @@ char	**ft_split_updated(char const *s, char c)
 		{
 			k = ft_word(s, &i, c);
 			if (!k && g_quote.on_quote)
-				break ; // bys moze continue jest potrzebne zeby nie wychodzil jak znajdzie " na poczatku.
+				break ;
 			small = ft_calloc((k + 1), sizeof(char));
 			if (!small)
 				return (0);

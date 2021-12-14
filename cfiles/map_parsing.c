@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 00:44:49 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 18:43:57 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,28 +123,28 @@ static int		ft_process_line(void)
 			return (0); 
 	}
 	else if (!(ft_strncmp(get_map(0)->args[0], "NO", 2)))
-		get_map(0)->NSEW[N] = get_map(0)->args[1];
+		get_map(0)->nsew[N] = get_map(0)->args[1];
 	else if (!(ft_strncmp(get_map(0)->args[0], "SO", 2)))
-		get_map(0)->NSEW[S] = get_map(0)->args[1];
+		get_map(0)->nsew[S] = get_map(0)->args[1];
 	else if (!(ft_strncmp(get_map(0)->args[0], "WE", 2)))
-		get_map(0)->NSEW[E] = get_map(0)->args[1];
+		get_map(0)->nsew[E] = get_map(0)->args[1];
 	else if (!(ft_strncmp(get_map(0)->args[0], "EA", 2)))
-		get_map(0)->NSEW[W] = get_map(0)->args[1];
+		get_map(0)->nsew[W] = get_map(0)->args[1];
 	else if (get_map(0)->args[0][0] == 'F') // < 0 && > 255 error
 	{
-		get_map(0)->RGB = ft_split(get_map(0)->args[1], ',');
-		get_map(0)->c_f[F][0] = ft_atoi(get_map(0)->RGB[0]); 
-		get_map(0)->c_f[F][1] = ft_atoi(get_map(0)->RGB[1]);
-		get_map(0)->c_f[F][2] = ft_atoi(get_map(0)->RGB[2]);
+		get_map(0)->rgb = ft_split(get_map(0)->args[1], ',');
+		get_map(0)->c_f[F][0] = ft_atoi(get_map(0)->rgb[0]); 
+		get_map(0)->c_f[F][1] = ft_atoi(get_map(0)->rgb[1]);
+		get_map(0)->c_f[F][2] = ft_atoi(get_map(0)->rgb[2]);
 		/*if (wrong_color_range(map->FR, map->FG, map->FB))
 			return (0);*/
 	}	
 	else if (get_map(0)->args[0][0] == 'C') 
 	{
-		get_map(0)->RGB = ft_split(get_map(0)->args[1], ',');
-		get_map(0)->c_f[C][0] = ft_atoi(get_map(0)->RGB[0]);
-		get_map(0)->c_f[C][1] = ft_atoi(get_map(0)->RGB[1]);
-		get_map(0)->c_f[C][2] = ft_atoi(get_map(0)->RGB[2]);
+		get_map(0)->rgb = ft_split(get_map(0)->args[1], ',');
+		get_map(0)->c_f[C][0] = ft_atoi(get_map(0)->rgb[0]);
+		get_map(0)->c_f[C][1] = ft_atoi(get_map(0)->rgb[1]);
+		get_map(0)->c_f[C][2] = ft_atoi(get_map(0)->rgb[2]);
 		/*if (wrong_color_range(get_map(0)->FR, map->FG, map->FB))
 			return (0);*/
 	}
@@ -171,7 +171,7 @@ int		ft_get_next_line(void)
 		{
 			line[i] = buf; 
 			line[++i] = '\0';
-			if (i != 0 && (line[0] >= 65 && line[0] <= 90) && next_is_map == FALSE) // to jest kod do informacji o teksturach i rozmiarze
+			if (i != 0 && (line[0] >= 65 && line[0] <= 90) && next_is_map == FALSE)
 			{
 				get_map(0)->args = ft_split(line, 32);
 				if (get_map(0)->args[0][0] == 'C')
