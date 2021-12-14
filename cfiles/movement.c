@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/07 20:45:01 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 00:23:26 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,43 +19,60 @@
 // 	mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.t_s_map.img_instance, x, y);
 // }
 
-void	ft_update_position(int key)
+void	ft_forward(void)
 {
 	float	if_wall;
+	
+	if_wall = get_trigo(0)->px_y + SPEED * -sin(get_trigo(0)->angle);
+	if (get_map(0)->map[(int)(if_wall/get_trigo(0)->unit_y_size)][(int)(get_trigo(0)->px_x/get_trigo(0)->unit_x_size)] != '1') // tu x na y
+		get_trigo(0)->px_y += SPEED * -sin(get_trigo(0)->angle);
+	if_wall = get_trigo(0)->px_x + SPEED * cos(get_trigo(0)->angle);
+	if (get_map(0)->map[(int)(get_trigo(0)->px_y/get_trigo(0)->unit_y_size)][(int)(if_wall/get_trigo(0)->unit_x_size)] != '1')
+		get_trigo(0)->px_x += SPEED * cos(get_trigo(0)->angle);
+}
+
+void	ft_backward(void)
+{
+	float	if_wall;
+
+	if_wall = get_trigo(0)->px_y + SPEED * sin(get_trigo(0)->angle);
+	if (get_map(0)->map[(int)(if_wall/get_trigo(0)->unit_y_size)][(int)(get_trigo(0)->px_x/get_trigo(0)->unit_x_size)] != '1') // tu x na 
+		get_trigo(0)->px_y += SPEED * sin(get_trigo(0)->angle);
+	if_wall = get_trigo(0)->px_x + SPEED * -cos(get_trigo(0)->angle);
+	if (get_map(0)->map[(int)(get_trigo(0)->px_y/get_trigo(0)->unit_y_size)][(int)(if_wall/get_trigo(0)->unit_x_size)] != '1')
+		get_trigo(0)->px_x += SPEED * -cos(get_trigo(0)->angle);
+}
+
+void	ft_left(void)
+{
+	get_trigo(0)->angle += ROT * degree;
+	if (get_trigo(0)->angle + degree >= 2 * PI)
+		get_trigo(0)->angle = 0 + degree;
+}
+
+void	ft_right(void)
+{
+	get_trigo(0)->angle -= ROT *degree;
+	if (get_trigo(0)->angle - degree < 0)
+		get_trigo(0)->angle = 2 * PI - degree;
+}
+
+void	ft_update_position(int key)
+{
 	if (key == k_W)
-	{
-		if_wall = g_master.trigo.pixel_y + SPEED * -sin(g_master.trigo.current_angle);
-		// printf("(int)g_master.trigo.pixel_y: %d\n, (int)if_wall: %df\n", (int)g_master.trigo.pixel_y/32, (int)if_wall/32);
-		// printf("hello\n\n");
-		if (g_master.map.map[(int)(if_wall/g_master.trigo.unit_y_size)][(int)(g_master.trigo.pixel_x/g_master.trigo.unit_x_size)] != '1') // tu x na y
-			g_master.trigo.pixel_y += SPEED * -sin(g_master.trigo.current_angle);
-		if_wall = g_master.trigo.pixel_x + SPEED * cos(g_master.trigo.current_angle);
-		if (g_master.map.map[(int)(g_master.trigo.pixel_y/g_master.trigo.unit_y_size)][(int)(if_wall/g_master.trigo.unit_x_size)] != '1')
-			g_master.trigo.pixel_x += SPEED * cos(g_master.trigo.current_angle);
-	}
+		ft_forward();
 	else if (key == k_S)
+		ft_backward();
+	else if (key == k_A || key == ARR_L)
+		ft_left();
+	else if (key == k_D || key == ARR_R)
+		ft_right();
+	if (key == ESC)
 	{
-		if_wall = g_master.trigo.pixel_y + SPEED * sin(g_master.trigo.current_angle);
-		if (g_master.map.map[(int)(if_wall/g_master.trigo.unit_y_size)][(int)(g_master.trigo.pixel_x/g_master.trigo.unit_x_size)] != '1') // tu x na 
-			g_master.trigo.pixel_y += SPEED * sin(g_master.trigo.current_angle);
-		if_wall = g_master.trigo.pixel_x + SPEED * -cos(g_master.trigo.current_angle);
-		if (g_master.map.map[(int)(g_master.trigo.pixel_y/g_master.trigo.unit_y_size)][(int)(if_wall/g_master.trigo.unit_x_size)] != '1')
-			g_master.trigo.pixel_x += SPEED * -cos(g_master.trigo.current_angle);
-	}
-	else if (key == k_A)
-	{
-		g_master.trigo.current_angle += ROT * degree;
-		if (g_master.trigo.current_angle + degree >= 2 * PI)
-			g_master.trigo.current_angle = 0 + degree;
-	}
-	else if (key == k_D)
-	{
-		g_master.trigo.current_angle -= ROT *degree;
-		if (g_master.trigo.current_angle - degree < 0)
-			g_master.trigo.current_angle = 2 * PI - degree;
-	}
-	// printf("angle: %f\n", g_master.trigo.current_angle);
-	// printf("x: %f, y: %f\n", g_master.trigo.pixel_x, g_master.trigo.pixel_y);
+		mlx_destroy_image(get_win(0)->mlx_p, get_win(0)->mlx_p);
+		exit (1);
+	}	
+	
 }
 
 
@@ -63,8 +80,10 @@ int	key_press(int key)
 {
 	ft_update_position(key);
 	//ft_printmap_to_window(); //MINIMAP;
-	//ft_move_player(g_master.trigo.pixel_x, g_master.trigo.pixel_y); //MINIMAP
+	//ft_move_player(get_trigo(0)->px_x, get_trigo(0)->px_y); //MINIMAP
 	ft_raycasting();
+	mlx_put_image_to_window(get_win(0)->mlx_p, get_win(0)->win_p, get_img(0)[BG].img_inst, 0, 0);
+	mlx_put_image_to_window(get_win(0)->mlx_p, get_win(0)->win_p, get_img(0)[WL].img_inst, 0, 0);
 	/*destroy image*/
 	//ft_3d_print_addr();
 	/*image to window*/

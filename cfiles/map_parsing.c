@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/07 21:22:27 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 00:44:49 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	ft_print_map(void)
 	int y;
 
 	y = -1;
-	while (g_master.map.map[++y])
-		printf("%s", g_master.map.map[y]);
+	while (get_map(0)->map[++y])
+		printf("%s", get_map(0)->map[y]);
 }
 
 int		ft_check_de_map(void) 
@@ -39,32 +39,32 @@ int		ft_check_de_map(void)
 
 	y = -1;
 	player = 0;
-	while (g_master.map.map[++y])
+	while (get_map(0)->map[++y])
 	{
 		x = -1;
-		while (g_master.map.map[y][++x])
+		while (get_map(0)->map[y][++x])
 		{
-			if (y == 0 || y == g_master.map.last_line)
+			if (y == 0 || y == get_map(0)->last_line)
 			{
-				if (g_master.map.map[y][x] != '1' && g_master.map.map[y][x] != ' ' && g_master.map.map[y][x] != '\n')
+				if (get_map(0)->map[y][x] != '1' && get_map(0)->map[y][x] != ' ' && get_map(0)->map[y][x] != '\n')
 					return (0);
 			}
-			else if (g_master.map.map[y][x] == 48 || g_master.map.map[y][x] == 'N' || g_master.map.map[y][x] == 'S' || g_master.map.map[y][x] == 'E' || g_master.map.map[y][x] == 'W') 
+			else if (get_map(0)->map[y][x] == 48 || get_map(0)->map[y][x] == 'N' || get_map(0)->map[y][x] == 'S' || get_map(0)->map[y][x] == 'E' || get_map(0)->map[y][x] == 'W') 
 			{
-				if (g_master.map.map[y][x+1] == 32 || g_master.map.map[y][x-1] == 32 || g_master.map.map[y+1][x] == 32 || g_master.map.map[y-1][x] == 32) 
+				if (get_map(0)->map[y][x+1] == 32 || get_map(0)->map[y][x-1] == 32 || get_map(0)->map[y+1][x] == 32 || get_map(0)->map[y-1][x] == 32) 
 					return (0);
-				if (g_master.map.map[y][x] == 'N' || g_master.map.map[y][x] == 'S' || g_master.map.map[y][x] == 'E' || g_master.map.map[y][x] == 'W')
+				if (get_map(0)->map[y][x] == 'N' || get_map(0)->map[y][x] == 'S' || get_map(0)->map[y][x] == 'E' || get_map(0)->map[y][x] == 'W')
 				{
-					g_master.trigo.pixel_x = x * g_master.trigo.unit_x_size;
-					g_master.trigo.pixel_y = y * g_master.trigo.unit_y_size;
-					if (g_master.map.map[y][x] == 'N')
-						g_master.trigo.current_angle = (PI/2);
-					else if (g_master.map.map[y][x] == 'S')
-						g_master.trigo.current_angle = 3 * PI / 2;
-					else if (g_master.map.map[y][x] == 'E')
-						g_master.trigo.current_angle = 0;
-					else if (g_master.map.map[y][x] == 'W')
-						g_master.trigo.current_angle = PI; 
+					get_trigo(0)->px_x = x * get_trigo(0)->unit_x_size;
+					get_trigo(0)->px_y = y * get_trigo(0)->unit_y_size;
+					if (get_map(0)->map[y][x] == 'N')
+						get_trigo(0)->angle = (PI/2);
+					else if (get_map(0)->map[y][x] == 'S')
+						get_trigo(0)->angle = 3 * PI / 2;
+					else if (get_map(0)->map[y][x] == 'E')
+						get_trigo(0)->angle = 0;
+					else if (get_map(0)->map[y][x] == 'W')
+						get_trigo(0)->angle = PI; 
 					player++;
 				}	
 			}
@@ -81,74 +81,71 @@ void	ft_resize_map_to_square(int l)
 	int	y;
 
 	y = -1;
-	while (g_master.map.map[++y])
+	while (get_map(0)->map[++y])
 	{
 		x = -1;	
-		while (g_master.map.map[y][++x])
+		while (get_map(0)->map[y][++x])
 			;
 		if (x < l)
 		{
-			g_master.map.map[y] = realloc(g_master.map.map[y], sizeof(char) * (l + 1));
+			get_map(0)->map[y] = realloc(get_map(0)->map[y], sizeof(char) * (l + 1));
 			while (x < l)
 			{
 				if (x == l)
-					g_master.map.map[y][x] = '\0';
+					get_map(0)->map[y][x] = '\0';
 				if (x == l - 1)
-					g_master.map.map[y][x] = '\n';
-				g_master.map.map[y][x - 1] = ' '; // checked with 'x' it works, now we turn it back to spaces;
+					get_map(0)->map[y][x] = '\n';
+				get_map(0)->map[y][x - 1] = ' '; // checked with 'x' it works, now we turn it back to spaces;
 				x++;
 			}
-			g_master.map.map[y][x] = '\0';
+			get_map(0)->map[y][x] = '\0';
 		}
 	}
 }
 
 static int		ft_process_map(char *line, int counter) 
 {
-	int		size;
-	
 	if (counter == 0)
-		g_master.map.map = malloc(sizeof(char *) * (counter + 2));
+		get_map(0)->map = malloc(sizeof(char *) * (counter + 2));
 	else
-		g_master.map.map = realloc(g_master.map.map, sizeof(char *) * (counter + 2));
-	size = ft_strlen(line);
-	g_master.map.map[counter] = ft_strdup(line);
+		get_map(0)->map = realloc(get_map(0)->map, sizeof(char *) * (counter + 2));
+	get_map(0)->map[counter] = ft_strdup(line);
 	return (1);
 }
 
 static int		ft_process_line(void)
 {
-	if (g_master.map.args[0][0] == 'R') // if wrong value, return atoi -1 i finish
+	if (get_map(0)->args[0][0] == 'R') // if wrong value, return atoi -1 i finish
 	{
-		g_master.map.window_width = ft_atoi(g_master.map.args[1]);  // less than 0 should throw error
-		g_master.map.window_height = ft_atoi(g_master.map.args[2]); // less than 0 should throw error
-		if (g_master.map.window_height <= 0 || g_master.map.window_width <= 0)
+		get_map(0)->win_wid = ft_atoi(get_map(0)->args[1]);  // less than 0 should throw error
+		get_map(0)->win_hei = ft_atoi(get_map(0)->args[2]); // less than 0 should throw error
+		if (get_map(0)->win_hei <= 0 || get_map(0)->win_wid <= 0)
 			return (0); 
 	}
-	else if (!(ft_strncmp(g_master.map.args[0], "NO", 3)))
-		g_master.map.NSEW[N] = ft_strtrim(g_master.map.args[1], "\n");
-	else if (!(ft_strncmp(g_master.map.args[0], "SO", 3)))
-		g_master.map.NSEW[S] = ft_strtrim(g_master.map.args[1], "\n");
-	else if (!(ft_strncmp(g_master.map.args[0], "WE", 3)))
-		g_master.map.NSEW[W] = ft_strtrim(g_master.map.args[1], "\n");
-	else if (!(ft_strncmp(g_master.map.args[0], "EA", 3)))
-		g_master.map.NSEW[E] = ft_strtrim(g_master.map.args[1], "\n");
-	else if (g_master.map.args[0][0] == 'F') // < 0 && > 255 error
+	else if (!(ft_strncmp(get_map(0)->args[0], "NO", 2)))
+		get_map(0)->NSEW[N] = get_map(0)->args[1];
+	else if (!(ft_strncmp(get_map(0)->args[0], "SO", 2)))
+		get_map(0)->NSEW[S] = get_map(0)->args[1];
+	else if (!(ft_strncmp(get_map(0)->args[0], "WE", 2)))
+		get_map(0)->NSEW[E] = get_map(0)->args[1];
+	else if (!(ft_strncmp(get_map(0)->args[0], "EA", 2)))
+		get_map(0)->NSEW[W] = get_map(0)->args[1];
+	else if (get_map(0)->args[0][0] == 'F') // < 0 && > 255 error
 	{
-		g_master.map.RGB = ft_split(g_master.map.args[1], ',');
-		g_master.map.c_f[F][0] = ft_atoi(g_master.map.RGB[0]); 
-		g_master.map.c_f[F][1] = ft_atoi(g_master.map.RGB[1]);
-		g_master.map.c_f[F][2] = ft_atoi(g_master.map.RGB[2]);
+		get_map(0)->RGB = ft_split(get_map(0)->args[1], ',');
+		get_map(0)->c_f[F][0] = ft_atoi(get_map(0)->RGB[0]); 
+		get_map(0)->c_f[F][1] = ft_atoi(get_map(0)->RGB[1]);
+		get_map(0)->c_f[F][2] = ft_atoi(get_map(0)->RGB[2]);
 		/*if (wrong_color_range(map->FR, map->FG, map->FB))
 			return (0);*/
 	}	
-	else if (g_master.map.args[0][0] == 'C') 
+	else if (get_map(0)->args[0][0] == 'C') 
 	{
-		g_master.map.RGB = ft_split(g_master.map.args[1], ',');
-		g_master.map.c_f[C][0] = ft_atoi(g_master.map.RGB[0]);
-		g_master.map.c_f[C][1] = ft_atoi(g_master.map.RGB[1]);
-		g_master.map.c_f[C][2]= ft_atoi(g_master.map.RGB[2]);
-		/*if (wrong_color_range(g_master.map.FR, map->FG, map->FB))
+		get_map(0)->RGB = ft_split(get_map(0)->args[1], ',');
+		get_map(0)->c_f[C][0] = ft_atoi(get_map(0)->RGB[0]);
+		get_map(0)->c_f[C][1] = ft_atoi(get_map(0)->RGB[1]);
+		get_map(0)->c_f[C][2] = ft_atoi(get_map(0)->RGB[2]);
+		/*if (wrong_color_range(get_map(0)->FR, map->FG, map->FB))
 			return (0);*/
 	}
 	return (1);
@@ -166,9 +163,9 @@ int		ft_get_next_line(void)
 	counter = -1;
 	next_is_map = FALSE;
 	line = malloc(8192);
-	if (g_master.map.fd < 0 || !line)
+	if (get_map(0)->fd < 0 || !line)
 		return (0);
-	while (read(g_master.map.fd, &buf, 1))
+	while (read(get_map(0)->fd, &buf, 1))
 	{
 		if (buf == '\n')
 		{
@@ -176,8 +173,8 @@ int		ft_get_next_line(void)
 			line[++i] = '\0';
 			if (i != 0 && (line[0] >= 65 && line[0] <= 90) && next_is_map == FALSE) // to jest kod do informacji o teksturach i rozmiarze
 			{
-				g_master.map.args = ft_split(line, 32);
-				if (g_master.map.args[0][0] == 'C')
+				get_map(0)->args = ft_split(line, 32);
+				if (get_map(0)->args[0][0] == 'C')
 					next_is_map = TRUE;
 				if (!ft_process_line())
 					return (0);
@@ -196,12 +193,21 @@ int		ft_get_next_line(void)
 				if(!ft_process_map(line, ++counter))
 					break ;
 				i = 0;
+				
 				continue ;
 			}
 		}
 		line[i++] = buf;
 	}
-	g_master.map.last_line = counter;
-	g_master.map.map[++counter] = NULL;
+	if (i != 0)
+	{
+		line[i] = '\0';
+		get_map(0)->map[++counter] = ft_strdup(line);
+		get_map(0)->map = realloc(get_map(0)->map, sizeof(char *) * (counter + 2));
+	}		
+	get_map(0)->last_line = counter;
+	get_map(0)->map[++counter] = NULL;
+	free(line);
+	line = NULL;
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/13 21:09:16 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/14 00:46:48 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,59 +31,39 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color) // znajdz ta funkcje,
 {
 	char	*dst;
 
-	dst = img->img_address + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	dst = img->img_address + (y * img->line_len + x * (img->bpp / 8));
 	*(int*)dst = color;
 }
 
+ // IF ERROR SEARCH HERE FOR ++j - 1;
 void	ft_update_bg(void)
 {
-	int y;
-	int x;
 	int i;
 	int j;
 	int color;
 
-	y = g_master.map.window_height / 2;
-	x = g_master.map.window_width;
 	j = -1;
-	//printf("RED: %d, GREEN: %d, BLUE: %d\n", g_master.map.CR, g_master.map.CG, g_master.map.CB);
-	while (++j < y)
+	while (++j < get_map(0)->win_hei / 2)
 	{
 		i = -1;
-		while (++i < x)
+		while (++i < get_map(0)->win_wid)
 		{
-			color = create_trgb(g_master.map.c_f[C][2], g_master.map.c_f[C][1], g_master.map.c_f[C][0], 0);
-			my_mlx_pixel_put(&g_master.bg, i, j, color);
+			color = create_trgb(get_map(0)->c_f[C][2], 
+				get_map(0)->c_f[C][1], get_map(0)->c_f[C][0], 0);
+			my_mlx_pixel_put(&get_img(0)[BG], i, j, color);
 		}
 	}
-	while (j < g_master.map.window_height)
+	while (++j - 1 < get_map(0)->win_hei)
 	{
 		i = -1;
-		while (++i < x)
+		while (++i < get_map(0)->win_wid)
 		{
-			color = create_trgb(g_master.map.c_f[F][2], g_master.map.c_f[F][1], g_master.map.c_f[F][0], 0);
-			my_mlx_pixel_put(&g_master.bg, i, j, color);
+			color = create_trgb(get_map(0)->c_f[F][2], 
+				get_map(0)->c_f[F][1], get_map(0)->c_f[F][0], 0);
+			my_mlx_pixel_put(&get_img(0)[BG], i, j, color);
 		}
-		j++;
 	}
 }
-
-	//j = width_x - g_master.map.window_width / 60;
-// 	while (++i < g_master.map.window_height)
-// 	{
-// 		printf("j: %d\n", j);
-// 		while (j < width_x)
-// 		{
-// 			printf("j: %d\n", j);
-// 			if (i > lineO && i < lineO + lineH)
-// 				mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, j, i, 0xFF0000);
-// 			else
-// 				mlx_pixel_put(g_master.window.mlx_p, g_master.window.win_p, j, i, 0x00FF00);
-// 			j++;
-// 		}
-// 		j = width_x - g_master.map.window_width / 60;
-
-
 
 /** Endian 0 - means less significant byte goes first (int this case Blue)
 * Color is given in hexa, 0x12345678, less significant byte is the last one. Y?
@@ -100,35 +80,34 @@ void	ft_update_bg(void)
 * If the image has the same endian as the screen then colors stored inside it
 * corresponds to the image color set.
 *
-*/ 
-
+**/ 
 
 void	ft_update_walls(int x, int dir, float ra)
 {
 	int	y;
 
 	y = -1;
-	while (++y < g_master.map.window_height)
+	while (++y < get_map(0)->win_hei)
 	{
-		if (y > g_master.trigo.lineO_3d && y < (g_master.trigo.lineO_3d + g_master.trigo.lineH_3d))
+		if (y > get_trigo(0)->lineO_3d && y < (get_trigo(0)->lineO_3d + get_trigo(0)->lineH_3d))
 		{
 			if (dir == 1 && ra > 0 && ra < PI) // N
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x00BF0000);
+				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00BF0000);
 			else if (dir == 0 && (ra < PI/2 || ra > P3)) // E
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x00FF0000);
+				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00FF0000);
 			else if (dir == 1 && ra >= PI && ra < 2 * PI) // S
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x00BF0000);
+				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00BF0000);
 			else if (dir == 0 && ra > PI/2 && ra < P3) // W
-				my_mlx_pixel_put(&g_master.walls, x, y, 0x00FF0000);
+				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00FF0000);
 		}
 		else
-			my_mlx_pixel_put(&g_master.walls, x, y, 0xFF000000);
+			my_mlx_pixel_put(&get_img(0)[WL], x, y, 0xFF000000);
 	}	
 }
 
 void    ft_3d_print_addr(int x, int dir, float ra)
 {
 	// ft_update_bg();
-	// mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.bg.img_instance, 0, 0);
+	// mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, get_img(0)[BG].img_instance, 0, 0);
 	ft_update_walls(x, dir, ra);
 }
