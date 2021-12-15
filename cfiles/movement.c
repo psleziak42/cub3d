@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 22:58:45 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 01:18:22 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,14 @@
 void	ft_forward(t_trigo *trigo)
 {
 	float	if_wall;
+
 	if_wall = trigo->px_y + SPEED * -sin(trigo->angle);
-	if (get_map(0)->map[(int)(if_wall/trigo->unit_y_size)][(int)(trigo->px_x/trigo->unit_x_size)] != '1') // tu x na y
+	if (get_map(0)->map[(int)(if_wall / trigo->unit_y_size)]
+			[(int)(trigo->px_x / trigo->unit_x_size)] != '1')
 		trigo->px_y += SPEED * -sin(trigo->angle);
 	if_wall = trigo->px_x + SPEED * cos(trigo->angle);
-	if (get_map(0)->map[(int)(trigo->px_y/trigo->unit_y_size)][(int)(if_wall/trigo->unit_x_size)] != '1')
+	if (get_map(0)->map[(int)(trigo->px_y / trigo->unit_y_size)]
+			[(int)(if_wall / trigo->unit_x_size)] != '1')
 		trigo->px_x += SPEED * cos(trigo->angle);
 }
 
@@ -35,10 +38,12 @@ void	ft_backward(t_trigo *trigo)
 	float	if_wall;
 
 	if_wall = trigo->px_y + SPEED * sin(trigo->angle);
-	if (get_map(0)->map[(int)(if_wall/trigo->unit_y_size)][(int)(trigo->px_x/trigo->unit_x_size)] != '1') // tu x na 
+	if (get_map(0)->map[(int)(if_wall / trigo->unit_y_size)]
+			[(int)(trigo->px_x / trigo->unit_x_size)] != '1')
 		trigo->px_y += SPEED * sin(trigo->angle);
 	if_wall = trigo->px_x + SPEED * -cos(trigo->angle);
-	if (get_map(0)->map[(int)(trigo->px_y/trigo->unit_y_size)][(int)(if_wall/trigo->unit_x_size)] != '1')
+	if (get_map(0)->map[(int)(trigo->px_y / trigo->unit_y_size)]
+			[(int)(if_wall / trigo->unit_x_size)] != '1')
 		trigo->px_x += SPEED * -cos(trigo->angle);
 }
 
@@ -58,7 +63,6 @@ void	ft_right(t_trigo *trigo)
 
 int	ft_update_position(int key, t_trigo *trigo)
 {
-	printf("px %f py %f\n", trigo->px_x, trigo->px_y);
 	if (key == K_W)
 		ft_forward(trigo);
 	else if (key == K_S)
@@ -74,18 +78,3 @@ int	ft_update_position(int key, t_trigo *trigo)
 	}	
 	return (0);
 }
-
-
-// int	key_press(int key)
-// {
-// 	// ft_update_position(key);
-// 	//ft_printmap_to_window(); //MINIMAP;
-// 	//ft_move_player(trigo->px_x, trigo->px_y); //MINIMAP
-// 	//ft_raycasting();
-// 	mlx_put_image_to_window(get_win(0)->mlx_p, get_win(0)->win_p, get_img(0)[BG]->img_inst, 0, 0);
-// 	mlx_put_image_to_window(get_win(0)->mlx_p, get_win(0)->win_p, get_img(0)[WL]->img_inst, 0, 0);
-// 	/*destroy image*/
-// 	//ft_3d_print_addr();
-// 	/*image to window*/
-// 	return (0);
-// }

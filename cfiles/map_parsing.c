@@ -6,35 +6,16 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 22:55:09 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 01:17:49 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../extras/hfiles/cub3d.h"
 
-/* TO DO:
- *-> 
- *
- *
- *
- *
- *
-*/
-
-// void	ft_print_map(void)
-// {
-// 	int y;
-
-// 	y = -1;
-// 	while (map->map[++y])
-// 		printf("%s", map->map[y]);
-// }
-
-int		ft_check_de_map(t_map *map, t_trigo *trigo) 
+int	ft_check_de_map(t_map *map, t_trigo *trigo)
 {
 	int	x;
-	int y;
+	int	y;
 	int	player;
 
 	y = -1;
@@ -49,23 +30,22 @@ int		ft_check_de_map(t_map *map, t_trigo *trigo)
 				if (map->map[y][x] != '1' && map->map[y][x] != ' ' && map->map[y][x] != '\n')
 					return (0);
 			}
-			else if (map->map[y][x] == 48 || map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W') 
+			else if (map->map[y][x] == 48 || map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W') // "any char of ths string NSEW"?
 			{
-				if (map->map[y][x+1] == 32 || map->map[y][x-1] == 32 || map->map[y+1][x] == 32 || map->map[y-1][x] == 32) 
+				if (map->map[y][x + 1] == 32 || map->map[y][x - 1] == 32 || map->map[y + 1][x] == 32 || map->map[y - 1][x] == 32)
 					return (0);
 				if (map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W')
 				{
 					trigo->px_x = x * trigo->unit_x_size;
 					trigo->px_y = y * trigo->unit_y_size;
-					//printf("trigo_px_x: %f, trigo_px_y: %f\n", trigo->px_x, trigo->px_y);
 					if (map->map[y][x] == 'N')
-						trigo->angle = (PI/2);
+						trigo->angle = P2;
 					else if (map->map[y][x] == 'S')
-						trigo->angle = 3 * PI / 2;
+						trigo->angle = P3;
 					else if (map->map[y][x] == 'E')
 						trigo->angle = 0;
 					else if (map->map[y][x] == 'W')
-						trigo->angle = PI; 
+						trigo->angle = PI;
 					player++;
 				}	
 			}
@@ -84,7 +64,7 @@ void	ft_resize_map_to_square(int l, t_map *map)
 	y = -1;
 	while (map->map[++y])
 	{
-		x = -1;	
+		x = -1;
 		while (map->map[y][++x])
 			;
 		if (x < l)
@@ -104,7 +84,7 @@ void	ft_resize_map_to_square(int l, t_map *map)
 	}
 }
 
-static int		ft_process_map(char *line, int counter, t_map *map)
+static int	ft_process_map(char *line, int counter, t_map *map)
 {
 	int	i;
 
@@ -116,22 +96,22 @@ static int		ft_process_map(char *line, int counter, t_map *map)
 	i = 0;
 	while (line[i])
 	{
-		if (!is_valid_char(line[i++], 
-			(char[9]){'0', '1', 'N', 'E', 'S', 'W', ' ', '\n', '\0'}))
+		if (!is_valid_char(line[i++],
+				(char[9]){'0', '1', 'N', 'E', 'S', 'W', ' ', '\n', '\0'}))
 			return (0);
 	}
 	map->map[counter] = ft_strdup(line);
 	return (1);
 }
 
-static int		ft_process_line(t_map *map)
+static int	ft_process_line(t_map *map)
 {
 	if (map->args[0][0] == 'R' && map->win_hei == 0 && map->win_wid == 0)
 	{
 		map->win_wid = ft_atoi(map->args[1]);
 		map->win_hei = ft_atoi(map->args[2]);
 		if (map->win_hei <= 0 || map->win_wid <= 0)
-			return (0); 
+			return (0);
 	}
 	else if (!(ft_strncmp(map->args[0], "NO", 2)) && !map->nsew[N])
 		map->nsew[N] = map->args[1];
@@ -144,13 +124,13 @@ static int		ft_process_line(t_map *map)
 	else if (map->args[0][0] == 'F')
 	{
 		map->rgb = ft_split(map->args[1], ',');
-		map->c_f[F][0] = ft_atoi(map->rgb[0]); 
+		map->c_f[F][0] = ft_atoi(map->rgb[0]);
 		map->c_f[F][1] = ft_atoi(map->rgb[1]);
 		map->c_f[F][2] = ft_atoi(map->rgb[2]);
 		if (is_wrong_color(map->c_f[F][0], map->c_f[F][1], map->c_f[F][2]))
 			return (0);
 	}	
-	else if (map->args[0][0] == 'C') 
+	else if (map->args[0][0] == 'C')
 	{
 		map->rgb = ft_split(map->args[1], ',');
 		map->c_f[C][0] = ft_atoi(map->rgb[0]);
@@ -178,9 +158,10 @@ int	parse_lines(char *line, int i, int *counter, t_map *map)
 	}
 	else if (line[0] == '\0')
 		;
-	else if ((line[0] != 49 && line[0] != 32) || line[ft_strlen(line) - 1] != 49)
+	else if ((line[0] != 49 && line[0] != 32)
+		|| line[ft_strlen(line) - 1] != 49)
 		return (0);
-	else 
+	else
 	{
 		if(!ft_process_map(line, ++(*counter), map))
 		{
@@ -191,7 +172,7 @@ int	parse_lines(char *line, int i, int *counter, t_map *map)
 	return (1);
 }
 
-int		ft_get_next_line(t_map *map)
+int	ft_get_next_line(t_map *map)
 {
 	char	*line;
 	char	buf;
@@ -244,6 +225,6 @@ int		ft_get_next_line(t_map *map)
 // 	if(!ft_process_map(line, ++counter))
 // 		break ;
 // 	i = 0;
-	
+
 // 	continue ;
 // }

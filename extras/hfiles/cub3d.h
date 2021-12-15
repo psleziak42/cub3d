@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/14 23:55:39 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 01:15:35 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # include <limits.h>
 
 # define PI		3.14159265359
-# define P2		PI/2
+# define P2		PI / 2
 # define P3		3 * PI / 2
 # define F0V	PI / 3 / DEGREE
 # define DEGREE	0.01745329251
@@ -60,7 +60,7 @@
 # define F		1
 # define C		0
 
-typedef	struct s_map
+typedef struct s_map
 {
 	char	**map;
 	char	**args;
@@ -74,7 +74,7 @@ typedef	struct s_map
 	int		longest_line;
 }				t_map;
 
-typedef	struct	s_win
+typedef struct s_win
 {
 	void	*mlx_p;
 	void	*win_p;
@@ -89,16 +89,15 @@ typedef	struct	s_win
 
 // }				t_s_map;
 
-typedef struct	s_img
+typedef struct s_img
 {
 	void	*img_inst;
 	char	*img_address;
 	int		bpp;
 	int		line_len;
 	int		endian;
-	int	 	img_wid;
-	int  	img_hei;
-	
+	int		img_wid;
+	int		img_hei;	
 }				t_img;
 
 typedef struct s_trigonometry
