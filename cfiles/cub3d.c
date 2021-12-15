@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:24:13 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 22:55:38 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 23:23:40 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,24 @@ int	ft_render_image(t_trigo *trigo)
 	return (0);
 }
 
+int	ft_key_release(int keycode, t_trigo *trigo)
+{
+	if (keycode == K_A)
+		trigo->key_a = 0;
+	if (keycode == K_W)
+		trigo->key_w = 0;
+	if (keycode == K_S)
+		trigo->key_s = 0;
+	if (keycode == K_D)
+		trigo->key_d = 0;
+	return (0);
+}
+
 void	ft_init_loop(t_trigo *trigo)
 {
 	mlx_loop_hook(get_win(0)->mlx_p, ft_render_image, trigo);
 	mlx_hook(get_win(0)->win_p, 2, 1L << 0, ft_update_position, trigo);
+	mlx_hook(get_win(0)->win_p, 3, 0, ft_key_release, trigo);
 	mlx_hook(get_win(0)->win_p, 17, (1L << 16), ft_close_window, 0);
 	mlx_loop(get_win(0)->mlx_p);
 }

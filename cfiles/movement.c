@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 21:31:32 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 23:23:19 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_forward(t_trigo *trigo)
 {
 	float	if_wall;
 
+	trigo->key_w = true;
 	if_wall = trigo->px_y + SPEED * -sin(trigo->angle);
 	if (get_map(0)->map[(int)(if_wall / trigo->unit_y_size)]
 			[(int)(trigo->px_x / trigo->unit_x_size)] != '1')
@@ -30,6 +31,7 @@ void	ft_backward(t_trigo *trigo)
 {
 	float	if_wall;
 
+	trigo->key_s = true;
 	if_wall = trigo->px_y + SPEED * sin(trigo->angle);
 	if (get_map(0)->map[(int)(if_wall / trigo->unit_y_size)]
 			[(int)(trigo->px_x / trigo->unit_x_size)] != '1')
@@ -42,6 +44,7 @@ void	ft_backward(t_trigo *trigo)
 
 void	ft_left(t_trigo *trigo)
 {
+	trigo->key_a = true;
 	trigo->angle += ROT * DEGREE;
 	if (trigo->angle + DEGREE >= 2 * PI)
 		trigo->angle = 0 + DEGREE;
@@ -49,6 +52,7 @@ void	ft_left(t_trigo *trigo)
 
 void	ft_right(t_trigo *trigo)
 {
+	trigo->key_d = true;
 	trigo->angle -= ROT * DEGREE;
 	if (trigo->angle - DEGREE < 0)
 		trigo->angle = 2 * PI - DEGREE;
@@ -56,13 +60,13 @@ void	ft_right(t_trigo *trigo)
 
 int	ft_update_position(int key, t_trigo *trigo)
 {
-	if (key == K_W)
+	if (key == K_W || trigo->key_w)
 		ft_forward(trigo);
-	else if (key == K_S)
+	if (key == K_S || trigo->key_s)
 		ft_backward(trigo);
-	else if (key == K_A || key == ARR_L)
+	if (key == K_A || key == ARR_L || trigo->key_a)
 		ft_left(trigo);
-	else if (key == K_D || key == ARR_R)
+	if (key == K_D || key == ARR_R || trigo->key_d)
 		ft_right(trigo);
 	if (key == ESC)
 	{
