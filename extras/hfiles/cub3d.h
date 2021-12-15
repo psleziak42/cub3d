@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/15 23:00:06 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 23:18:17 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,10 @@ typedef struct s_trigonometry
 	float	unit_x_size;
 	float	line_h_3d;
 	float	line_o_3d;
+	bool	key_a;
+	bool	key_w;
+	bool	key_s;
+	bool	key_d;
 }				t_trigo;
 
 typedef union u_color
