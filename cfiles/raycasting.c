@@ -6,47 +6,11 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 18:56:03 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 21:00:54 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
-
-//====================================================================
-// static void	ft_print_one_ray_h(float trigo->rx, float trigo->ry, float ra, int color)
-// {
-// 	float 	x;
-// 	float	y;
-// 	float	i;
-// 	//float	c;
-// 	float	delta_x;
-// 	float	step;
-
-// 	trigo->ry = (float)trigo->ry;
-// 	i = 0;
-// 	delta_x = fabs(trigo->rx - trigo->px_x); // chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
-// 	printf("deltax: %f\n", delta_x);
-// 	// if (sin(trigo->angle) != 0)
-// 	// 	c = delta_x / sin(trigo->angle);
-// 	step = tan(ra);
-// 	x = trigo->px_x;
-// 	y = trigo->px_y;
-// 	while (i < delta_x)
-// 	{
-// 		mlx_pixel_put(get_win(0)->mlx_p, get_win(0)->win_p, x, y, color);
-// 		if (cos(ra) > 0)
-// 			y -= step;
-// 		else
-// 			y += step;
-// 		if (cos(ra) < 0)
-// 				x -= 1;
-// 		else
-// 			x += 1;
-// 		i++;
-// 	}	
-// }
-// ============================================================
-// static void	ft_3d_printer(float lineH, float lineO, float width_x);
 
 void	ft_create_3d_world(t_trigo *trigo, float dist, float ra)
 {

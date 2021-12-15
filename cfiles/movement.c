@@ -6,18 +6,11 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 18:49:21 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 20:59:04 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
-
-// static void	ft_move_player(int x, int y)
-// {
-// 	g_master.t_s_map.img_file = "extras/textures/player.xpm";
-// 	g_master.t_s_map.img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.t_s_map.img_file, &g_master.t_s_map.img_width, &g_master.t_s_map.img_heigth);
-// 	mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.t_s_map.img_instance, x, y);
-// }
 
 void	ft_forward(t_trigo *trigo)
 {

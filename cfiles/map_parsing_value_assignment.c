@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 18:55:08 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 21:00:17 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,6 @@ static int	ft_process_line(t_map *map)
 	return (1);
 }
 
-/**
- * count_args++ == 7 // before: count_args ==7 and line 164 = count_args++;
- **/
 int	parse_lines(char *line, int i, int *counter, t_map *map)
 {
 	static int		count_args;
@@ -103,10 +100,6 @@ int	parse_lines(char *line, int i, int *counter, t_map *map)
 	return (1);
 }
 
-/**
- * i was changed to static, in case of errors chekc here
- * 
- **/
 int	ft_get_next_line(t_map *map)
 {
 	char		*line;

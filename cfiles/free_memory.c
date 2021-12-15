@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 18:47:34 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 18:57:10 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 20:59:26 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	ft_destroy_imgs(void)
 {
 	mlx_destroy_image(get_win(0)->mlx_p, get_img(0)[BG].img_inst);
 	mlx_destroy_image(get_win(0)->mlx_p, get_img(0)[WL].img_inst);
-	//free(get_img(0));
-	// get_img(0) = NULL;
+	free(get_img(0));
 }
 
 void	ft_free_memory(void)

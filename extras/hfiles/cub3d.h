@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/15 18:47:59 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 21:03:00 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,21 +115,42 @@ typedef struct s_trigonometry
 	float	line_o_3d;
 }				t_trigo;
 
+typedef union u_color
+{
+	int	color;
+	struct
+	{
+		uint8_t	b;
+		uint8_t	g;
+		uint8_t	r;
+		uint8_t	t;
+	};
+}				t_color;
+
 /****CUB3D_UTILS****/
 int		ft_close_window(void);
 void	ft_error_handler(char *error, char *msg, int fd);
 void	ft_fill_walls_and_background_struct(t_img *img, t_map *map, t_win *win);
 void	ft_create_singletones(t_map *map, t_win *win, t_img *img);
 void	ft_set_em_to_zero(t_map *map, t_win *win, t_img *img, t_trigo *trigo);
+
 /****MAP****/
 int		ft_get_next_line(t_map *map);
 int		ft_map_parse(char *argc, t_map *map, t_trigo *trigo);
+
 /****RGB****/
 void	ft_floor(t_map *map);
 void	ft_ceiling(t_map *map);
 bool	is_wrong_color(int r, int g, int b);
 bool	is_valid_char(char c, char *compound);
 int		ft_check_rgb_values(t_map *map);
+int		create_trgb(int b, int g, int r, int t);
+/****CREATE_MAP_UTILS****/
+void	ft_north_wall(t_trigo *trigo, int x, int y);
+void	ft_east_wall(t_trigo *trigo, int x, int y);
+void	ft_south_wall(t_trigo *trigo, int x, int y);
+void	ft_west_wall(t_trigo *trigo, int x, int y);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
 /****WINDOW****/
 void	ft_printmap_to_window(void);
