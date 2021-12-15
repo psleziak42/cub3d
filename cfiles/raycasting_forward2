@@ -6,48 +6,11 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 17:13:12 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 21:33:15 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
-
-//====================================================================
-// static void	ft_print_one_ray_h(float rx, float ry, float ra, int color)
-// {
-// 	float 	x;
-// 	float	y;
-// 	float	i;
-// 	//float	c;
-// 	float	delta_x;
-// 	float	step;
-
-// 	ry = (float)ry;
-// 	i = 0;
-// 	delta_x = fabs(rx - trigo->px_x); // chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
-// 	printf("deltax: %f\n", delta_x);
-// 	// if (sin(trigo->angle) != 0)
-// 	// 	c = delta_x / sin(trigo->angle);
-// 	step = tan(ra);
-// 	x = trigo->px_x;
-// 	y = trigo->px_y;
-// 	while (i < delta_x)
-// 	{
-// 		mlx_pixel_put(get_win(0)->mlx_p, get_win(0)->win_p, x, y, color);
-// 		if (cos(ra) > 0)
-// 			y -= step;
-// 		else
-// 			y += step;
-// 		if (cos(ra) < 0)
-// 				x -= 1;
-// 		else
-// 			x += 1;
-// 		i++;
-// 	}	
-// }
-// ============================================================
-// static void	ft_3d_printer(float lineH, float lineO, float width_x);
-
 
 void	ft_create_3d_world(t_trigo *trigo, float dist, float ra)
 {
@@ -122,23 +85,6 @@ float	ft_horizontal_line(t_trigo *trigo, float ra)
 	}
 	return(ft_hit_da_wall(trigo, rx, ry, xo, yo));
 }
-	
-	// int		mx;
-	// int		my;
-	
-	// mx = (int)(rx / trigo->unit_x_size);
-	// my = (int)(ry / trigo->unit_y_size);
-	// while (my < get_map(0)->last_line && mx < get_map(0)->longest_line && my > 0 && mx > 0 && get_map(0)->map[my][mx] != '1')
-	// {
-	// 	rx += xo;
-	// 	ry += yo;
-	// 	mx = (int)(rx / trigo->unit_x_size);
-	// 	my = (int)(ry / trigo->unit_y_size);
-	// }
-	// trigo->ryh = ry;
-	// trigo->rxh = rx;
-	// return(ft_distance(ry, trigo->px_y, rx, trigo->px_x));
-	// //return(ft_hit_da_wall(rx, ry, xo, yo));
 
 /*** VERTICAL LINE ***/
 
@@ -172,22 +118,6 @@ float	ft_vertical_line(t_trigo *trigo, float ra)
 	}
 	return(ft_hit_da_wall(trigo, rx, ry, xo, yo));
 }
-	// int		mx;
-	// int		my;
-	
-	// mx = (int)(rx / trigo->unit_x_size);
-	// my = (int)(ry / trigo->unit_y_size);
-	// while (my < get_map(0)->last_line && mx < get_map(0)->longest_line && my > 0 && mx > 0 && get_map(0)->map[my][mx] != '1')
-	// {
-	// 	rx += xo;
-	// 	ry += yo;
-	// 	mx = (int)(rx / trigo->unit_x_size);
-	// 	my = (int)(ry / trigo->unit_y_size);
-	// }
-	// trigo->ryv = ry;
-	// trigo->rxv = rx;
-	// return(ft_distance(ry, trigo->px_y, rx, trigo->px_x));
-	// //return(ft_hit_da_wall(rx, ry, xo, yo));
 
 float ft_360(float ra)
 {

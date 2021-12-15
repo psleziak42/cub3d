@@ -6,27 +6,23 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 16:59:56 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 21:31:32 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
 
-// static void	ft_move_player(int x, int y)
-// {
-// 	g_master.t_s_map.img_file = "extras/textures/player.xpm";
-// 	g_master.t_s_map.img_instance = mlx_xpm_file_to_image(g_master.window.mlx_p, g_master.t_s_map.img_file, &g_master.t_s_map.img_width, &g_master.t_s_map.img_heigth);
-// 	mlx_put_image_to_window(g_master.window.mlx_p, g_master.window.win_p, g_master.t_s_map.img_instance, x, y);
-// }
-
 void	ft_forward(t_trigo *trigo)
 {
 	float	if_wall;
+
 	if_wall = trigo->px_y + SPEED * -sin(trigo->angle);
-	if (get_map(0)->map[(int)(if_wall/trigo->unit_y_size)][(int)(trigo->px_x/trigo->unit_x_size)] != '1') // tu x na y
+	if (get_map(0)->map[(int)(if_wall / trigo->unit_y_size)]
+			[(int)(trigo->px_x / trigo->unit_x_size)] != '1')
 		trigo->px_y += SPEED * -sin(trigo->angle);
 	if_wall = trigo->px_x + SPEED * cos(trigo->angle);
-	if (get_map(0)->map[(int)(trigo->px_y/trigo->unit_y_size)][(int)(if_wall/trigo->unit_x_size)] != '1')
+	if (get_map(0)->map[(int)(trigo->px_y / trigo->unit_y_size)]
+			[(int)(if_wall / trigo->unit_x_size)] != '1')
 		trigo->px_x += SPEED * cos(trigo->angle);
 }
 
@@ -35,10 +31,12 @@ void	ft_backward(t_trigo *trigo)
 	float	if_wall;
 
 	if_wall = trigo->px_y + SPEED * sin(trigo->angle);
-	if (get_map(0)->map[(int)(if_wall/trigo->unit_y_size)][(int)(trigo->px_x/trigo->unit_x_size)] != '1') // tu x na 
+	if (get_map(0)->map[(int)(if_wall / trigo->unit_y_size)]
+			[(int)(trigo->px_x / trigo->unit_x_size)] != '1')
 		trigo->px_y += SPEED * sin(trigo->angle);
 	if_wall = trigo->px_x + SPEED * -cos(trigo->angle);
-	if (get_map(0)->map[(int)(trigo->px_y/trigo->unit_y_size)][(int)(if_wall/trigo->unit_x_size)] != '1')
+	if (get_map(0)->map[(int)(trigo->px_y / trigo->unit_y_size)]
+			[(int)(if_wall / trigo->unit_x_size)] != '1')
 		trigo->px_x += SPEED * -cos(trigo->angle);
 }
 
@@ -67,6 +65,11 @@ int	ft_update_position(int key, t_trigo *trigo)
 	else if (key == K_D || key == ARR_R)
 		ft_right(trigo);
 	if (key == ESC)
-		ft_close_window();
+	{
+		ft_free_memory();
+		ft_destroy_imgs();
+		mlx_destroy_window(get_win(0)->mlx_p, get_win(0)->win_p);
+		exit (1);
+	}
 	return (0);
 }

@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/11 18:41:22 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/11 18:41:23 by psleziak         ###   ########.fr       */
+/*   Created: 2021/12/15 17:16:58 by psleziak          #+#    #+#             */
+/*   Updated: 2021/12/15 21:01:06 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../extras/hfiles/cub3d.h"
 
-int	ft_isprint(int c)
+float	ft_distance(float ry, float py, float rx, float px)
 {
-	if (c >= 32 && c <= 126)
-		return (1);
-	return (0);
+	return (sqrt((ry - py) * (ry - py) + (rx - px) * (rx - px)));
+}
+
+float	ft_360(float ra)
+{
+	if (ra < 0)
+		ra += 2 * PI;
+	if (ra > 2 * PI)
+		ra -= 2 * PI;
+	return (ra);
 }

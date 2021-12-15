@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:52:05 by bcosters          #+#    #+#             */
-/*   Updated: 2021/12/15 18:17:19 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 23:00:06 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@
 # include <limits.h>
 
 # define PI		3.14159265359
-# define P2		PI/2
-# define P3		3 * PI / 2
-# define F0V	PI / 3 / DEGREE
+// # define P2		PI/2
+// # define P3		3 * PI / 2
+//# define F0V	PI / 3 / DEGREE
 # define DEGREE	0.01745329251
 # define X		17
 # define ESC 	53
@@ -88,7 +88,7 @@ typedef struct s_s_map
 	int		img_hei;
 }	t_s_map;
 
-typedef struct	s_img
+typedef struct s_img
 {
 	void	*img_inst;
 	char	*img_address;
@@ -96,11 +96,15 @@ typedef struct	s_img
 	int		line_len;
 	int		endian;
 	int		img_wid;
-	int		img_hei;
-}	t_img;
+	int		img_hei;	
+}				t_img;
 
 typedef struct s_trigonometry
 {
+	float	ry;
+	float	rx;
+	float	xo;
+	float	yo;
 	float	px_y;
 	float	px_x;
 	float	angle;
@@ -110,20 +114,45 @@ typedef struct s_trigonometry
 	float	line_o_3d;
 }				t_trigo;
 
+typedef union u_color
+{
+	int	color;
+	struct
+	{
+		uint8_t	b;
+		uint8_t	g;
+		uint8_t	r;
+		uint8_t	t;
+	};
+}				t_color;
+
+/****CUB3D_UTILS****/
+int		ft_close_window(void);
+void	ft_error_handler(char *error, char *msg, int fd);
+void	ft_fill_walls_and_background_struct(t_img *img, t_map *map, t_win *win);
+void	ft_create_singletones(t_map *map, t_win *win, t_img *img);
+void	ft_set_em_to_zero(t_map *map, t_win *win, t_img *img, t_trigo *trigo);
+
 /****MAP****/
 int		ft_get_next_line(t_map *map);
-int		ft_count_longest_line(t_map *map);
-void	ft_resize_map_to_square(int l, t_map *map);
-int		ft_check_de_map(t_map *map, t_trigo *trigo);
-void	ft_print_map(void);
+int		ft_map_parse(char *argc, t_map *map, t_trigo *trigo);
 
-/****MAP_UTILS****/
+/****RGB****/
+int		ft_floor(t_map *map);
+int		ft_ceiling(t_map *map);
 bool	is_wrong_color(int r, int g, int b);
 bool	is_valid_char(char c, char *compound);
+int		ft_check_rgb_values(t_map *map);
+int		create_trgb(int b, int g, int r, int t);
+/****CREATE_MAP_UTILS****/
+void	ft_north_wall(t_trigo *trigo, int x, int y);
+void	ft_east_wall(t_trigo *trigo, int x, int y);
+void	ft_south_wall(t_trigo *trigo, int x, int y);
+void	ft_west_wall(t_trigo *trigo, int x, int y);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
 /****WINDOW****/
-void	ft_printmap_to_window(t_trigo *trigo);
-//void	ft_put_pixel(t_master *master, int x, int y);
+void	ft_printmap_to_window(void);
 
 /****KEY****/
 int		key_release(int key);
@@ -132,14 +161,21 @@ int		ft_update_position(int key, t_trigo *trigo);
 /****RAYCASTING****/
 void	ft_raycasting(t_trigo *trigo);
 
+/*****RAYCASTING_UTILS****/
+float	ft_distance(float ry, float py, float rx, float px);
+float	ft_360(float ra);
+
 /****PRINTING****/
 void	ft_update_walls(t_trigo *trigo, int x, int dir, float ra);
-void	ft_update_bg(void);
+void	ft_create_bg(void);
 
 /****FREE and CLEAN****/
+void	ft_error_handler(char *error, char *msg, int fd);
 void	ft_free_memory(void);
-void	free_dp(char **dp);
-int		ft_close_window();
+void	free_rgb(char **rgb);
+void	ft_destroy_imgs(void);
+int		ft_free_memory_without_singleton(t_map *map);
+void	malloc_guard(void **alloc_var, int size, int data_type_size);
 
 /****SINGLETONES****/
 t_map	*get_map(t_map *map);
