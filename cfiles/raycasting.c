@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting_forward2.c                              :+:      :+:    :+:   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 20:11:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 01:16:41 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 18:56:03 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
 
 //====================================================================
-// static void	ft_print_one_ray_h(float rx, float ry, float ra, int color)
+// static void	ft_print_one_ray_h(float trigo->rx, float trigo->ry, float ra, int color)
 // {
 // 	float 	x;
 // 	float	y;
@@ -22,9 +22,9 @@
 // 	float	delta_x;
 // 	float	step;
 
-// 	ry = (float)ry;
+// 	trigo->ry = (float)trigo->ry;
 // 	i = 0;
-// 	delta_x = fabs(rx - trigo->px_x); // chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
+// 	delta_x = fabs(trigo->rx - trigo->px_x); // chyba zle drukuje, trzeba popracoawc nad delta!!!, moze 2 rozne funkcje dac!!
 // 	printf("deltax: %f\n", delta_x);
 // 	// if (sin(trigo->angle) != 0)
 // 	// 	c = delta_x / sin(trigo->angle);
@@ -53,10 +53,7 @@ void	ft_create_3d_world(t_trigo *trigo, float dist, float ra)
 	float	fish_eye;
 
 	fish_eye = ra - trigo->angle;
-	if (fish_eye < 0)
-		fish_eye += 2 * PI;
-	if (fish_eye > 2 * PI)
-		fish_eye -= 2 * PI;
+	ra = ft_360(ra);
 	dist = dist * cos(fish_eye);
 	trigo->line_h_3d = (TEXT * get_map(0)->win_hei) / dist;
 	if (trigo->line_h_3d > get_map(0)->win_hei)
@@ -64,106 +61,82 @@ void	ft_create_3d_world(t_trigo *trigo, float dist, float ra)
 	trigo->line_o_3d = (get_map(0)->win_hei - trigo->line_h_3d) / 2;
 }
 
-static float	ft_distance(float ry, float py, float rx, float px)
-{
-	return (sqrt((ry - py) * (ry - py) + (rx - px) * (rx - px)));
-}
-
-float	ft_hit_da_wall(t_trigo *trigo, float rx, float ry, float xo, float yo)
+float	ft_hit_da_wall(t_trigo *trigo)
 {
 	int		mx;
 	int		my;
 
-	mx = (int)(rx / trigo->unit_x_size);
-	my = (int)(ry / trigo->unit_y_size);
+	mx = (int)(trigo->rx / trigo->unit_x_size);
+	my = (int)(trigo->ry / trigo->unit_y_size);
 	while (my < get_map(0)->last_line && mx < get_map(0)->longest_line
 		&& my > 0 && mx > 0 && get_map(0)->map[my][mx] != '1')
 	{
-		rx += xo;
-		ry += yo;
-		mx = (int)(rx / trigo->unit_x_size);
-		my = (int)(ry / trigo->unit_y_size);
+		trigo->rx += trigo->xo;
+		trigo->ry += trigo->yo;
+		mx = (int)(trigo->rx / trigo->unit_x_size);
+		my = (int)(trigo->ry / trigo->unit_y_size);
 	}
-	return (ft_distance(ry, trigo->px_y, rx, trigo->px_x));
+	return (ft_distance(trigo->ry, trigo->px_y, trigo->rx, trigo->px_x));
 }
 
 /*** HORIZONTAL LINE ***/
 
 float	ft_horizontal_line(t_trigo *trigo, float ra)
 {
-	float	rx;
-	float	ry;
-	float	xo;
-	float	yo;
-
 	if (!tan(ra))
 	{
-		ry = trigo->px_y;
-		rx = trigo->px_x;
-		yo = 0;
-		xo = trigo->unit_x_size;
+		trigo->ry = trigo->px_y;
+		trigo->rx = trigo->px_x;
+		trigo->yo = 0;
+		trigo->xo = trigo->unit_x_size;
 	}
 	else if (ra < PI)
 	{
-		ry = ((int)(trigo->px_y / trigo->unit_y_size)
+		trigo->ry = ((int)(trigo->px_y / trigo->unit_y_size)
 				* trigo->unit_y_size) - 0.0001;
-		rx = ((trigo->px_y - ry) / tan(ra)) + trigo->px_x;
-		yo = -trigo->unit_y_size;
-		xo = -yo / tan(ra);
+		trigo->rx = ((trigo->px_y - trigo->ry) / tan(ra)) + trigo->px_x;
+		trigo->yo = -trigo->unit_y_size;
+		trigo->xo = -trigo->yo / tan(ra);
 	}
 	else
 	{
-		ry = ((int)(trigo->px_y / trigo->unit_y_size)
+		trigo->ry = ((int)(trigo->px_y / trigo->unit_y_size)
 				* trigo->unit_y_size) + trigo->unit_y_size;
-		rx = ((trigo->px_y - ry) / tan(ra)) + trigo->px_x;
-		yo = trigo->unit_y_size;
-		xo = -yo / tan(ra);
+		trigo->rx = ((trigo->px_y - trigo->ry) / tan(ra)) + trigo->px_x;
+		trigo->yo = trigo->unit_y_size;
+		trigo->xo = -trigo->yo / tan(ra);
 	}
-	return (ft_hit_da_wall(trigo, rx, ry, xo, yo));
+	return (ft_hit_da_wall(trigo));
 }
 
 /*** VERTICAL LINE ***/
 
 float	ft_vertical_line(t_trigo *trigo, float ra)
 {
-	float	ry;
-	float	rx;
-	float	xo;
-	float	yo;
-
 	if (!tan(ra))
 	{
-		ry = trigo->px_y;
-		rx = trigo->px_x;
-		yo = trigo->unit_x_size;
-		xo = 0;
+		trigo->ry = trigo->px_y;
+		trigo->rx = trigo->px_x;
+		trigo->yo = trigo->unit_x_size;
+		trigo->xo = 0;
 	}
-	else if (ra > P2 && ra < P3)
+	else if (ra > PI / 2 && ra < 3 * PI / 2)
 	{
-		rx = ((int)(trigo->px_x / trigo->unit_x_size)
+		trigo->rx = ((int)(trigo->px_x / trigo->unit_x_size)
 				* trigo->unit_x_size) - 0.0001;
-		ry = ((trigo->px_x - rx) * tan(ra)) + trigo->px_y;
-		xo = -trigo->unit_x_size;
-		yo = -xo * tan(ra);
+		trigo->ry = ((trigo->px_x - trigo->rx) * tan(ra)) + trigo->px_y;
+		trigo->xo = -trigo->unit_x_size;
+		trigo->yo = -trigo->xo * tan(ra);
 	}
 	else
 	{
-		rx = ((int)(trigo->px_x / trigo->unit_x_size)
+		trigo->rx = ((int)(trigo->px_x / trigo->unit_x_size)
 				* trigo->unit_x_size) + trigo->unit_x_size;
-		ry = ((trigo->px_x - rx) * tan(ra)) + trigo->px_y;
-		xo = trigo->unit_x_size;
-		yo = -xo * tan(ra);
+		trigo->ry = ((trigo->px_x - trigo->rx) * tan(ra)) + trigo->px_y;
+		trigo->xo = trigo->unit_x_size;
+		trigo->yo = -trigo->xo * tan(ra);
 	}
-	return (ft_hit_da_wall(trigo, rx, ry, xo, yo));
-}
-
-float	ft_360(float ra)
-{
-	if (ra < 0)
-		ra += 2 * PI;
-	if (ra > 2 * PI)
-		ra -= 2 * PI;
-	return (ra);
+	return (ft_hit_da_wall(trigo));
 }
 
 void	ft_raycasting(t_trigo *trigo)

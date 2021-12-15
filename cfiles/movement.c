@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/07 18:05:28 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 01:18:22 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 18:49:21 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ int	ft_update_position(int key, t_trigo *trigo)
 		ft_right(trigo);
 	if (key == ESC)
 	{
-		mlx_destroy_image(get_win(0)->mlx_p, get_win(0)->mlx_p);
+		ft_free_memory();
+		ft_destroy_imgs();
+		mlx_destroy_window(get_win(0)->mlx_p, get_win(0)->win_p);
 		exit (1);
-	}	
+	}
 	return (0);
 }

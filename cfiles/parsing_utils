@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   parsing_utils                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/11 18:40:17 by psleziak          #+#    #+#             */
-/*   Updated: 2021/11/11 18:40:18 by psleziak         ###   ########.fr       */
+/*   Created: 2021/12/14 19:36:33 by rimartin          #+#    #+#             */
+/*   Updated: 2021/12/15 16:26:49 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../extras/hfiles/cub3d.h"
 
-void	*ft_memset(void *s, int c, size_t n)
-{
-	unsigned int	i;
-	unsigned char	*a;
+// bool	is_wrong_color(int r, int g, int b)
+// {
+// 	if ((r >= 0 && r <= 255) && (g >= 0 && g <= 255) && (b >= 0 && b <= 255))
+// 		return (true);
+// 	return (false);
+// }
 
-	a = (unsigned char *)s;
-	i = 0;
-	while (i < n)
-		a[i++] = c;
-	return (s);
-}
+// bool	is_valid_char(char c, char *compound)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (compound[++i])
+// 	{
+// 		if (compound[i] == c)
+// 			return (true);
+// 	}	
+// 	return (false);
+// }

@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d_utils.c                                      :+:      :+:    :+:   */
+/*   ft_isnumber.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 19:52:49 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/01 20:08:00 by psleziak         ###   ########.fr       */
+/*   Created: 2021/11/09 15:49:12 by psleziak          #+#    #+#             */
+/*   Updated: 2021/11/09 16:01:04 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../extras/hfiles/cub3d.h"
+#include "libft.h"
 
-void *ft_calloc(size_t size_of, size_t no_of_elem)
+int	ft_isnumber(char *str)
 {
-	unsigned int	i;
-	char			*a;
+	int	i;
 
-	a = malloc(size_of * no_of_elem);
-	i = 0;
-	while (i < size_of * no_of_elem)
-		a[i++] = '\0';
-	return (a);
+	i = -1;
+	if (str[0] == '-' || str[0] == '+')
+		i++;
+	while (str[++i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+	}
+	return (1);
 }

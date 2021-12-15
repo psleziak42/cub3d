@@ -6,7 +6,7 @@
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:44:16 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/15 00:18:25 by psleziak         ###   ########.fr       */
+/*   Updated: 2021/12/15 18:14:52 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,20 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(int *)dst = color;
 }
 
-void	ft_update_bg(void)
+void	ft_create_bg(void)
 {
-	static int	j;
+	int			j;
 	int			i;
-	int			color;
 
-	while (j++ < get_map(0)->win_hei / 2)
+	j = -1;
+	while (++j < get_map(0)->win_hei / 2)
 	{
 		i = -1;
 		while (++i < get_map(0)->win_wid)
 		{
-			color = create_trgb(get_map(0)->c_f[C][2],
-					get_map(0)->c_f[C][1], get_map(0)->c_f[C][0], 0);
-			my_mlx_pixel_put(&get_img(0)[BG], i, j, color);
+			my_mlx_pixel_put(&get_img(0)[BG], i, j,
+				create_trgb(get_map(0)->c_f[C][2],
+					get_map(0)->c_f[C][1], get_map(0)->c_f[C][0], 0));
 		}
 	}
 	while (j < get_map(0)->win_hei)
@@ -58,9 +58,9 @@ void	ft_update_bg(void)
 		i = -1;
 		while (++i < get_map(0)->win_wid)
 		{
-			color = create_trgb(get_map(0)->c_f[F][2],
-					get_map(0)->c_f[F][1], get_map(0)->c_f[F][0], 0);
-			my_mlx_pixel_put(&get_img(0)[BG], i, j, color);
+			my_mlx_pixel_put(&get_img(0)[BG], i, j,
+				create_trgb(get_map(0)->c_f[F][2],
+					get_map(0)->c_f[F][1], get_map(0)->c_f[F][0], 0));
 		}
 		j++;
 	}
@@ -96,11 +96,11 @@ void	ft_update_walls(t_trigo *trigo, int x, int dir, float ra)
 		{
 			if (dir == 1 && ra > 0 && ra < PI)
 				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00BF0000);
-			else if (dir == 0 && (ra < PI / 2 || ra > P3))
+			else if (dir == 0 && (ra < PI / 2 || ra > 3 * PI / 2))
 				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00FF0000);
 			else if (dir == 1 && ra >= PI && ra < 2 * PI)
 				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00BF0000);
-			else if (dir == 0 && ra > PI / 2 && ra < P3)
+			else if (dir == 0 && ra > PI / 2 && ra < 3 * PI / 2)
 				my_mlx_pixel_put(&get_img(0)[WL], x, y, 0x00FF0000);
 		}
 		else

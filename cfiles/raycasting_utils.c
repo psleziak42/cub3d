@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*   raycasting_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/14 19:36:33 by rimartin          #+#    #+#             */
-/*   Updated: 2021/12/14 20:26:57 by psleziak         ###   ########.fr       */
+/*   Created: 2021/12/15 17:16:58 by psleziak          #+#    #+#             */
+/*   Updated: 2021/12/15 17:27:16 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../extras/hfiles/cub3d.h"
 
-bool	is_wrong_color(int r, int g, int b)
+float	ft_distance(float ry, float py, float rx, float px)
 {
-	if (r <= 255 && r >= 0)
-		return (false);
-	else if (g <= 255 && g >= 0)
-		return (false);
-	else if (b <= 255 && b >= 0)
-		return (false);
-	return (true);
+	return (sqrt((ry - py) * (ry - py) + (rx - px) * (rx - px)));
 }
 
-bool	is_valid_char(char c, char *compound)
+float	ft_360(float ra)
 {
-	int	i;
-
-	i = -1;
-	while (compound[++i])
-	{
-		if (compound[i] == c)
-			return (true);
-	}	
-	return (false);
+	if (ra < 0)
+		ra += 2 * PI;
+	if (ra > 2 * PI)
+		ra -= 2 * PI;
+	return (ra);
 }

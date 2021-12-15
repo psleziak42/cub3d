@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memdel_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcosters <bcosters@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psleziak <psleziak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 08:57:29 by bcosters          #+#    #+#             */
-/*   Updated: 2021/09/15 11:24:18 by bcosters         ###   ########.fr       */
+/*   Updated: 2021/11/09 15:41:32 by psleziak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_memdel(void **mem)
 {
-	if (mem != NULL)
+	if (mem != NULL && *mem != NULL)
 	{
 		free(*mem);
 		*mem = NULL;
