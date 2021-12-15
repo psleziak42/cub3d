@@ -22,7 +22,7 @@ CC		=	gcc
 #UPDATE READLINE via brew because the Mac one is too old
 
 CFLAGS	=	-Wall -Wextra -Werror -O3
-LDFLAGS = 	-g -fsanitize=address
+# LDFLAGS = 	-g -fsanitize=address
 INCLUDE	=	-I./$(DOTH) -I./$(LIBFT) -I /usr/local/include
 LINKS	=	-L./$(LIBFT) -lft $(MLX) 
 
@@ -31,7 +31,7 @@ LINKS	=	-L./$(LIBFT) -lft $(MLX)
 all:	$(NAME)
 
 $(NAME): libft $(DIR_O) $(OBJS)
-	@$(CC) $(wildcard cfiles/*.c) $(wildcard extras/libft/*c) $(MLX) $(INC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(LINKS)
+	@$(CC) $(wildcard cfiles/*.c) $(wildcard extras/libft/*c) $(MLX) $(INC) $(CFLAGS) -o $(NAME) $(LINKS)
 	@echo "\n$(GREEN)\n"
 	@cat ./fonts/cub3d.txt
 	@echo "\n$(RESET)\n"

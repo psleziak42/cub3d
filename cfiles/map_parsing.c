@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:28:32 by psleziak          #+#    #+#             */
-/*   Updated: 2021/12/14 20:30:43 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 16:28:08 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 // 	int y;
 
 // 	y = -1;
-// 	while (get_map(0)->map[++y])
-// 		printf("%s", get_map(0)->map[y]);
+// 	while (map->map[++y])
+// 		printf("%s", map->map[y]);
 // }
 
-int		ft_check_de_map(void) 
+int		ft_check_de_map(t_map *map, t_trigo *trigo) 
 {
 	int	x;
 	int y;
@@ -39,32 +39,33 @@ int		ft_check_de_map(void)
 
 	y = -1;
 	player = 0;
-	while (get_map(0)->map[++y])
+	while (map->map[++y])
 	{
 		x = -1;
-		while (get_map(0)->map[y][++x])
+		while (map->map[y][++x])
 		{
-			if (y == 0 || y == get_map(0)->last_line)
+			if (y == 0 || y == map->last_line)
 			{
-				if (get_map(0)->map[y][x] != '1' && get_map(0)->map[y][x] != ' ' && get_map(0)->map[y][x] != '\n')
+				if (map->map[y][x] != '1' && map->map[y][x] != ' ' && map->map[y][x] != '\n')
 					return (0);
 			}
-			else if (get_map(0)->map[y][x] == 48 || get_map(0)->map[y][x] == 'N' || get_map(0)->map[y][x] == 'S' || get_map(0)->map[y][x] == 'E' || get_map(0)->map[y][x] == 'W') 
+			else if (map->map[y][x] == 48 || map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W') 
 			{
-				if (get_map(0)->map[y][x+1] == 32 || get_map(0)->map[y][x-1] == 32 || get_map(0)->map[y+1][x] == 32 || get_map(0)->map[y-1][x] == 32) 
+				if (map->map[y][x+1] == 32 || map->map[y][x-1] == 32 || map->map[y+1][x] == 32 || map->map[y-1][x] == 32) 
 					return (0);
-				if (get_map(0)->map[y][x] == 'N' || get_map(0)->map[y][x] == 'S' || get_map(0)->map[y][x] == 'E' || get_map(0)->map[y][x] == 'W')
+				if (map->map[y][x] == 'N' || map->map[y][x] == 'S' || map->map[y][x] == 'E' || map->map[y][x] == 'W')
 				{
-					get_trigo(0)->px_x = x * get_trigo(0)->unit_x_size;
-					get_trigo(0)->px_y = y * get_trigo(0)->unit_y_size;
-					if (get_map(0)->map[y][x] == 'N')
-						get_trigo(0)->angle = (PI/2);
-					else if (get_map(0)->map[y][x] == 'S')
-						get_trigo(0)->angle = 3 * PI / 2;
-					else if (get_map(0)->map[y][x] == 'E')
-						get_trigo(0)->angle = 0;
-					else if (get_map(0)->map[y][x] == 'W')
-						get_trigo(0)->angle = PI; 
+					trigo->px_x = x * trigo->unit_x_size;
+					trigo->px_y = y * trigo->unit_y_size;
+					//printf("trigo_px_x: %f, trigo_px_y: %f\n", trigo->px_x, trigo->px_y);
+					if (map->map[y][x] == 'N')
+						trigo->angle = (PI/2);
+					else if (map->map[y][x] == 'S')
+						trigo->angle = 3 * PI / 2;
+					else if (map->map[y][x] == 'E')
+						trigo->angle = 0;
+					else if (map->map[y][x] == 'W')
+						trigo->angle = PI; 
 					player++;
 				}	
 			}
@@ -75,43 +76,43 @@ int		ft_check_de_map(void)
 	return (1);
 }
 
-void	ft_resize_map_to_square(int l)
+void	ft_resize_map_to_square(int l, t_map *map)
 {
 	int	x;
 	int	y;
 
 	y = -1;
-	while (get_map(0)->map[++y])
+	while (map->map[++y])
 	{
 		x = -1;	
-		while (get_map(0)->map[y][++x])
+		while (map->map[y][++x])
 			;
 		if (x < l)
 		{
-			get_map(0)->map[y] = realloc(get_map(0)->map[y], l + 1);
+			map->map[y] = realloc(map->map[y], l + 1);
 			while (x < l)
 			{
 				if (x == l)
-					get_map(0)->map[y][x] = '\0';
+					map->map[y][x] = '\0';
 				if (x == l - 1)
-					get_map(0)->map[y][x] = '\n';
-				get_map(0)->map[y][x] = ' ';
+					map->map[y][x] = '\n';
+				map->map[y][x] = ' ';
 				x++;
 			}
-			get_map(0)->map[y][x] = '\0';
+			map->map[y][x] = '\0';
 		}
 	}
 }
 
-static int		ft_process_map(char *line, int counter) 
+static int		ft_process_map(char *line, int counter, t_map *map)
 {
 	int	i;
 
 	if (counter == 0)
-		get_map(0)->map = malloc(sizeof(char *) * (counter + 2));
+		map->map = malloc(sizeof(char *) * (counter + 2));
 	else
-		get_map(0)->map = realloc(get_map(0)->map, sizeof(char *) * (counter + 2));
-	get_map(0)->map[counter] = ft_strdup(line);
+		map->map = realloc(map->map, sizeof(char *) * (counter + 2));
+	map->map[counter] = ft_strdup(line);
 	i = 0;
 	while (line[i])
 	{
@@ -119,55 +120,62 @@ static int		ft_process_map(char *line, int counter)
 			(char[9]){'0', '1', 'N', 'E', 'S', 'W', ' ', '\n', '\0'}))
 			return (0);
 	}
-	get_map(0)->map[counter] = ft_strdup(line);
+	map->map[counter] = ft_strdup(line);
 	return (1);
 }
 
-void	get_rgb_colors(int option)
+static int		ft_process_line(t_map *map)
 {
-	get_map(0)->rgb = ft_split(get_map(0)->args[1], ',');
-	get_map(0)->c_f[option][0] = ft_atoi(get_map(0)->rgb[0]); 
-	get_map(0)->c_f[option][1] = ft_atoi(get_map(0)->rgb[1]);
-	get_map(0)->c_f[option][2] = ft_atoi(get_map(0)->rgb[2]);
-	if (is_wrong_color(get_map(0)->c_f[option][0], get_map(0)->c_f[option][1], get_map(0)->c_f[option][2]))
-		return (0);
-}
-
-static int		ft_process_line(void)
-{
-	if (get_map(0)->args[0][0] == 'R' && get_map(0)->win_hei == 0 && get_map(0)->win_wid == 0)
+	if (map->args[0][0] == 'R' && map->win_hei == 0 && map->win_wid == 0)
 	{
-		get_map(0)->win_wid = ft_atoi(get_map(0)->args[1]);
-		get_map(0)->win_hei = ft_atoi(get_map(0)->args[2]);
-		if (get_map(0)->win_hei <= 0 || get_map(0)->win_wid <= 0)
+		map->win_wid = ft_atoi(map->args[1]);
+		map->win_hei = ft_atoi(map->args[2]);
+		if (map->win_hei <= 0 || map->win_wid <= 0)
 			return (0); 
 	}
-	else if (!(ft_strncmp(get_map(0)->args[0], "NO", 2)) && !get_map(0)->nsew[N])
-		get_map(0)->nsew[N] = get_map(0)->args[1];
-	else if (!(ft_strncmp(get_map(0)->args[0], "SO", 2)) && !get_map(0)->nsew[S])
-		get_map(0)->nsew[S] = get_map(0)->args[1];
-	else if (!(ft_strncmp(get_map(0)->args[0], "WE", 2)) && !get_map(0)->nsew[W])
-		get_map(0)->nsew[E] = get_map(0)->args[1];
-	else if (!(ft_strncmp(get_map(0)->args[0], "EA", 2)) && !get_map(0)->nsew[E])
-		get_map(0)->nsew[W] = get_map(0)->args[1];
-	else if (get_map(0)->args[0][0] == 'F')
-		get_rgb_colors(1);
-	else if (get_map(0)->args[0][0] == 'C') 
-		get_rgb_colors(0);
+	else if (!(ft_strncmp(map->args[0], "NO", 2)) && !map->nsew[N])
+		map->nsew[N] = map->args[1];
+	else if (!(ft_strncmp(map->args[0], "SO", 2)) && !map->nsew[S])
+		map->nsew[S] = map->args[1];
+	else if (!(ft_strncmp(map->args[0], "WE", 2)) && !map->nsew[W])
+		map->nsew[E] = map->args[1];
+	else if (!(ft_strncmp(map->args[0], "EA", 2)) && !map->nsew[E])
+		map->nsew[W] = map->args[1];
+	else if (map->args[0][0] == 'F')
+	{
+		map->rgb = ft_split(map->args[1], ',');
+		map->c_f[F][0] = ft_atoi(map->rgb[0]); 
+		map->c_f[F][1] = ft_atoi(map->rgb[1]);
+		map->c_f[F][2] = ft_atoi(map->rgb[2]);
+		if (is_wrong_color(map->c_f[F][0], map->c_f[F][1], map->c_f[F][2]))
+			return (0);
+		// free_dp(map->rgb);
+	}	
+	else if (map->args[0][0] == 'C') 
+	{
+		map->rgb = ft_split(map->args[1], ',');
+		map->c_f[C][0] = ft_atoi(map->rgb[0]);
+		map->c_f[C][1] = ft_atoi(map->rgb[1]);
+		map->c_f[C][2] = ft_atoi(map->rgb[2]);
+		if (is_wrong_color(map->c_f[C][0], map->c_f[C][1], map->c_f[C][2]))
+			return (0);
+		// free_dp(map->rgb);
+
+	}
 	return (1);
 }
 
-int	parse_lines(char *line, int i, int *counter)
+int	parse_lines(char *line, int i, int *counter, t_map *map)
 {
 	static int		count_args;
 	static bool		next_is_map;
 
 	if (i != 0 && (line[0] >= 65 && line[0] <= 90) && next_is_map == FALSE)
 	{
-		get_map(0)->args = ft_split(line, 32);
+		map->args = ft_split(line, 32);
 		if (count_args == 7)
 			next_is_map = TRUE;
-		if (!ft_process_line())
+		if (!ft_process_line(map))
 			return (0);
 		count_args++;
 	}
@@ -177,16 +185,16 @@ int	parse_lines(char *line, int i, int *counter)
 		return (0);
 	else 
 	{
-		if(!ft_process_map(line, ++(*counter)))
+		if(!ft_process_map(line, ++(*counter), map))
 		{
-			get_map(0)->map[(*counter)] = NULL;
+			map->map[(*counter)] = NULL;
 			return (0);
 		}
 	}
 	return (1);
 }
 
-int		ft_get_next_line()
+int		ft_get_next_line(t_map *map)
 {
 	char	*line;
 	char	buf;
@@ -195,23 +203,23 @@ int		ft_get_next_line()
 
 	i = 0;
 	counter = -1;
-	line = malloc(8192);
-	if (get_map(0)->fd < 0 || !line)
+	line = malloc(1000);
+	if (map->fd < 0 || !line)
 		return (0);
-	while (read(get_map(0)->fd, &buf, 1))
+	while (read(map->fd, &buf, 1))
 	{
 		if (buf == '\n')
 		{
 			line[i] = '\0';
-			if (!parse_lines(line, i, &counter))
+			if (!parse_lines(line, i, &counter, map))
 				return (0);
 			i = 0;
 		}
 		else
 			line[i++] = buf;
 	}
-	get_map(0)->last_line = counter;
-	get_map(0)->map[++counter] = NULL;
+	map->last_line = counter;
+	map->map[++counter] = NULL;
 	free(line);
 	line = NULL;
 	return (1);

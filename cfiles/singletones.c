@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 18:41:25 by rimartin          #+#    #+#             */
-/*   Updated: 2021/12/14 19:46:07 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/12/15 00:23:54 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,36 @@
 
 t_map	*get_map(t_map *map)
 {
-	static t_map	*mapa;
+	static t_map	*mapa = NULL;
 
-	if (!map)
+	if (map)
 		mapa = map;
 	return (mapa);
 }
 
 t_win	*get_win(t_win *win)
 {
-	static t_win	*window;
+	static t_win	*window = NULL;
 
-	if (!win)
+	if (win)
 		window = win;
 	return (window);
 }
 
 t_img	*get_img(t_img *img)
 {
-	static t_img	*image;
+	static t_img	*image = NULL;
 
-	if (!img)
+	if (img)
 		image = img;
 	return (image);
 }
 
 t_trigo	*get_trigo(t_trigo *trigo)
 {
-	static t_trigo	*trigonometry;
+	static t_trigo	*trigonometry = NULL;
 
-	if (!trigo)
+	if (trigo)
 		trigonometry = trigo;
 	return (trigonometry);
 }
